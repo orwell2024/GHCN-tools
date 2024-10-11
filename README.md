@@ -75,3 +75,8 @@ This notebook provides a comparative analysis of temperature trends between US s
 
 ![image](https://github.com/user-attachments/assets/af7c7161-b6cb-47e1-8089-15880c2d51da)
 
+Ineractive map showing all stations which deviate being BI = 0-0.1 both in old (NASA) and new (orwell2022) BI analysis.
+
+![image](https://github.com/user-attachments/assets/8fb2989a-d58f-4725-bec6-c5722284351a)
+
+
