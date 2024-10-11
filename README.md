@@ -67,3 +67,5 @@ This notebook provides a comparative analysis of temperature trends between US s
 - To analyze brightness or built-up area data, use the `Extract_BI_for_GHCN.ipynb` notebook, which provides step-by-step instructions on extracting and processing the data.
 - The CSV file `GHCNv4_stations_with_BI_BU_orwell2022.csv` can be used directly for statistical analysis or visualization in any tool of choice, such as Python (Pandas), R, or Excel.
 
+![image](https://github.com/user-attachments/assets/af7c7161-b6cb-47e1-8089-15880c2d51da)
+
