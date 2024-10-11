@@ -56,7 +56,7 @@ The CSV file contains the following columns:
 ## GEE Data Sources
 
 - **Built-up Area (BU)**: The **BU** values are extracted from the [Global Human Settlement Layer (GHSL)](https://ghsl.jrc.ec.europa.eu/), available in GEE.
-- **Brightness Information (BI)**: The **BI** values are extracted from the [NOAA VIIRS Nighttime Lights dataset](https://developers.google.com/earth-engine/datasets/catalog/NOAA_VIIRS_DNB_MONTHLY_V1_VCMCFG), available in GEE.
+- **Brightness Information (BI)**: The **BI** values are extracted from the [NOAA VIIRS Nighttime Lights dataset](https://developers.google.com/earth-engine/datasets/catalog/NOAA_VIIRS_DNB_MONTHLY_V1_VCMCFG), available in GEE. A 1km radius was used for brigness averaging.
 
 ## `GHCN_US-vs-global.ipynb` Notebook
 
