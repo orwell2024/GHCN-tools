@@ -75,11 +75,11 @@ This notebook provides a comparative analysis of temperature trends between US s
 
 ![image](https://github.com/user-attachments/assets/af7c7161-b6cb-47e1-8089-15880c2d51da)
 
-Ineractive map showing all stations which deviate being BI = 0-0.1 both in old (NASA) and new (orwell2022) BI analysis.
+### Ineractive map showing all stations which deviate being BI = 0-0.1 both in old (NASA) and new (orwell2022) BI analysis.
 
 ![image](https://github.com/user-attachments/assets/8fb2989a-d58f-4725-bec6-c5722284351a)
 
-Mapping Brightness and Built-Up Indexes Across the Globe
+### Mapping Brightness and Built-Up Indexes Across the Globe
 In this analysis, we explore how NASA's Brightness Index (BI) compares to actual built-up areas around meteorological stations. Using data from NASA's GHCNv4 and VIIRS/NOAA, we mapped stations with minimal urbanization (BU_10km ≤ 1%).
 Colors Explained:
 Purple: Stations with a NASA flagged BI above 15.
@@ -89,6 +89,13 @@ Despite these classifications, all stations shown here have both BI_2020 < 1 and
 Footnote:The colors are used to quickly highlight the most extreme misclassifications. All points are rural, with BU_10km < 1%.
 
 ![image](https://github.com/user-attachments/assets/052dd545-93a5-4135-a914-ab4eb83d8435)
+
+### Correlation plot BI_2020_sqr versus BU_2km, colored by old BI values. 🔴 for BI>6.
+
+Brightness Index (BI) is nearly a random number generator, failing to rigorously separate Rural 🔴 from Urban ⚫️ stations ("R", "U" mark the ensemble's weight centers). This is why no difference appears in the temperature curves either. Proper GHSL data should be used.
+
+![image](https://github.com/user-attachments/assets/61b10884-cd20-4610-9f31-f707005e7458)
+
 
 
 
