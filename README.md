@@ -87,8 +87,6 @@ Red: Stations with a a NASA flagged BI between 10 and 15
 Blue: Stations with a a NASA flagged BI  6-10, 
 Despite these classifications, all stations shown here have both BI_2020 < 1 and BU_10km < 1%, meaning they are in deep rural areas. This highlights how NASA's BI misclassifies these locations, suggesting the need for improved metrics (use of GHSL_S etc) to distinguish urban from rural areas.
 Footnote:The colors are used to quickly highlight the most extreme misclassifications. All points are rural, with BU_10km < 1%.
-![image](https://github.com/user-attachments/assets/3a491aab-b757-4abe-a196-06fb473cedfd)
-
 
 ![image](https://github.com/user-attachments/assets/052dd545-93a5-4135-a914-ab4eb83d8435)
 
