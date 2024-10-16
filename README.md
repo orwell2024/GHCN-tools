@@ -13,7 +13,7 @@ This repository contains tools and datasets related to the analysis of GHCN (Glo
 ### Built-up Area (BU)
 
 - **BU** values represent the built-up area percentage around each station, indicating urbanization levels. The data is derived from the Global Human Settlement Layer (GHSL) dataset.
-- The **BU** values are available for the following years: 1975, 1990, 2000, and 2014.
+- The **BU** values are available for the following years: 1975, 2020.
 - **BU Source**: [Global Human Settlement Layer (GHSL)](https://ghsl.jrc.ec.europa.eu/)
 
 ### Brightness Information (BI)
@@ -68,7 +68,7 @@ This notebook provides a comparative analysis of temperature trends between US s
 - The CSV file `GHCNv4_stations_with_BI_BU_orwell2022.csv` can be used directly for statistical analysis or visualization in any tool of choice, such as Python (Pandas), R, or Excel.
 - Use the file as meta data file for the GHCNv4 T file by NASA-GISS. Merge by station ID
 
-## Some picture
+## Some pictures and examples
 
   ![image](https://github.com/user-attachments/assets/2fdc64d5-44b3-4502-9f79-af54e719df4e)
 
@@ -78,5 +78,19 @@ This notebook provides a comparative analysis of temperature trends between US s
 Ineractive map showing all stations which deviate being BI = 0-0.1 both in old (NASA) and new (orwell2022) BI analysis.
 
 ![image](https://github.com/user-attachments/assets/8fb2989a-d58f-4725-bec6-c5722284351a)
+
+Mapping Brightness and Built-Up Indexes Across the Globe
+In this analysis, we explore how NASA's Brightness Index (BI) compares to actual built-up areas around meteorological stations. Using data from NASA's GHCNv4 and VIIRS/NOAA, we mapped stations with minimal urbanization (BU_10km ≤ 1%).
+Colors Explained:
+Purple: Stations with a NASA flagged BI above 15.
+Red: Stations with a a NASA flagged BI between 10 and 15
+Blue: Stations with a a NASA flagged BI  6-10, 
+Despite these classifications, all stations shown here have both BI_2020 < 1 and BU_10km < 1%, meaning they are in deep rural areas. This highlights how NASA's BI misclassifies these locations, suggesting the need for improved metrics (use of GHSL_S etc) to distinguish urban from rural areas.
+Footnote:The colors are used to quickly highlight the most extreme misclassifications. All points are rural, with BU_10km < 1%.
+![image](https://github.com/user-attachments/assets/3a491aab-b757-4abe-a196-06fb473cedfd)
+
+
+![image](https://github.com/user-attachments/assets/052dd545-93a5-4135-a914-ab4eb83d8435)
+
 
 
