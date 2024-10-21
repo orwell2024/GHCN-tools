@@ -7,6 +7,7 @@ This repository contains tools and datasets related to the analysis of GHCN (Glo
 - **GHCNv4\_stations\_with\_BI\_BU\_orwell2022.csv**: This file contains metadata and analysis results for GHCN stations, including BI and BU values.
 - **Extract\_BI\_for\_GHCN.ipynb**: A Jupyter notebook that details the process of extracting brightness information for GHCN stations.
 - **GHCN\_US-vs-global.ipynb**: A Jupyter notebook that compares temperature trends between US stations and global stations.
+- **Plot_T_anomalies_GHCN.ipynb**: A Jupyter notebook that compares temperature trends with various filter and binning options (BU...)
 
 ## Fields Explained
 
