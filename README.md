@@ -97,6 +97,15 @@ Brightness Index (BI) is nearly a random number generator, failing to rigorously
 
 ![image](https://github.com/user-attachments/assets/61b10884-cd20-4610-9f31-f707005e7458)
 
+### Trend lines (added feature on Nov 6th 2024, due to US Election Boredout Syndrome)
+Motivation - to compare with Java. E.g. here
+![image](https://github.com/user-attachments/assets/7731940b-ebba-47d8-93e6-5c592a80aeba)
+What can you do with this? Extract trend slopes for various BU bins with a flexible start point.
+![image](https://github.com/user-attachments/assets/2fa73016-5afd-4852-bc91-91c1f4c2fdbc)
+The analysis on the right is done ad-hoc (just feed GPT with the trend values and do the plot). It depends on the experiment perfromed. 
+![image](https://github.com/user-attachments/assets/df9b5052-9548-4a63-bb72-a44e5b65459c)
+
+
 
 
 
