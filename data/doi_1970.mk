@@ -1,0 +1,115 @@
+Lat >20 and <60 filter
+Number of stations with less than 10.0% missing data: 3808
+Calculating baseline (1970-1975) and anomalies.
+QCU (raw)
+
+BU 0.00-0.10: 0.2567 °C/decade
+BU 0.10-0.39: 0.2257 °C/decade
+BU 0.39-0.78: 0.2166 °C/decade
+BU 0.78-1.34: 0.2227 °C/decade
+BU 1.34-2.10: 0.2158 °C/decade
+BU 2.10-3.21: 0.2398 °C/decade
+BU 3.21-4.89: 0.2617 °C/decade
+BU 4.89-7.91: 0.2895 °C/decade
+BU 7.91-13.28: 0.3092 °C/decade
+BU 13.28-42.60: 0.3390 °C/decade
+
+No Lat filter
+Number of stations with less than 10.0% missing data: 4711
+Calculating baseline (1970-1975) and anomalies...
+QCU (raw)
+
+BU 0.00-0.07: 0.2905 °C/decade
+BU 0.07-0.33: 0.2476 °C/decade
+BU 0.33-0.70: 0.2348 °C/decade
+BU 0.70-1.24: 0.2275 °C/decade
+BU 1.24-2.04: 0.2236 °C/decade
+BU 2.04-3.20: 0.2370 °C/decade
+BU 3.20-5.00: 0.2564 °C/decade
+BU 5.00-8.12: 0.2817 °C/decade
+BU 8.12-13.64: 0.2877 °C/decade
+BU 13.64-42.60: 0.3176 °C/decade
+
+No Lat filter
+number of stations with less than 10.0% missing data: 3850
+QCF (adjusted)
+
+BU 0.00-0.07: 0.3247 °C/decade
+BU 0.07-0.31: 0.3039 °C/decade
+BU 0.31-0.68: 0.2981 °C/decade
+BU 0.68-1.21: 0.2915 °C/decade
+BU 1.21-2.02: 0.2903 °C/decade
+BU 2.02-3.15: 0.3044 °C/decade
+BU 3.15-4.99: 0.3159 °C/decade
+BU 4.99-8.07: 0.3250 °C/decade
+BU 8.07-13.46: 0.3317 °C/decade
+BU 13.46-42.60: 0.3404 °C/decade
+
+number of stations with less than 10.0% missing data: 1590
+QCF (adjusted)
+US only. Lat >20, <60
+
+BU 0.00-0.11: 0.2516 °C/decade
+BU 0.11-0.36: 0.2332 °C/decade
+BU 0.36-0.67: 0.2494 °C/decade
+BU 0.67-1.10: 0.2306 °C/decade
+BU 1.10-1.69: 0.2365 °C/decade
+BU 1.69-2.47: 0.2503 °C/decade
+BU 2.47-3.69: 0.2466 °C/decade
+BU 3.69-5.57: 0.2596 °C/decade
+BU 5.57-9.84: 0.2701 °C/decade
+BU 9.84-33.32: 0.2935 °C/decade
+
+number of stations with less than 10.0% missing data: 2115
+QCU (raw)
+US only. Lat >20, <60
+
+BU 0.00-0.10: 0.1831 °C/decade
+BU 0.10-0.34: 0.1618 °C/decade
+BU 0.34-0.65: 0.1598 °C/decade
+BU 0.65-1.05: 0.1503 °C/decade
+BU 1.05-1.62: 0.1346 °C/decade
+BU 1.62-2.36: 0.1622 °C/decade
+BU 2.36-3.51: 0.1683 °C/decade
+BU 3.51-5.33: 0.1854 °C/decade
+BU 5.33-9.54: 0.2265 °C/decade
+BU 9.54-34.64: 0.2724 °C/decade
+
+
+Number of stations with less than 5.0% missing data: 728
+QCU (raw)
+Lat >20, <60
+Stations that existed 1900-2023
+
+BU 0.02-0.66: 0.1909 °C/decade
+BU 0.66-1.25: 0.1654 °C/decade
+BU 1.25-2.08: 0.1760 °C/decade
+BU 2.08-3.05: 0.1960 °C/decade
+BU 3.05-4.71: 0.2145 °C/decade
+BU 4.71-6.46: 0.2317 °C/decade
+BU 6.46-9.12: 0.3110 °C/decade
+BU 9.12-12.57: 0.2846 °C/decade
+BU 12.57-18.34: 0.3478 °C/decade
+BU 18.34-42.60: 0.3303 °C/decade
+
+Number of stations with less than 5.0% missing data: 449
+QCF (adjusted)
+Lat >20, <60
+Stations that existed 1900-2023
+
+BU 0.02-0.68: 0.2874 °C/decade
+BU 0.68-1.44: 0.2957 °C/decade
+BU 1.44-2.70: 0.2994 °C/decade
+BU 2.70-4.17: 0.2880 °C/decade
+BU 4.17-5.61: 0.2984 °C/decade
+BU 5.61-8.12: 0.3422 °C/decade
+BU 8.12-10.99: 0.3428 °C/decade
+BU 10.99-14.92: 0.3585 °C/decade
+BU 14.92-19.99: 0.3584 °C/decade
+BU 19.99-42.60: 0.3348 °C/decade
+
+
+
+ 
+
+
