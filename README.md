@@ -113,7 +113,7 @@ The analysis on the right is done ad-hoc (just feed GPT with the trend values an
 
 ![image](https://github.com/user-attachments/assets/df9b5052-9548-4a63-bb72-a44e5b65459c)
 
-### Note on the output file 
+### Note on the output file 'GHCNv4_stations_with_BI_BU_orwell2022.csv'
 https://github.com/orwell2024/GHCN-tools/blob/main/GHCNv4_stations_with_BI_BU_orwell2022.csv
 The image provides a global map of GISS GHCN stations, comparing them against the GHSL built-up land data retrieval process.
 
