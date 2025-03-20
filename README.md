@@ -113,7 +113,19 @@ The analysis on the right is done ad-hoc (just feed GPT with the trend values an
 
 ![image](https://github.com/user-attachments/assets/df9b5052-9548-4a63-bb72-a44e5b65459c)
 
+### Note on the output file https://github.com/orwell2024/GHCN-tools/blob/main/GHCNv4_stations_with_BI_BU_orwell2022.csv
+he image provides a global map of GISS GHCN stations, comparing them against the GHSL built-up land data retrieval process.
 
+Gray dots represent all existing stations in the dataset.
+Red dots highlight 386 stations missing from the fetched GHSL dataset, meaning built-up data could not be retrieved for these locations.
+The missing stations are primarily located in polar regions (e.g., above ~70°N and Antarctica), suggesting a limitation in GHSL data coverage for extreme latitudes.
+This issue could be due to:
+GHSL dataset gaps where satellite-derived built-up data is unavailable in remote locations.
 
+Gray dots: Existing stations.
+Red dots: Stations missing from the fetched GHSL dataset.
+Total stations in fetched dataset: 27,519.
+Stations missing from the fetched GHSL list: 386.
+![image](https://github.com/user-attachments/assets/32f8accc-c7c3-4734-9b11-fb0f1a042794)
 
 
