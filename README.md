@@ -113,6 +113,11 @@ The analysis on the right is done ad-hoc (just feed GPT with the trend values an
 
 ![image](https://github.com/user-attachments/assets/df9b5052-9548-4a63-bb72-a44e5b65459c)
 
+Comaring adjusted versus raw.
+
+![image](https://github.com/user-attachments/assets/9888574f-bc62-49b3-906d-aa6769d426f9)
+
+
 ### #Note on output file `GHCNv4_stations_with_BI_BU_orwell2022.csv`
 
 https://github.com/orwell2024/GHCN-tools/blob/main/GHCNv4_stations_with_BI_BU_orwell2022.csv
