@@ -1,0 +1,2328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_681e979ab1b56a369e38570ea007cb3c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>
+    
+    
+<div style="position: fixed;
+            top: 30px; left: 30px; width: 360px; height: 400px;
+            border:2px solid grey; z-index:9999; font-size:13px;
+            background-color:white; padding: 10px; overflow-y:auto">
+<b>GHCN-M Legacy & USCRN Station Pair Map</b><br>
+Enriched with urbanization data from GHSL & VIIRS.<br><br>
+
+<i class="fa fa-map-marker fa-2x" style="color:red"></i> Legacy Station<br>
+<i class="fa fa-map-marker fa-2x" style="color:green"></i> USCRN Station<br>
+<i class="fa fa-map-marker fa-2x" style="color:orange"></i> Duplicate Entry<br><br>
+
+<b>Popup Includes:</b><br>
+– Station name, ID, years<br>
+– Built-Up % (1975 & 2020)<br>
+– Brightness (BI 2020 lsq & NASAGISS BI)<br>
+– Distance, time range, overlap<br><br>
+
+<b>Data Sources:</b><br>
+– GHCN-M v4: ghcnm.tavg.v4.0.1.20250309.qcu.dat<br>
+– USCRN metadata<br>
+– GHSL (BU), VIIRS (BI, 1km radius)<br>
+Docs: <a href="https://github.com/orwell2024/GHCN-tools/blob/main/README.md" target="_blank">GHCN-tools</a><br>
+Map by <b>orwell2022</b>
+</div>
+
+    <script>
+        L.control.scale({position: 'bottomleft', metric: true, imperial: false}).addTo(window.map);
+    </script>
+    
+    
+            <div class="folium-map" id="map_681e979ab1b56a369e38570ea007cb3c" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_681e979ab1b56a369e38570ea007cb3c = L.map(
+                "map_681e979ab1b56a369e38570ea007cb3c",
+                {
+                    center: [39.8283, -98.5795],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 4,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_c6549e18b490cd9d0a2b1297f5e0cace = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var tile_layer_0ea8424e754bfb05ca75860b4f76b319 = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg",
+                {"attribution": "Map tiles by \u003ca href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, under \u003ca href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e. Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://creativecommons.org/licenses/by-sa/3.0\"\u003eCC BY SA\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var tile_layer_4c92df4715efd00d5f76732ac2a8502a = L.tileLayer(
+                "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"http://cartodb.com/attributions\"\u003eCartoDB\u003c/a\u003e, CartoDB \u003ca href =\"http://cartodb.com/attributions\"\u003eattributions\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var tile_layer_55c337e53edf0ff696946c3d20093b5b = L.tileLayer(
+                "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"http://cartodb.com/attributions\"\u003eCartoDB\u003c/a\u003e, CartoDB \u003ca href =\"http://cartodb.com/attributions\"\u003eattributions\u003c/a\u003e", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var tile_layer_ddc7114d42ea70cbe20c098e13273300 = L.tileLayer(
+                "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+                {"attribution": "OpenTopoMap", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var tile_layer_343d0c23fd62d6ae1017da17e5193192 = L.tileLayer(
+                "https://mt1.google.com/vt/lyrs=s\u0026x={x}\u0026y={y}\u0026z={z}",
+                {"attribution": "Google", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var marker_c55d5ea9311e6a67391b5db04d7fd084 = L.marker(
+                [44.2333, -79.7833],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_014f475454b09f2e1045dd6143de8003 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_c55d5ea9311e6a67391b5db04d7fd084.setIcon(icon_014f475454b09f2e1045dd6143de8003);
+        
+    
+        var popup_bc4aa8db75e149754ef21bd3e39369e9 = L.popup({"maxWidth": 420});
+
+        
+            var html_ed37ae6c67643ad81d0d2557f49335d0 = $(`<div id="html_ed37ae6c67643ad81d0d2557f49335d0" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> EGBERT_CS (CA00611E001)<br>         <b>Years:</b> 2000 – 2025<br>         <b>Coords:</b> (44.2333, -79.7833)<br>         <b>Paired with:</b> EGBERT_1_W (CAW00064757)<br>         BU% 1975: 0.4% | BU% 2020: 0.8%<br>         BI 2020 (lsq): 0.5 | NASAGISS_false_BI: 8.0<br><br>         <b>Distance:</b> 196 meters<br>         <b>Combined Years:</b> 26<br>         <b>Overlap:</b> 22 years         </div>`)[0];
+            popup_bc4aa8db75e149754ef21bd3e39369e9.setContent(html_ed37ae6c67643ad81d0d2557f49335d0);
+        
+
+        marker_c55d5ea9311e6a67391b5db04d7fd084.bindPopup(popup_bc4aa8db75e149754ef21bd3e39369e9)
+        ;
+
+        
+    
+    
+            var marker_d8123b3f1e08613a8668ff5bb29fc332 = L.marker(
+                [44.2325, -79.7811],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_05cccf708d72cbc89eb73f1434f61eb4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_d8123b3f1e08613a8668ff5bb29fc332.setIcon(icon_05cccf708d72cbc89eb73f1434f61eb4);
+        
+    
+        var popup_1a402c9f88cde3a045c0fadad7883034 = L.popup({"maxWidth": 420});
+
+        
+            var html_e4f84f4f208ffc43a727c7a19f765ecb = $(`<div id="html_e4f84f4f208ffc43a727c7a19f765ecb" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> EGBERT_1_W (CAW00064757)<br>         <b>Years:</b> 2004 – 2025<br>         <b>Coords:</b> (44.2325, -79.7811)<br>         <b>Paired with:</b> EGBERT_CS (CA00611E001)<br>         BU% 1975: 0.4% | BU% 2020: 0.8%<br>         BI 2020 (lsq): 0.7 | NASAGISS_false_BI: 8.0<br><br>         <b>Distance:</b> 196 meters<br>         <b>Combined Years:</b> 26<br>         <b>Overlap:</b> 22 years         </div>`)[0];
+            popup_1a402c9f88cde3a045c0fadad7883034.setContent(html_e4f84f4f208ffc43a727c7a19f765ecb);
+        
+
+        marker_d8123b3f1e08613a8668ff5bb29fc332.bindPopup(popup_1a402c9f88cde3a045c0fadad7883034)
+        ;
+
+        
+    
+    
+            var poly_line_e45f393cb3c1a04b8b2523c127df4a04 = L.polyline(
+                [[44.2333, -79.7833], [44.2325, -79.7811]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_e45f393cb3c1a04b8b2523c127df4a04.bindTooltip(
+                `<div>
+                     196 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f2aab15e073a51912d22b333ede21198 = L.marker(
+                [31.1414, -87.0486],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_6b05cec01945a7ffa17687b6b900c3fb = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_f2aab15e073a51912d22b333ede21198.setIcon(icon_6b05cec01945a7ffa17687b6b900c3fb);
+        
+    
+        var popup_d23b4847b95ec80fd17d0642cfe7ae41 = L.popup({"maxWidth": 420});
+
+        
+            var html_5e90e0266e908b47a4dfadbb23075af9 = $(`<div id="html_5e90e0266e908b47a4dfadbb23075af9" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> BREWTON_3_ENE (USC00011080)<br>         <b>Years:</b> 1977 – 2025<br>         <b>Coords:</b> (31.1414, -87.0486)<br>         <b>Paired with:</b> BREWTON_3_NNE (USW00063899)<br>         BU% 1975: 1.1% | BU% 2020: 2.2%<br>         BI 2020 (lsq): 2.2 | NASAGISS_false_BI: 10.0<br><br>         <b>Distance:</b> 496 meters<br>         <b>Combined Years:</b> 49<br>         <b>Overlap:</b> 18 years         </div>`)[0];
+            popup_d23b4847b95ec80fd17d0642cfe7ae41.setContent(html_5e90e0266e908b47a4dfadbb23075af9);
+        
+
+        marker_f2aab15e073a51912d22b333ede21198.bindPopup(popup_d23b4847b95ec80fd17d0642cfe7ae41)
+        ;
+
+        
+    
+    
+            var marker_e906ee9176fa2db5c536aa923c816125 = L.marker(
+                [31.145, -87.0517],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_4939c828b398dc3b993bb7e64b11cc95 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_e906ee9176fa2db5c536aa923c816125.setIcon(icon_4939c828b398dc3b993bb7e64b11cc95);
+        
+    
+        var popup_a3e4b8890eb0cd33aa8cc52ae38a459b = L.popup({"maxWidth": 420});
+
+        
+            var html_eff309f6522c6490efc226191da30df9 = $(`<div id="html_eff309f6522c6490efc226191da30df9" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> BREWTON_3_NNE (USW00063899)<br>         <b>Years:</b> 2008 – 2025<br>         <b>Coords:</b> (31.1450, -87.0517)<br>         <b>Paired with:</b> BREWTON_3_ENE (USC00011080)<br>         BU% 1975: 1.0% | BU% 2020: 2.1%<br>         BI 2020 (lsq): 2.0 | NASAGISS_false_BI: 10.0<br><br>         <b>Distance:</b> 496 meters<br>         <b>Combined Years:</b> 49<br>         <b>Overlap:</b> 18 years         </div>`)[0];
+            popup_a3e4b8890eb0cd33aa8cc52ae38a459b.setContent(html_eff309f6522c6490efc226191da30df9);
+        
+
+        marker_e906ee9176fa2db5c536aa923c816125.bindPopup(popup_a3e4b8890eb0cd33aa8cc52ae38a459b)
+        ;
+
+        
+    
+    
+            var poly_line_9765d3caa78cb39b38bdb756f1dd0cf9 = L.polyline(
+                [[31.1414, -87.0486], [31.145, -87.0517]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_9765d3caa78cb39b38bdb756f1dd0cf9.bindTooltip(
+                `<div>
+                     496 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8273a6711720b581b3dee1554410a680 = L.marker(
+                [34.1925, -86.7972],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_14342b0e6f2f886404ded9c04dfcafec = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_8273a6711720b581b3dee1554410a680.setIcon(icon_14342b0e6f2f886404ded9c04dfcafec);
+        
+    
+        var popup_9747134446ae3f4e3a432314272bc71a = L.popup({"maxWidth": 420});
+
+        
+            var html_9e0d784bbcfe5a37b6d2ad89a8aea84a = $(`<div id="html_9e0d784bbcfe5a37b6d2ad89a8aea84a" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> CULLMAN_NAHS (USC00012096)<br>         <b>Years:</b> 1994 – 2025<br>         <b>Coords:</b> (34.1925, -86.7972)<br>         <b>Paired with:</b> CULLMAN_3_ENE (USW00063867)<br>         BU% 1975: 2.5% | BU% 2020: 4.8%<br>         BI 2020 (lsq): 7.6 | NASAGISS_false_BI: 26.0<br><br>         <b>Distance:</b> 319 meters<br>         <b>Combined Years:</b> 32<br>         <b>Overlap:</b> 20 years         </div>`)[0];
+            popup_9747134446ae3f4e3a432314272bc71a.setContent(html_9e0d784bbcfe5a37b6d2ad89a8aea84a);
+        
+
+        marker_8273a6711720b581b3dee1554410a680.bindPopup(popup_9747134446ae3f4e3a432314272bc71a)
+        ;
+
+        
+    
+    
+            var marker_520e3a9f927b9c1000d643fc648fb684 = L.marker(
+                [34.1953, -86.7964],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_c4120f981fa458d7bc66866772b8e351 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_520e3a9f927b9c1000d643fc648fb684.setIcon(icon_c4120f981fa458d7bc66866772b8e351);
+        
+    
+        var popup_07f2098ce34dc796454812feff3f786d = L.popup({"maxWidth": 420});
+
+        
+            var html_b450fb71db5a4045cf03815a45be2b7b = $(`<div id="html_b450fb71db5a4045cf03815a45be2b7b" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> CULLMAN_3_ENE (USW00063867)<br>         <b>Years:</b> 2006 – 2025<br>         <b>Coords:</b> (34.1953, -86.7964)<br>         <b>Paired with:</b> CULLMAN_NAHS (USC00012096)<br>         BU% 1975: 2.4% | BU% 2020: 4.7%<br>         BI 2020 (lsq): 7.6 | NASAGISS_false_BI: 26.0<br><br>         <b>Distance:</b> 319 meters<br>         <b>Combined Years:</b> 32<br>         <b>Overlap:</b> 20 years         </div>`)[0];
+            popup_07f2098ce34dc796454812feff3f786d.setContent(html_b450fb71db5a4045cf03815a45be2b7b);
+        
+
+        marker_520e3a9f927b9c1000d643fc648fb684.bindPopup(popup_07f2098ce34dc796454812feff3f786d)
+        ;
+
+        
+    
+    
+            var poly_line_67702e4a9d6b3e6c161909b3e2b7a326 = L.polyline(
+                [[34.1925, -86.7972], [34.1953, -86.7964]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_67702e4a9d6b3e6c161909b3e2b7a326.bindTooltip(
+                `<div>
+                     319 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a83ca658de34ab8cb50ca088a5fbce23 = L.marker(
+                [30.5467, -87.8808],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_dec4adea55bb7e20f79d7f19b732fa30 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_a83ca658de34ab8cb50ca088a5fbce23.setIcon(icon_dec4adea55bb7e20f79d7f19b732fa30);
+        
+    
+        var popup_09bd9be51a79bdecda1e1a1c5a1876e0 = L.popup({"maxWidth": 420});
+
+        
+            var html_bef6ee1487cf141b057ceb7a36af5df8 = $(`<div id="html_bef6ee1487cf141b057ceb7a36af5df8" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> FAIRHOPE_2_NE (USC00012813)<br>         <b>Years:</b> 1917 – 2025<br>         <b>Coords:</b> (30.5467, -87.8808)<br>         <b>Paired with:</b> FAIRHOPE_3_NE (USW00063869)<br>         BU% 1975: 1.4% | BU% 2020: 5.3%<br>         BI 2020 (lsq): 3.4 | NASAGISS_false_BI: 27.0<br><br>         <b>Distance:</b> 523 meters<br>         <b>Combined Years:</b> 109<br>         <b>Overlap:</b> 20 years         </div>`)[0];
+            popup_09bd9be51a79bdecda1e1a1c5a1876e0.setContent(html_bef6ee1487cf141b057ceb7a36af5df8);
+        
+
+        marker_a83ca658de34ab8cb50ca088a5fbce23.bindPopup(popup_09bd9be51a79bdecda1e1a1c5a1876e0)
+        ;
+
+        
+    
+    
+            var marker_8134a3aa0b9cd25278b88811d114a5e4 = L.marker(
+                [30.5486, -87.8758],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_b603ebb04ca6eb186396f5e887f517bf = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_8134a3aa0b9cd25278b88811d114a5e4.setIcon(icon_b603ebb04ca6eb186396f5e887f517bf);
+        
+    
+        var popup_d8736f46db46cb2d7e565e6a70ed4d8c = L.popup({"maxWidth": 420});
+
+        
+            var html_7caefbde2262703ebf3ade919519940d = $(`<div id="html_7caefbde2262703ebf3ade919519940d" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> FAIRHOPE_3_NE (USW00063869)<br>         <b>Years:</b> 2006 – 2025<br>         <b>Coords:</b> (30.5486, -87.8758)<br>         <b>Paired with:</b> FAIRHOPE_2_NE (USC00012813)<br>         BU% 1975: 1.5% | BU% 2020: 5.5%<br>         BI 2020 (lsq): 3.4 | NASAGISS_false_BI: 25.0<br><br>         <b>Distance:</b> 523 meters<br>         <b>Combined Years:</b> 109<br>         <b>Overlap:</b> 20 years         </div>`)[0];
+            popup_d8736f46db46cb2d7e565e6a70ed4d8c.setContent(html_7caefbde2262703ebf3ade919519940d);
+        
+
+        marker_8134a3aa0b9cd25278b88811d114a5e4.bindPopup(popup_d8736f46db46cb2d7e565e6a70ed4d8c)
+        ;
+
+        
+    
+    
+            var poly_line_4cd0a65342d1b90919643f0707322ff9 = L.polyline(
+                [[30.5467, -87.8808], [30.5486, -87.8758]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_4cd0a65342d1b90919643f0707322ff9.bindTooltip(
+                `<div>
+                     523 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b62a1a92142dce838d6264861deae67e = L.marker(
+                [32.8347, -88.1342],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_57a0386149b4b1ed5280ed7aa0445253 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_b62a1a92142dce838d6264861deae67e.setIcon(icon_57a0386149b4b1ed5280ed7aa0445253);
+        
+    
+        var popup_1e647aea64aeae07392a8ef7efce7cf1 = L.popup({"maxWidth": 420});
+
+        
+            var html_4bb8ce4a9f942665df3888cd330d171c = $(`<div id="html_4bb8ce4a9f942665df3888cd330d171c" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> GAINESVILLE_LOCK (USC00013160)<br>         <b>Years:</b> 1893 – 2025<br>         <b>Coords:</b> (32.8347, -88.1342)<br>         <b>Paired with:</b> GAINESVILLE_2_NE (USW00063892)<br>         BU% 1975: 0.1% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 1.8 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 393 meters<br>         <b>Combined Years:</b> 133<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_1e647aea64aeae07392a8ef7efce7cf1.setContent(html_4bb8ce4a9f942665df3888cd330d171c);
+        
+
+        marker_b62a1a92142dce838d6264861deae67e.bindPopup(popup_1e647aea64aeae07392a8ef7efce7cf1)
+        ;
+
+        
+    
+    
+            var marker_513dc6a1919792f22f6d2fb0c87c5408 = L.marker(
+                [32.8369, -88.1375],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_ee397325406a4d1e70caa2e8a3726202 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_513dc6a1919792f22f6d2fb0c87c5408.setIcon(icon_ee397325406a4d1e70caa2e8a3726202);
+        
+    
+        var popup_505fdb18a30eecc017d79a285fd1d759 = L.popup({"maxWidth": 420});
+
+        
+            var html_0309c61955fe8f915ed1131e2d6f4b21 = $(`<div id="html_0309c61955fe8f915ed1131e2d6f4b21" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> GAINESVILLE_2_NE (USW00063892)<br>         <b>Years:</b> 2007 – 2025<br>         <b>Coords:</b> (32.8369, -88.1375)<br>         <b>Paired with:</b> GAINESVILLE_LOCK (USC00013160)<br>         BU% 1975: 0.1% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 1.8 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 393 meters<br>         <b>Combined Years:</b> 133<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_505fdb18a30eecc017d79a285fd1d759.setContent(html_0309c61955fe8f915ed1131e2d6f4b21);
+        
+
+        marker_513dc6a1919792f22f6d2fb0c87c5408.bindPopup(popup_505fdb18a30eecc017d79a285fd1d759)
+        ;
+
+        
+    
+    
+            var poly_line_abf130f50c5644e03c9f83f678627e68 = L.polyline(
+                [[32.8347, -88.1342], [32.8369, -88.1375]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_abf130f50c5644e03c9f83f678627e68.bindTooltip(
+                `<div>
+                     393 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4596dfda76ce1d3b60c6d6ac5a06270d = L.marker(
+                [34.2878, -85.9681],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_4db72582e368376e4ea67309326f7dff = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_4596dfda76ce1d3b60c6d6ac5a06270d.setIcon(icon_4db72582e368376e4ea67309326f7dff);
+        
+    
+        var popup_908cc77dec6ca3b0084d13ac72634861 = L.popup({"maxWidth": 420});
+
+        
+            var html_ab0cb5713ff521f159ae57f3e616f017 = $(`<div id="html_ab0cb5713ff521f159ae57f3e616f017" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> SAND_MT_SUBSTN (USC00017207)<br>         <b>Years:</b> 1949 – 2025<br>         <b>Coords:</b> (34.2878, -85.9681)<br>         <b>Paired with:</b> GADSDEN_19_N (USW00063857)<br>         BU% 1975: 0.8% | BU% 2020: 1.5%<br>         BI 2020 (lsq): 1.9 | NASAGISS_false_BI: 8.0<br><br>         <b>Distance:</b> 625 meters<br>         <b>Combined Years:</b> 77<br>         <b>Overlap:</b> 21 years         </div>`)[0];
+            popup_908cc77dec6ca3b0084d13ac72634861.setContent(html_ab0cb5713ff521f159ae57f3e616f017);
+        
+
+        marker_4596dfda76ce1d3b60c6d6ac5a06270d.bindPopup(popup_908cc77dec6ca3b0084d13ac72634861)
+        ;
+
+        
+    
+    
+            var marker_fe34630313811fbf7872254d133de61a = L.marker(
+                [34.285, -85.9622],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_bed30fa37d0e7a7837b46a6cbf95f165 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_fe34630313811fbf7872254d133de61a.setIcon(icon_bed30fa37d0e7a7837b46a6cbf95f165);
+        
+    
+        var popup_daea7d256768a50423e6619aa2e6251e = L.popup({"maxWidth": 420});
+
+        
+            var html_f29fa8ab5df83a800977dccf6dc86773 = $(`<div id="html_f29fa8ab5df83a800977dccf6dc86773" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> GADSDEN_19_N (USW00063857)<br>         <b>Years:</b> 2005 – 2025<br>         <b>Coords:</b> (34.2850, -85.9622)<br>         <b>Paired with:</b> SAND_MT_SUBSTN (USC00017207)<br>         BU% 1975: 0.8% | BU% 2020: 1.4%<br>         BI 2020 (lsq): 1.9 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 625 meters<br>         <b>Combined Years:</b> 77<br>         <b>Overlap:</b> 21 years         </div>`)[0];
+            popup_daea7d256768a50423e6619aa2e6251e.setContent(html_f29fa8ab5df83a800977dccf6dc86773);
+        
+
+        marker_fe34630313811fbf7872254d133de61a.bindPopup(popup_daea7d256768a50423e6619aa2e6251e)
+        ;
+
+        
+    
+    
+            var poly_line_96285b0a7c21c96a6a17b644d6a793ec = L.polyline(
+                [[34.2878, -85.9681], [34.285, -85.9622]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_96285b0a7c21c96a6a17b644d6a793ec.bindTooltip(
+                `<div>
+                     625 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ca20362ff37a6775c15f9f7e1006e477 = L.marker(
+                [33.2097, -87.5936],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_4cf4119fd9a626a56b122dfd5ee5df2a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_ca20362ff37a6775c15f9f7e1006e477.setIcon(icon_4cf4119fd9a626a56b122dfd5ee5df2a);
+        
+    
+        var popup_5f1d6ee0fec5ea2a67fdf89a0038eb26 = L.popup({"maxWidth": 420});
+
+        
+            var html_0318badc8f7215745e584a60aecc6790 = $(`<div id="html_0318badc8f7215745e584a60aecc6790" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> TUSCALOOSA_OLIVER_DAM (USC00018385)<br>         <b>Years:</b> 1900 – 1987<br>         <b>Coords:</b> (33.2097, -87.5936)<br>         <b>Paired with:</b> NORTHPORT_2_S (USW00073801)<br>         BU% 1975: 5.6% | BU% 2020: 11.3%<br>         BI 2020 (lsq): 17.9 | NASAGISS_false_BI: 43.0<br><br>         <b>Distance:</b> 372 meters<br>         <b>Combined Years:</b> 126<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_5f1d6ee0fec5ea2a67fdf89a0038eb26.setContent(html_0318badc8f7215745e584a60aecc6790);
+        
+
+        marker_ca20362ff37a6775c15f9f7e1006e477.bindPopup(popup_5f1d6ee0fec5ea2a67fdf89a0038eb26)
+        ;
+
+        
+    
+    
+            var marker_45e2e2a15de8c94f7d01e683007542d6 = L.marker(
+                [33.2125, -87.5914],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_f040786a5a9e6808f68cc9b2a71c1a2d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_45e2e2a15de8c94f7d01e683007542d6.setIcon(icon_f040786a5a9e6808f68cc9b2a71c1a2d);
+        
+    
+        var popup_a14b0f599b0c170d363085ba440dd965 = L.popup({"maxWidth": 420});
+
+        
+            var html_583def5f7fd1e9f7193e1a9f825cc0a9 = $(`<div id="html_583def5f7fd1e9f7193e1a9f825cc0a9" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> NORTHPORT_2_S (USW00073801)<br>         <b>Years:</b> 2009 – 2025<br>         <b>Coords:</b> (33.2125, -87.5914)<br>         <b>Paired with:</b> TUSCALOOSA_OLIVER_DAM (USC00018385)<br>         BU% 1975: 5.8% | BU% 2020: 11.7%<br>         BI 2020 (lsq): 8.6 | NASAGISS_false_BI: 43.0<br><br>         <b>Distance:</b> 372 meters<br>         <b>Combined Years:</b> 126<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_a14b0f599b0c170d363085ba440dd965.setContent(html_583def5f7fd1e9f7193e1a9f825cc0a9);
+        
+
+        marker_45e2e2a15de8c94f7d01e683007542d6.bindPopup(popup_a14b0f599b0c170d363085ba440dd965)
+        ;
+
+        
+    
+    
+            var poly_line_f842cdf377179e477933e93bdd7ff6b4 = L.polyline(
+                [[33.2097, -87.5936], [33.2125, -87.5914]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_f842cdf377179e477933e93bdd7ff6b4.bindTooltip(
+                `<div>
+                     372 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_4e36f17827ae740d7f735bae07331d06 = L.marker(
+                [40.2442, -108.9719],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_47c383b6b5a6800312271a028cf8aece = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_4e36f17827ae740d7f735bae07331d06.setIcon(icon_47c383b6b5a6800312271a028cf8aece);
+        
+    
+        var popup_769150c46da9d0e9286cdc16e417077a = L.popup({"maxWidth": 420});
+
+        
+            var html_166959e0d15106a324b7ef3667b3298b = $(`<div id="html_166959e0d15106a324b7ef3667b3298b" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> DINOSAUR_NATL_MONUMNT (USC00052286)<br>         <b>Years:</b> 1965 – 2015<br>         <b>Coords:</b> (40.2442, -108.9719)<br>         <b>Paired with:</b> DINOSAUR_2_E (USW00094082)<br>         BU% 1975: 0.1% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 353 meters<br>         <b>Combined Years:</b> 61<br>         <b>Overlap:</b> 12 years         </div>`)[0];
+            popup_769150c46da9d0e9286cdc16e417077a.setContent(html_166959e0d15106a324b7ef3667b3298b);
+        
+
+        marker_4e36f17827ae740d7f735bae07331d06.bindPopup(popup_769150c46da9d0e9286cdc16e417077a)
+        ;
+
+        
+    
+    
+            var marker_75d32a282bd650365458d7c1c27b4f95 = L.marker(
+                [40.2447, -108.9678],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_e66e5467639e460acae0e1b51badf158 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_75d32a282bd650365458d7c1c27b4f95.setIcon(icon_e66e5467639e460acae0e1b51badf158);
+        
+    
+        var popup_3d43df342688d7ca9cc4b3b6d15d7e82 = L.popup({"maxWidth": 420});
+
+        
+            var html_96860a9b28e92ca1e38c0dfd89902e3b = $(`<div id="html_96860a9b28e92ca1e38c0dfd89902e3b" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> DINOSAUR_2_E (USW00094082)<br>         <b>Years:</b> 2004 – 2025<br>         <b>Coords:</b> (40.2447, -108.9678)<br>         <b>Paired with:</b> DINOSAUR_NATL_MONUMNT (USC00052286)<br>         BU% 1975: 0.1% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 0.3 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 353 meters<br>         <b>Combined Years:</b> 61<br>         <b>Overlap:</b> 12 years         </div>`)[0];
+            popup_3d43df342688d7ca9cc4b3b6d15d7e82.setContent(html_96860a9b28e92ca1e38c0dfd89902e3b);
+        
+
+        marker_75d32a282bd650365458d7c1c27b4f95.bindPopup(popup_3d43df342688d7ca9cc4b3b6d15d7e82)
+        ;
+
+        
+    
+    
+            var poly_line_27b8bd62c320daaea6ddf988b3007616 = L.polyline(
+                [[40.2442, -108.9719], [40.2447, -108.9678]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_27b8bd62c320daaea6ddf988b3007616.bindTooltip(
+                `<div>
+                     353 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_78120554bd0f7089b678dba550e48618 = L.marker(
+                [31.2, -84.45],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_82c0d6913490fc2ae42aad182298f643 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_78120554bd0f7089b678dba550e48618.setIcon(icon_82c0d6913490fc2ae42aad182298f643);
+        
+    
+        var popup_76ca67d103c341fa0f3f71de64efc3b1 = L.popup({"maxWidth": 420});
+
+        
+            var html_a2775226c89cbbe3a3b0dae204ac33bb = $(`<div id="html_a2775226c89cbbe3a3b0dae204ac33bb" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> HOGGARDS_MILL (USC00094388)<br>         <b>Years:</b> 1939 – 1958<br>         <b>Coords:</b> (31.2000, -84.4500)<br>         <b>Paired with:</b> NEWTON_11_SW (USW00063829)<br>         BU% 1975: 0.1% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 930 meters<br>         <b>Combined Years:</b> 87<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_76ca67d103c341fa0f3f71de64efc3b1.setContent(html_a2775226c89cbbe3a3b0dae204ac33bb);
+        
+
+        marker_78120554bd0f7089b678dba550e48618.bindPopup(popup_76ca67d103c341fa0f3f71de64efc3b1)
+        ;
+
+        
+    
+    
+            var marker_951c32f5d8ff45ea4ae3acb692280968 = L.marker(
+                [31.1922, -84.4464],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_f6844ecd36c9400749be265104a06c33 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_951c32f5d8ff45ea4ae3acb692280968.setIcon(icon_f6844ecd36c9400749be265104a06c33);
+        
+    
+        var popup_df09b2fedc8459bedb567b425a3254ee = L.popup({"maxWidth": 420});
+
+        
+            var html_6db1d0d9cd5fc6cffbf36cd8e748ad5a = $(`<div id="html_6db1d0d9cd5fc6cffbf36cd8e748ad5a" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> NEWTON_11_SW (USW00063829)<br>         <b>Years:</b> 2002 – 2025<br>         <b>Coords:</b> (31.1922, -84.4464)<br>         <b>Paired with:</b> HOGGARDS_MILL (USC00094388)<br>         BU% 1975: 0.1% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 930 meters<br>         <b>Combined Years:</b> 87<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_df09b2fedc8459bedb567b425a3254ee.setContent(html_6db1d0d9cd5fc6cffbf36cd8e748ad5a);
+        
+
+        marker_951c32f5d8ff45ea4ae3acb692280968.bindPopup(popup_df09b2fedc8459bedb567b425a3254ee)
+        ;
+
+        
+    
+    
+            var poly_line_1e452ac6701379c839c7352f167dc1d9 = L.polyline(
+                [[31.2, -84.45], [31.1922, -84.4464]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_1e452ac6701379c839c7352f167dc1d9.bindTooltip(
+                `<div>
+                     930 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_70a96075900be60b111923df542021cd = L.marker(
+                [43.465, -113.5581],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_e6280498fd0b8c54684733ffdf4f78ff = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_70a96075900be60b111923df542021cd.setIcon(icon_e6280498fd0b8c54684733ffdf4f78ff);
+        
+    
+        var popup_790b48f2a4c296da8dd892e0b1bf6cc0 = L.popup({"maxWidth": 420});
+
+        
+            var html_0d5c002d6adb801a466b398262bd3497 = $(`<div id="html_0d5c002d6adb801a466b398262bd3497" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> CRATERS_OF_THE_MOON (USC00102260)<br>         <b>Years:</b> 1958 – 2025<br>         <b>Coords:</b> (43.4650, -113.5581)<br>         <b>Paired with:</b> ARCO_17_SW (USW00004126)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 350 meters<br>         <b>Combined Years:</b> 68<br>         <b>Overlap:</b> 23 years         </div>`)[0];
+            popup_790b48f2a4c296da8dd892e0b1bf6cc0.setContent(html_0d5c002d6adb801a466b398262bd3497);
+        
+
+        marker_70a96075900be60b111923df542021cd.bindPopup(popup_790b48f2a4c296da8dd892e0b1bf6cc0)
+        ;
+
+        
+    
+    
+            var marker_b4098af0fb19b9f975e8329e58718f07 = L.marker(
+                [43.4622, -113.5561],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_84ce024428cebf9a7283e27612bba556 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_b4098af0fb19b9f975e8329e58718f07.setIcon(icon_84ce024428cebf9a7283e27612bba556);
+        
+    
+        var popup_8f56d39f1dea23d0207d40b3abd586da = L.popup({"maxWidth": 420});
+
+        
+            var html_f588f92c1925fe1a57961981c0a998cf = $(`<div id="html_f588f92c1925fe1a57961981c0a998cf" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> ARCO_17_SW (USW00004126)<br>         <b>Years:</b> 2003 – 2025<br>         <b>Coords:</b> (43.4622, -113.5561)<br>         <b>Paired with:</b> CRATERS_OF_THE_MOON (USC00102260)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 350 meters<br>         <b>Combined Years:</b> 68<br>         <b>Overlap:</b> 23 years         </div>`)[0];
+            popup_8f56d39f1dea23d0207d40b3abd586da.setContent(html_f588f92c1925fe1a57961981c0a998cf);
+        
+
+        marker_b4098af0fb19b9f975e8329e58718f07.bindPopup(popup_8f56d39f1dea23d0207d40b3abd586da)
+        ;
+
+        
+    
+    
+            var poly_line_0d001b572a11e5415d3b7e7115110932 = L.polyline(
+                [[43.465, -113.5581], [43.4622, -113.5561]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_0d001b572a11e5415d3b7e7115110932.bindTooltip(
+                `<div>
+                     350 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ddbe3219b3ef9e5b84f0581aea5836c1 = L.marker(
+                [43.2064, -116.7494],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_718eab4b16b3038d0afa10169a39ffd4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_ddbe3219b3ef9e5b84f0581aea5836c1.setIcon(icon_718eab4b16b3038d0afa10169a39ffd4);
+        
+    
+        var popup_8138c227376777b8161e45b4aa8a1711 = L.popup({"maxWidth": 420});
+
+        
+            var html_c4979244756d55394ddeb8f8984d5c96 = $(`<div id="html_c4979244756d55394ddeb8f8984d5c96" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> REYNOLDS (USC00107648)<br>         <b>Years:</b> 1961 – 2014<br>         <b>Coords:</b> (43.2064, -116.7494)<br>         <b>Paired with:</b> MURPHY_10_W (USW00004127)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 242 meters<br>         <b>Combined Years:</b> 65<br>         <b>Overlap:</b> 12 years         </div>`)[0];
+            popup_8138c227376777b8161e45b4aa8a1711.setContent(html_c4979244756d55394ddeb8f8984d5c96);
+        
+
+        marker_ddbe3219b3ef9e5b84f0581aea5836c1.bindPopup(popup_8138c227376777b8161e45b4aa8a1711)
+        ;
+
+        
+    
+    
+            var marker_48cd5a8c56baedc431c5321739f0bdf0 = L.marker(
+                [43.2044, -116.7506],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_153564161c554cf043d40dfeff3cdbde = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_48cd5a8c56baedc431c5321739f0bdf0.setIcon(icon_153564161c554cf043d40dfeff3cdbde);
+        
+    
+        var popup_afd97b3aeebdbc9770869612945caa22 = L.popup({"maxWidth": 420});
+
+        
+            var html_e626686fea3e2e008ca07a179d74c44f = $(`<div id="html_e626686fea3e2e008ca07a179d74c44f" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> MURPHY_10_W (USW00004127)<br>         <b>Years:</b> 2003 – 2025<br>         <b>Coords:</b> (43.2044, -116.7506)<br>         <b>Paired with:</b> REYNOLDS (USC00107648)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 242 meters<br>         <b>Combined Years:</b> 65<br>         <b>Overlap:</b> 12 years         </div>`)[0];
+            popup_afd97b3aeebdbc9770869612945caa22.setContent(html_e626686fea3e2e008ca07a179d74c44f);
+        
+
+        marker_48cd5a8c56baedc431c5321739f0bdf0.bindPopup(popup_afd97b3aeebdbc9770869612945caa22)
+        ;
+
+        
+    
+    
+            var poly_line_64e5d21ba412698e66b879acf9dbadc5 = L.polyline(
+                [[43.2064, -116.7494], [43.2044, -116.7506]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_64e5d21ba412698e66b879acf9dbadc5.bindTooltip(
+                `<div>
+                     242 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_804db9ab41f822a205a92c8425636ecb = L.marker(
+                [30.0858, -91.8694],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_cf4609a315298652f13eed987a318b58 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_804db9ab41f822a205a92c8425636ecb.setIcon(icon_cf4609a315298652f13eed987a318b58);
+        
+    
+        var popup_d567f7af3198c4d92f076277baacda4d = L.popup({"maxWidth": 420});
+
+        
+            var html_4d68903ac6c6ad37a095ac358a31d238 = $(`<div id="html_4d68903ac6c6ad37a095ac358a31d238" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> ST_MARTINVILLE_3_SW (USC00168181)<br>         <b>Years:</b> 2001 – 2018<br>         <b>Coords:</b> (30.0858, -91.8694)<br>         <b>Paired with:</b> LAFAYETTE_13_SE (USW00053960)<br>         BU% 1975: 1.5% | BU% 2020: 2.8%<br>         BI 2020 (lsq): 1.8 | NASAGISS_false_BI: 10.0<br><br>         <b>Distance:</b> 744 meters<br>         <b>Combined Years:</b> 25<br>         <b>Overlap:</b> 16 years         </div>`)[0];
+            popup_d567f7af3198c4d92f076277baacda4d.setContent(html_4d68903ac6c6ad37a095ac358a31d238);
+        
+
+        marker_804db9ab41f822a205a92c8425636ecb.bindPopup(popup_d567f7af3198c4d92f076277baacda4d)
+        ;
+
+        
+    
+    
+            var marker_4779ef6ff7840b68f29e080ce79b1e4e = L.marker(
+                [30.0917, -91.8731],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_d51c19bb0e7f13c35c9a95cb03b76620 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_4779ef6ff7840b68f29e080ce79b1e4e.setIcon(icon_d51c19bb0e7f13c35c9a95cb03b76620);
+        
+    
+        var popup_b7e827fba119bf9006df1c198d3d3177 = L.popup({"maxWidth": 420});
+
+        
+            var html_873dedc97069f37d8c2c249e7ad324a9 = $(`<div id="html_873dedc97069f37d8c2c249e7ad324a9" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> LAFAYETTE_13_SE (USW00053960)<br>         <b>Years:</b> 2003 – 2025<br>         <b>Coords:</b> (30.0917, -91.8731)<br>         <b>Paired with:</b> ST_MARTINVILLE_3_SW (USC00168181)<br>         BU% 1975: 1.6% | BU% 2020: 2.8%<br>         BI 2020 (lsq): 1.8 | NASAGISS_false_BI: 13.0<br><br>         <b>Distance:</b> 744 meters<br>         <b>Combined Years:</b> 25<br>         <b>Overlap:</b> 16 years         </div>`)[0];
+            popup_b7e827fba119bf9006df1c198d3d3177.setContent(html_873dedc97069f37d8c2c249e7ad324a9);
+        
+
+        marker_4779ef6ff7840b68f29e080ce79b1e4e.bindPopup(popup_b7e827fba119bf9006df1c198d3d3177)
+        ;
+
+        
+    
+    
+            var poly_line_1c0f161ab6faf9daa36c8f81f60a2331 = L.polyline(
+                [[30.0858, -91.8694], [30.0917, -91.8731]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_1c0f161ab6faf9daa36c8f81f60a2331.bindTooltip(
+                `<div>
+                     744 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8e95a9d2be257b0557e6aa22a6d6aaa6 = L.marker(
+                [44.9072, -84.7189],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_0a8048e45b34524c3b23b1228dccb588 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_8e95a9d2be257b0557e6aa22a6d6aaa6.setIcon(icon_0a8048e45b34524c3b23b1228dccb588);
+        
+    
+        var popup_12fbac4ba8cf1cd311f91fbb626e22ac = L.popup({"maxWidth": 420});
+
+        
+            var html_61c8e69c8ac87348e1b835bce5ac807d = $(`<div id="html_61c8e69c8ac87348e1b835bce5ac807d" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> GAYLORD_9SSW (USC00203099)<br>         <b>Years:</b> 1998 – 2025<br>         <b>Coords:</b> (44.9072, -84.7189)<br>         <b>Paired with:</b> GAYLORD_9_SSW (USW00054854)<br>         BU% 1975: 0.2% | BU% 2020: 0.4%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 9.0<br><br>         <b>Distance:</b> 149 meters<br>         <b>Combined Years:</b> 28<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_12fbac4ba8cf1cd311f91fbb626e22ac.setContent(html_61c8e69c8ac87348e1b835bce5ac807d);
+        
+
+        marker_8e95a9d2be257b0557e6aa22a6d6aaa6.bindPopup(popup_12fbac4ba8cf1cd311f91fbb626e22ac)
+        ;
+
+        
+    
+    
+            var marker_35671ae42339dc413f27bbe6799b9b96 = L.marker(
+                [44.9081, -84.7203],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_f9e79234347aeefc5393dee9561dcc89 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_35671ae42339dc413f27bbe6799b9b96.setIcon(icon_f9e79234347aeefc5393dee9561dcc89);
+        
+    
+        var popup_7ddc2aa21a7ac12946733852b10ca266 = L.popup({"maxWidth": 420});
+
+        
+            var html_84d3e20994d65067208c71c54bce7850 = $(`<div id="html_84d3e20994d65067208c71c54bce7850" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> GAYLORD_9_SSW (USW00054854)<br>         <b>Years:</b> 2007 – 2025<br>         <b>Coords:</b> (44.9081, -84.7203)<br>         <b>Paired with:</b> GAYLORD_9SSW (USC00203099)<br>         BU% 1975: 0.2% | BU% 2020: 0.4%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 9.0<br><br>         <b>Distance:</b> 149 meters<br>         <b>Combined Years:</b> 28<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_7ddc2aa21a7ac12946733852b10ca266.setContent(html_84d3e20994d65067208c71c54bce7850);
+        
+
+        marker_35671ae42339dc413f27bbe6799b9b96.bindPopup(popup_7ddc2aa21a7ac12946733852b10ca266)
+        ;
+
+        
+    
+    
+            var poly_line_4ab12f1d76a0fbec9305c4365805d296 = L.polyline(
+                [[44.9072, -84.7189], [44.9081, -84.7203]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_4ab12f1d76a0fbec9305c4365805d296.bindTooltip(
+                `<div>
+                     149 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7b95237b11abf84c28983e39a20d601d = L.marker(
+                [46.8833, -110.3],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_f38a9130989907b349aa51251b24e566 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_7b95237b11abf84c28983e39a20d601d.setIcon(icon_f38a9130989907b349aa51251b24e566);
+        
+    
+        var popup_3de9f20deb75fb154b7dd65e7343f788 = L.popup({"maxWidth": 420});
+
+        
+            var html_e247aabca07d980932709e4c968dd3ad = $(`<div id="html_e247aabca07d980932709e4c968dd3ad" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> UTICA_11_WSW (USC00248495)<br>         <b>Years:</b> 1962 – 1987<br>         <b>Coords:</b> (46.8833, -110.3000)<br>         <b>Paired with:</b> LEWISTOWN_42_WSW (USW00004140)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 822 meters<br>         <b>Combined Years:</b> 64<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_3de9f20deb75fb154b7dd65e7343f788.setContent(html_e247aabca07d980932709e4c968dd3ad);
+        
+
+        marker_7b95237b11abf84c28983e39a20d601d.bindPopup(popup_3de9f20deb75fb154b7dd65e7343f788)
+        ;
+
+        
+    
+    
+            var marker_ee11fa327c31cb45ef0ca3856ad9e15d = L.marker(
+                [46.8847, -110.2894],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_273d13ecdf095f06d83a9e3eb65241a5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_ee11fa327c31cb45ef0ca3856ad9e15d.setIcon(icon_273d13ecdf095f06d83a9e3eb65241a5);
+        
+    
+        var popup_5b90f61a2e881b890e23bde88f00529c = L.popup({"maxWidth": 420});
+
+        
+            var html_2fabeeab57ab167574e8ace281a0d023 = $(`<div id="html_2fabeeab57ab167574e8ace281a0d023" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> LEWISTOWN_42_WSW (USW00004140)<br>         <b>Years:</b> 2008 – 2025<br>         <b>Coords:</b> (46.8847, -110.2894)<br>         <b>Paired with:</b> UTICA_11_WSW (USC00248495)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 822 meters<br>         <b>Combined Years:</b> 64<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_5b90f61a2e881b890e23bde88f00529c.setContent(html_2fabeeab57ab167574e8ace281a0d023);
+        
+
+        marker_ee11fa327c31cb45ef0ca3856ad9e15d.bindPopup(popup_5b90f61a2e881b890e23bde88f00529c)
+        ;
+
+        
+    
+    
+            var poly_line_ee0dc3bb2c7d46a2fc0d946b50867b47 = L.polyline(
+                [[46.8833, -110.3], [46.8847, -110.2894]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_ee0dc3bb2c7d46a2fc0d946b50867b47.bindTooltip(
+                `<div>
+                     822 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b82a4b97e381560a2d744bfb19a19013 = L.marker(
+                [42.4244, -103.7347],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_da8851ec52582006017ceb32d4ee0776 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_b82a4b97e381560a2d744bfb19a19013.setIcon(icon_da8851ec52582006017ceb32d4ee0776);
+        
+    
+        var popup_579a46f8658d7b4bca7348a8abcf3c2f = L.popup({"maxWidth": 420});
+
+        
+            var html_30ff60eb119c80aec95111684a8d68cc = $(`<div id="html_30ff60eb119c80aec95111684a8d68cc" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> AGATE_3_E (USC00250030)<br>         <b>Years:</b> 1903 – 2025<br>         <b>Coords:</b> (42.4244, -103.7347)<br>         <b>Paired with:</b> HARRISON_20_SSE (USW00094077)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 143 meters<br>         <b>Combined Years:</b> 123<br>         <b>Overlap:</b> 23 years         </div>`)[0];
+            popup_579a46f8658d7b4bca7348a8abcf3c2f.setContent(html_30ff60eb119c80aec95111684a8d68cc);
+        
+
+        marker_b82a4b97e381560a2d744bfb19a19013.bindPopup(popup_579a46f8658d7b4bca7348a8abcf3c2f)
+        ;
+
+        
+    
+    
+            var marker_094be7805aea55c08cbf7ec487c5d62a = L.marker(
+                [42.4247, -103.7364],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_daef417a2f65c45667918d6ce6ce8064 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_094be7805aea55c08cbf7ec487c5d62a.setIcon(icon_daef417a2f65c45667918d6ce6ce8064);
+        
+    
+        var popup_f3273e69e1fad1b15185e510e04bd6af = L.popup({"maxWidth": 420});
+
+        
+            var html_d2ca67e53d060e017de3416c62322da8 = $(`<div id="html_d2ca67e53d060e017de3416c62322da8" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> HARRISON_20_SSE (USW00094077)<br>         <b>Years:</b> 2003 – 2025<br>         <b>Coords:</b> (42.4247, -103.7364)<br>         <b>Paired with:</b> AGATE_3_E (USC00250030)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 143 meters<br>         <b>Combined Years:</b> 123<br>         <b>Overlap:</b> 23 years         </div>`)[0];
+            popup_f3273e69e1fad1b15185e510e04bd6af.setContent(html_d2ca67e53d060e017de3416c62322da8);
+        
+
+        marker_094be7805aea55c08cbf7ec487c5d62a.bindPopup(popup_f3273e69e1fad1b15185e510e04bd6af)
+        ;
+
+        
+    
+    
+            var poly_line_7e7a34133fdddddacaacd24270c0ac39 = L.polyline(
+                [[42.4244, -103.7347], [42.4247, -103.7364]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_7e7a34133fdddddacaacd24270c0ac39.bindTooltip(
+                `<div>
+                     143 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a86cec07fbad464f74305f0a03f25454 = L.marker(
+                [39.0, -114.2167],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_885f1fd532a1dae8daf126a6eac6758b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_a86cec07fbad464f74305f0a03f25454.setIcon(icon_885f1fd532a1dae8daf126a6eac6758b);
+        
+    
+        var popup_07107f19d04c0ffce453269e3384ed26 = L.popup({"maxWidth": 420});
+
+        
+            var html_09cd728cb919e511fc4198db9555c9ba = $(`<div id="html_09cd728cb919e511fc4198db9555c9ba" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> LEHMAN_CAVES_NM (USC00264514)<br>         <b>Years:</b> 1937 – 1987<br>         <b>Coords:</b> (39.0000, -114.2167)<br>         <b>Paired with:</b> BAKER_5_W (USW00053138)<br>         BU% 1975: 0.0% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 1464 meters<br>         <b>Combined Years:</b> 89<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_07107f19d04c0ffce453269e3384ed26.setContent(html_09cd728cb919e511fc4198db9555c9ba);
+        
+
+        marker_a86cec07fbad464f74305f0a03f25454.bindPopup(popup_07107f19d04c0ffce453269e3384ed26)
+        ;
+
+        
+    
+    
+            var marker_7d2edbf6e6295a7beddf460946244316 = L.marker(
+                [39.0117, -114.2089],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_3aed9a8bae5ae0fc26cbf08eca99e002 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_7d2edbf6e6295a7beddf460946244316.setIcon(icon_3aed9a8bae5ae0fc26cbf08eca99e002);
+        
+    
+        var popup_6ccf491954f1c4e1aa4072d87329de92 = L.popup({"maxWidth": 420});
+
+        
+            var html_223a3cd9a9c76318a675184a6af3b255 = $(`<div id="html_223a3cd9a9c76318a675184a6af3b255" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> BAKER_5_W (USW00053138)<br>         <b>Years:</b> 2004 – 2025<br>         <b>Coords:</b> (39.0117, -114.2089)<br>         <b>Paired with:</b> LEHMAN_CAVES_NM (USC00264514)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 1464 meters<br>         <b>Combined Years:</b> 89<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_6ccf491954f1c4e1aa4072d87329de92.setContent(html_223a3cd9a9c76318a675184a6af3b255);
+        
+
+        marker_7d2edbf6e6295a7beddf460946244316.bindPopup(popup_6ccf491954f1c4e1aa4072d87329de92)
+        ;
+
+        
+    
+    
+            var poly_line_81ec5132c76626356927d7269a8e0a22 = L.polyline(
+                [[39.0, -114.2167], [39.0117, -114.2089]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_81ec5132c76626356927d7269a8e0a22.bindTooltip(
+                `<div>
+                     1464 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b07286150db878cf84d422dfd5e25baf = L.marker(
+                [41.85, -119.6333],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_55d85350364e06b5fdab44d0cc0bdbb8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_b07286150db878cf84d422dfd5e25baf.setIcon(icon_55d85350364e06b5fdab44d0cc0bdbb8);
+        
+    
+        var popup_f3b2dfdb93753be6d2355f54b8dd9883 = L.popup({"maxWidth": 420});
+
+        
+            var html_aea4bfd9593320838a791c56c728f623 = $(`<div id="html_aea4bfd9593320838a791c56c728f623" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> SHELDON (USC00267443)<br>         <b>Years:</b> 1933 – 1971<br>         <b>Coords:</b> (41.8500, -119.6333)<br>         <b>Paired with:</b> DENIO_52_WSW (USW00004139)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 280 meters<br>         <b>Combined Years:</b> 93<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_f3b2dfdb93753be6d2355f54b8dd9883.setContent(html_aea4bfd9593320838a791c56c728f623);
+        
+
+        marker_b07286150db878cf84d422dfd5e25baf.bindPopup(popup_f3b2dfdb93753be6d2355f54b8dd9883)
+        ;
+
+        
+    
+    
+            var marker_0365a7707e0550a0de88615771642ea9 = L.marker(
+                [41.8483, -119.6358],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_b0e7dffae56842ceefc48376bf0ff25e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_0365a7707e0550a0de88615771642ea9.setIcon(icon_b0e7dffae56842ceefc48376bf0ff25e);
+        
+    
+        var popup_2a6d7051ce928ea22a14a4902e8c1dc4 = L.popup({"maxWidth": 420});
+
+        
+            var html_dcc493e54fa133f0474213ef6a2db231 = $(`<div id="html_dcc493e54fa133f0474213ef6a2db231" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> DENIO_52_WSW (USW00004139)<br>         <b>Years:</b> 2008 – 2025<br>         <b>Coords:</b> (41.8483, -119.6358)<br>         <b>Paired with:</b> SHELDON (USC00267443)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 280 meters<br>         <b>Combined Years:</b> 93<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_2a6d7051ce928ea22a14a4902e8c1dc4.setContent(html_dcc493e54fa133f0474213ef6a2db231);
+        
+
+        marker_0365a7707e0550a0de88615771642ea9.bindPopup(popup_2a6d7051ce928ea22a14a4902e8c1dc4)
+        ;
+
+        
+    
+    
+            var poly_line_65c755b67397229a107527d3769b5fd5 = L.polyline(
+                [[41.85, -119.6333], [41.8483, -119.6358]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_65c755b67397229a107527d3769b5fd5.bindTooltip(
+                `<div>
+                     280 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_61ef3d29a32bbf188a64f39c9517de84 = L.marker(
+                [32.6161, -106.7403],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_ca52c2deaf4f9d73207f617163cb3599 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_61ef3d29a32bbf188a64f39c9517de84.setIcon(icon_ca52c2deaf4f9d73207f617163cb3599);
+        
+    
+        var popup_707d905ce02bee5d1083159f97591629 = L.popup({"maxWidth": 420});
+
+        
+            var html_ae71e65224710b89c892c2af427418f7 = $(`<div id="html_ae71e65224710b89c892c2af427418f7" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> JORNADA_EXP_RANGE (USC00294426)<br>         <b>Years:</b> 1914 – 2025<br>         <b>Coords:</b> (32.6161, -106.7403)<br>         <b>Paired with:</b> LAS_CRUCES_20_N (USW00003074)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 295 meters<br>         <b>Combined Years:</b> 112<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_707d905ce02bee5d1083159f97591629.setContent(html_ae71e65224710b89c892c2af427418f7);
+        
+
+        marker_61ef3d29a32bbf188a64f39c9517de84.bindPopup(popup_707d905ce02bee5d1083159f97591629)
+        ;
+
+        
+    
+    
+            var marker_d25ed5ca1d3f9d8c95d22829a05642a5 = L.marker(
+                [32.6136, -106.7414],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_b070c11266a2f2d77d320ce8294b45e8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_d25ed5ca1d3f9d8c95d22829a05642a5.setIcon(icon_b070c11266a2f2d77d320ce8294b45e8);
+        
+    
+        var popup_369bfe0766e365caa39f42da85cad9d6 = L.popup({"maxWidth": 420});
+
+        
+            var html_d4d1f693ad0a9ac3f3135a4593d106c1 = $(`<div id="html_d4d1f693ad0a9ac3f3135a4593d106c1" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> LAS_CRUCES_20_N (USW00003074)<br>         <b>Years:</b> 2007 – 2025<br>         <b>Coords:</b> (32.6136, -106.7414)<br>         <b>Paired with:</b> JORNADA_EXP_RANGE (USC00294426)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 295 meters<br>         <b>Combined Years:</b> 112<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_369bfe0766e365caa39f42da85cad9d6.setContent(html_d4d1f693ad0a9ac3f3135a4593d106c1);
+        
+
+        marker_d25ed5ca1d3f9d8c95d22829a05642a5.bindPopup(popup_369bfe0766e365caa39f42da85cad9d6)
+        ;
+
+        
+    
+    
+            var poly_line_b70573942ff5fa6db87f0e97e83cfe33 = L.polyline(
+                [[32.6161, -106.7403], [32.6136, -106.7414]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_b70573942ff5fa6db87f0e97e83cfe33.bindTooltip(
+                `<div>
+                     295 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_62869ed42dda7ed87ef516a12c6b2bea = L.marker(
+                [35.4267, -82.5575],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_42331977ca9a52c6e442e215f96ad50a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_62869ed42dda7ed87ef516a12c6b2bea.setIcon(icon_42331977ca9a52c6e442e215f96ad50a);
+        
+    
+        var popup_62cfa5a43596935ef1c5ef368aa685ea = L.popup({"maxWidth": 420});
+
+        
+            var html_614ce9e9768dade5f4aaa3937960d695 = $(`<div id="html_614ce9e9768dade5f4aaa3937960d695" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> FLETCHER_3_W (USC00313106)<br>         <b>Years:</b> 1959 – 2025<br>         <b>Coords:</b> (35.4267, -82.5575)<br>         <b>Paired with:</b> ASHEVILLE_13_S (USW00053878)<br>         BU% 1975: 2.0% | BU% 2020: 5.3%<br>         BI 2020 (lsq): 10.2 | NASAGISS_false_BI: 20.0<br><br>         <b>Distance:</b> 901 meters<br>         <b>Combined Years:</b> 67<br>         <b>Overlap:</b> 25 years         </div>`)[0];
+            popup_62cfa5a43596935ef1c5ef368aa685ea.setContent(html_614ce9e9768dade5f4aaa3937960d695);
+        
+
+        marker_62869ed42dda7ed87ef516a12c6b2bea.bindPopup(popup_62cfa5a43596935ef1c5ef368aa685ea)
+        ;
+
+        
+    
+    
+            var marker_92b9831220581abfa662728e40027a87 = L.marker(
+                [35.4186, -82.5567],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_6c61abfc87a4f0bd74684bedf71d2f18 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_92b9831220581abfa662728e40027a87.setIcon(icon_6c61abfc87a4f0bd74684bedf71d2f18);
+        
+    
+        var popup_861e8a9951d787954c7ba8820bf3ba9b = L.popup({"maxWidth": 420});
+
+        
+            var html_920dc1c318121823d8e9f46e1fa90d83 = $(`<div id="html_920dc1c318121823d8e9f46e1fa90d83" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> ASHEVILLE_13_S (USW00053878)<br>         <b>Years:</b> 2001 – 2025<br>         <b>Coords:</b> (35.4186, -82.5567)<br>         <b>Paired with:</b> FLETCHER_3_W (USC00313106)<br>         BU% 1975: 1.9% | BU% 2020: 5.0%<br>         BI 2020 (lsq): 7.6 | NASAGISS_false_BI: 11.0<br><br>         <b>Distance:</b> 901 meters<br>         <b>Combined Years:</b> 67<br>         <b>Overlap:</b> 25 years         </div>`)[0];
+            popup_861e8a9951d787954c7ba8820bf3ba9b.setContent(html_920dc1c318121823d8e9f46e1fa90d83);
+        
+
+        marker_92b9831220581abfa662728e40027a87.bindPopup(popup_861e8a9951d787954c7ba8820bf3ba9b)
+        ;
+
+        
+    
+    
+            var poly_line_6fb2c5e0e8946e517df473a5e903759b = L.polyline(
+                [[35.4267, -82.5575], [35.4186, -82.5567]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_6fb2c5e0e8946e517df473a5e903759b.bindTooltip(
+                `<div>
+                     901 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fedc9f31ee6614974a153f8d017c3e1f = L.marker(
+                [36.1208, -97.0953],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_65af3fded759ea47cb9cdf1705ae09e7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_fedc9f31ee6614974a153f8d017c3e1f.setIcon(icon_65af3fded759ea47cb9cdf1705ae09e7);
+        
+    
+        var popup_ad2d05a9c2609baf17644e71d94cfd15 = L.popup({"maxWidth": 420});
+
+        
+            var html_9aa36fbb3d705a73a91a3ab0231a8f61 = $(`<div id="html_9aa36fbb3d705a73a91a3ab0231a8f61" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> STILLWATER_MESONET (USC00348499)<br>         <b>Years:</b> 2009 – 2025<br>         <b>Coords:</b> (36.1208, -97.0953)<br>         <b>Paired with:</b> STILLWATER_2_W (USC00348501)<br>         BU% 1975: 3.7% | BU% 2020: 7.7%<br>         BI 2020 (lsq): 6.9 | NASAGISS_false_BI: 30.0<br><br>         <b>Distance:</b> 461 meters<br>         <b>Combined Years:</b> 24<br>         <b>Overlap:</b> 17 years         </div>`)[0];
+            popup_ad2d05a9c2609baf17644e71d94cfd15.setContent(html_9aa36fbb3d705a73a91a3ab0231a8f61);
+        
+
+        marker_fedc9f31ee6614974a153f8d017c3e1f.bindPopup(popup_ad2d05a9c2609baf17644e71d94cfd15)
+        ;
+
+        
+    
+    
+            var marker_855967470c053c56aa0c2f39ea352c10 = L.marker(
+                [36.1181, -97.0914],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_68626b687c10bce46c4313264b29c91b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_855967470c053c56aa0c2f39ea352c10.setIcon(icon_68626b687c10bce46c4313264b29c91b);
+        
+    
+        var popup_fb0472c9685ccb8628aa43ba029813c0 = L.popup({"maxWidth": 420});
+
+        
+            var html_b8f6e33da91ffd6999d75c547a6cad35 = $(`<div id="html_b8f6e33da91ffd6999d75c547a6cad35" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> STILLWATER_2_W (USC00348501)<br>         <b>Years:</b> 2002 – 2025<br>         <b>Coords:</b> (36.1181, -97.0914)<br>         <b>Paired with:</b> STILLWATER_MESONET (USC00348499)<br>         BU% 1975: 3.6% | BU% 2020: 7.7%<br>         BI 2020 (lsq): 6.9 | NASAGISS_false_BI: 30.0<br><br>         <b>Distance:</b> 461 meters<br>         <b>Combined Years:</b> 24<br>         <b>Overlap:</b> 17 years         </div>`)[0];
+            popup_fb0472c9685ccb8628aa43ba029813c0.setContent(html_b8f6e33da91ffd6999d75c547a6cad35);
+        
+
+        marker_855967470c053c56aa0c2f39ea352c10.bindPopup(popup_fb0472c9685ccb8628aa43ba029813c0)
+        ;
+
+        
+    
+    
+            var poly_line_a9085463c88bf4c9e7c96b62a1dac201 = L.polyline(
+                [[36.1208, -97.0953], [36.1181, -97.0914]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_a9085463c88bf4c9e7c96b62a1dac201.bindTooltip(
+                `<div>
+                     461 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_e011d7e836dfa43434d7592cade583bc = L.marker(
+                [44.5564, -119.6447],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_ece689d7b6e80ca17928aa1bab81fcd6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_e011d7e836dfa43434d7592cade583bc.setIcon(icon_ece689d7b6e80ca17928aa1bab81fcd6);
+        
+    
+        var popup_1d834c77546b1a2574c841cf6ccd6211 = L.popup({"maxWidth": 420});
+
+        
+            var html_683b79daeff920d2368d8ebd1bb0b2e3 = $(`<div id="html_683b79daeff920d2368d8ebd1bb0b2e3" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> DAYVILLE_8_NW (USC00352173)<br>         <b>Years:</b> 1978 – 2023<br>         <b>Coords:</b> (44.5564, -119.6447)<br>         <b>Paired with:</b> JOHN_DAY_35_WNW (USW00004125)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 93 meters<br>         <b>Combined Years:</b> 48<br>         <b>Overlap:</b> 20 years         </div>`)[0];
+            popup_1d834c77546b1a2574c841cf6ccd6211.setContent(html_683b79daeff920d2368d8ebd1bb0b2e3);
+        
+
+        marker_e011d7e836dfa43434d7592cade583bc.bindPopup(popup_1d834c77546b1a2574c841cf6ccd6211)
+        ;
+
+        
+    
+    
+            var marker_3f0721215b84bb05cd9e24a2ba8145c4 = L.marker(
+                [44.5561, -119.6458],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_9d6de505d85145f2e2976df62c9ba40c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_3f0721215b84bb05cd9e24a2ba8145c4.setIcon(icon_9d6de505d85145f2e2976df62c9ba40c);
+        
+    
+        var popup_5bec79620effc60c91ff155721dd61d7 = L.popup({"maxWidth": 420});
+
+        
+            var html_48b063a76b2521160649854f374ccd20 = $(`<div id="html_48b063a76b2521160649854f374ccd20" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> JOHN_DAY_35_WNW (USW00004125)<br>         <b>Years:</b> 2004 – 2025<br>         <b>Coords:</b> (44.5561, -119.6458)<br>         <b>Paired with:</b> DAYVILLE_8_NW (USC00352173)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 93 meters<br>         <b>Combined Years:</b> 48<br>         <b>Overlap:</b> 20 years         </div>`)[0];
+            popup_5bec79620effc60c91ff155721dd61d7.setContent(html_48b063a76b2521160649854f374ccd20);
+        
+
+        marker_3f0721215b84bb05cd9e24a2ba8145c4.bindPopup(popup_5bec79620effc60c91ff155721dd61d7)
+        ;
+
+        
+    
+    
+            var poly_line_ca16c959de6b9008cfd0752640b618b5 = L.polyline(
+                [[44.5564, -119.6447], [44.5561, -119.6458]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_ca16c959de6b9008cfd0752640b618b5.bindTooltip(
+                `<div>
+                     93 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ce06e790c57c981ecd7e8f93a8886e1e = L.marker(
+                [36.0147, -85.1314],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_94f93d404c34fab558fa24bd93c25aaf = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_ce06e790c57c981ecd7e8f93a8886e1e.setIcon(icon_94f93d404c34fab558fa24bd93c25aaf);
+        
+    
+        var popup_2f0261bfb37f842bd06faea2dab151d4 = L.popup({"maxWidth": 420});
+
+        
+            var html_00e90379d3df3e8fcbf928cfec91e9ce = $(`<div id="html_00e90379d3df3e8fcbf928cfec91e9ce" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> CROSSVILLE_EDRESEARCH (USC00402202)<br>         <b>Years:</b> 1912 – 2024<br>         <b>Coords:</b> (36.0147, -85.1314)<br>         <b>Paired with:</b> CROSSVILLE_7_NW (USW00063855)<br>         BU% 1975: 0.5% | BU% 2020: 1.0%<br>         BI 2020 (lsq): 0.7 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 284 meters<br>         <b>Combined Years:</b> 114<br>         <b>Overlap:</b> 21 years         </div>`)[0];
+            popup_2f0261bfb37f842bd06faea2dab151d4.setContent(html_00e90379d3df3e8fcbf928cfec91e9ce);
+        
+
+        marker_ce06e790c57c981ecd7e8f93a8886e1e.bindPopup(popup_2f0261bfb37f842bd06faea2dab151d4)
+        ;
+
+        
+    
+    
+            var marker_a60c69e049d5c95108c480f8f5b3d60d = L.marker(
+                [36.0139, -85.1344],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_50342fac9e5b9392622a0c3a0706abf5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_a60c69e049d5c95108c480f8f5b3d60d.setIcon(icon_50342fac9e5b9392622a0c3a0706abf5);
+        
+    
+        var popup_25389471466763d4a1f8d686bce2a34e = L.popup({"maxWidth": 420});
+
+        
+            var html_520c74d108abc45b9bd1e078678255f2 = $(`<div id="html_520c74d108abc45b9bd1e078678255f2" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> CROSSVILLE_7_NW (USW00063855)<br>         <b>Years:</b> 2004 – 2025<br>         <b>Coords:</b> (36.0139, -85.1344)<br>         <b>Paired with:</b> CROSSVILLE_EDRESEARCH (USC00402202)<br>         BU% 1975: 0.5% | BU% 2020: 1.0%<br>         BI 2020 (lsq): 0.6 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 284 meters<br>         <b>Combined Years:</b> 114<br>         <b>Overlap:</b> 21 years         </div>`)[0];
+            popup_25389471466763d4a1f8d686bce2a34e.setContent(html_520c74d108abc45b9bd1e078678255f2);
+        
+
+        marker_a60c69e049d5c95108c480f8f5b3d60d.bindPopup(popup_25389471466763d4a1f8d686bce2a34e)
+        ;
+
+        
+    
+    
+            var poly_line_de7cb0d02498a2fd6d6e288f7b5a67ac = L.polyline(
+                [[36.0147, -85.1314], [36.0139, -85.1344]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_de7cb0d02498a2fd6d6e288f7b5a67ac.bindTooltip(
+                `<div>
+                     284 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_af348a48c2fd53fb722ee88f72c22fd2 = L.marker(
+                [33.9544, -102.7783],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_7dbe7317cab8e6f5e51bade54ca72e26 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_af348a48c2fd53fb722ee88f72c22fd2.setIcon(icon_7dbe7317cab8e6f5e51bade54ca72e26);
+        
+    
+        var popup_4fad260f2bc6d81af033ebae2aa076da = L.popup({"maxWidth": 420});
+
+        
+            var html_8280bf675bedbf65d745f368790b3195 = $(`<div id="html_8280bf675bedbf65d745f368790b3195" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> MULESHOE_NTL_WR (USC00416137)<br>         <b>Years:</b> 1980 – 2025<br>         <b>Coords:</b> (33.9544, -102.7783)<br>         <b>Paired with:</b> MULESHOE_19_S (USW00003054)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.3 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 435 meters<br>         <b>Combined Years:</b> 46<br>         <b>Overlap:</b> 22 years         </div>`)[0];
+            popup_4fad260f2bc6d81af033ebae2aa076da.setContent(html_8280bf675bedbf65d745f368790b3195);
+        
+
+        marker_af348a48c2fd53fb722ee88f72c22fd2.bindPopup(popup_4fad260f2bc6d81af033ebae2aa076da)
+        ;
+
+        
+    
+    
+            var marker_97053eb173f5da0ac1d2ef5976df9357 = L.marker(
+                [33.9558, -102.7739],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_c6a6150ed547763e6938d74461e911d8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_97053eb173f5da0ac1d2ef5976df9357.setIcon(icon_c6a6150ed547763e6938d74461e911d8);
+        
+    
+        var popup_80474ceca011367e2249df624b628a5b = L.popup({"maxWidth": 420});
+
+        
+            var html_712c3a204d665b4fe32fc43937a7d4fd = $(`<div id="html_712c3a204d665b4fe32fc43937a7d4fd" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> MULESHOE_19_S (USW00003054)<br>         <b>Years:</b> 2004 – 2025<br>         <b>Coords:</b> (33.9558, -102.7739)<br>         <b>Paired with:</b> MULESHOE_NTL_WR (USC00416137)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 435 meters<br>         <b>Combined Years:</b> 46<br>         <b>Overlap:</b> 22 years         </div>`)[0];
+            popup_80474ceca011367e2249df624b628a5b.setContent(html_712c3a204d665b4fe32fc43937a7d4fd);
+        
+
+        marker_97053eb173f5da0ac1d2ef5976df9357.bindPopup(popup_80474ceca011367e2249df624b628a5b)
+        ;
+
+        
+    
+    
+            var poly_line_a6ec4edf2c7b5db114cafaf13b331c33 = L.polyline(
+                [[33.9544, -102.7783], [33.9558, -102.7739]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_a6ec4edf2c7b5db114cafaf13b331c33.bindTooltip(
+                `<div>
+                     435 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ca95663ed45d1321944081c443ef7cd0 = L.marker(
+                [19.5361, -155.5767],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_6f7d385c3c6a4f75608ba8eb30ae8ac5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_ca95663ed45d1321944081c443ef7cd0.setIcon(icon_6f7d385c3c6a4f75608ba8eb30ae8ac5);
+        
+    
+        var popup_62fe5c38aa993144c0d3de4a70a053b9 = L.popup({"maxWidth": 420});
+
+        
+            var html_e29a556b964255cee5e42d17c40dc1cf = $(`<div id="html_e29a556b964255cee5e42d17c40dc1cf" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> MAUNA_LOA_SLOPE_OBS_39 (USC00516198)<br>         <b>Years:</b> 1955 – 2025<br>         <b>Coords:</b> (19.5361, -155.5767)<br>         <b>Paired with:</b> MAUNA_LOA_5_NNE (USW00021514)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 108 meters<br>         <b>Combined Years:</b> 71<br>         <b>Overlap:</b> 21 years         </div>`)[0];
+            popup_62fe5c38aa993144c0d3de4a70a053b9.setContent(html_e29a556b964255cee5e42d17c40dc1cf);
+        
+
+        marker_ca95663ed45d1321944081c443ef7cd0.bindPopup(popup_62fe5c38aa993144c0d3de4a70a053b9)
+        ;
+
+        
+    
+    
+            var marker_a4b84fcc83903a94927174d4a61687df = L.marker(
+                [19.5353, -155.5761],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_fe1b3d769b2b3ffd4bacfd86bd8d282c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_a4b84fcc83903a94927174d4a61687df.setIcon(icon_fe1b3d769b2b3ffd4bacfd86bd8d282c);
+        
+    
+        var popup_64e97c1d16975d8795cecdf1d14b5084 = L.popup({"maxWidth": 420});
+
+        
+            var html_8c202fb9005055b67e81bb36e044d145 = $(`<div id="html_8c202fb9005055b67e81bb36e044d145" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> MAUNA_LOA_5_NNE (USW00021514)<br>         <b>Years:</b> 2005 – 2025<br>         <b>Coords:</b> (19.5353, -155.5761)<br>         <b>Paired with:</b> MAUNA_LOA_SLOPE_OBS_39 (USC00516198)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 108 meters<br>         <b>Combined Years:</b> 71<br>         <b>Overlap:</b> 21 years         </div>`)[0];
+            popup_64e97c1d16975d8795cecdf1d14b5084.setContent(html_8c202fb9005055b67e81bb36e044d145);
+        
+
+        marker_a4b84fcc83903a94927174d4a61687df.bindPopup(popup_64e97c1d16975d8795cecdf1d14b5084)
+        ;
+
+        
+    
+    
+            var poly_line_027534ff822267b65245f12ff0b1f18a = L.polyline(
+                [[19.5361, -155.5767], [19.5353, -155.5761]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_027534ff822267b65245f12ff0b1f18a.bindTooltip(
+                `<div>
+                     108 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_72dca59d3ea290e853f4a3e483205482 = L.marker(
+                [38.5428, -107.6869],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_4490f88970fcddf498c91797a74fa349 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_72dca59d3ea290e853f4a3e483205482.setIcon(icon_4490f88970fcddf498c91797a74fa349);
+        
+    
+        var popup_a05d01e61f9074287a7a443e6e33cfd1 = L.popup({"maxWidth": 420});
+
+        
+            var html_c7265602bc271e5f1808c60604591e3f = $(`<div id="html_c7265602bc271e5f1808c60604591e3f" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> BLACK_CANYON_COLORADO (USR0000CBLA)<br>         <b>Years:</b> 1997 – 2025<br>         <b>Coords:</b> (38.5428, -107.6869)<br>         <b>Paired with:</b> MONTROSE_11_ENE (USW00003060)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.3 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 528 meters<br>         <b>Combined Years:</b> 29<br>         <b>Overlap:</b> 22 years         </div>`)[0];
+            popup_a05d01e61f9074287a7a443e6e33cfd1.setContent(html_c7265602bc271e5f1808c60604591e3f);
+        
+
+        marker_72dca59d3ea290e853f4a3e483205482.bindPopup(popup_a05d01e61f9074287a7a443e6e33cfd1)
+        ;
+
+        
+    
+    
+            var marker_a57079b13f51f2bfb827fd55d7e1ea0a = L.marker(
+                [38.5439, -107.6928],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_95737a2a2b8557410f949694889a6705 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_a57079b13f51f2bfb827fd55d7e1ea0a.setIcon(icon_95737a2a2b8557410f949694889a6705);
+        
+    
+        var popup_eb68407becc4fb530ac78e18d6800ccd = L.popup({"maxWidth": 420});
+
+        
+            var html_2a20fa88eb03d2f0810a98f95c9c708d = $(`<div id="html_2a20fa88eb03d2f0810a98f95c9c708d" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> MONTROSE_11_ENE (USW00003060)<br>         <b>Years:</b> 2004 – 2025<br>         <b>Coords:</b> (38.5439, -107.6928)<br>         <b>Paired with:</b> BLACK_CANYON_COLORADO (USR0000CBLA)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.3 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 528 meters<br>         <b>Combined Years:</b> 29<br>         <b>Overlap:</b> 22 years         </div>`)[0];
+            popup_eb68407becc4fb530ac78e18d6800ccd.setContent(html_2a20fa88eb03d2f0810a98f95c9c708d);
+        
+
+        marker_a57079b13f51f2bfb827fd55d7e1ea0a.bindPopup(popup_eb68407becc4fb530ac78e18d6800ccd)
+        ;
+
+        
+    
+    
+            var poly_line_3835b7240f485538ccc8cface361b034 = L.polyline(
+                [[38.5428, -107.6869], [38.5439, -107.6928]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_3835b7240f485538ccc8cface361b034.bindTooltip(
+                `<div>
+                     528 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b9609402887e932c6ee72105101036b2 = L.marker(
+                [37.7617, -119.8247],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_ff1eb55fc425ae656aa6d66f55b1efad = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_b9609402887e932c6ee72105101036b2.setIcon(icon_ff1eb55fc425ae656aa6d66f55b1efad);
+        
+    
+        var popup_cbbcfea369a33fad4bf728f2309f398b = L.popup({"maxWidth": 420});
+
+        
+            var html_20e9c60e6fb7ca49b6c3a0d5f0b8aaf7 = $(`<div id="html_20e9c60e6fb7ca49b6c3a0d5f0b8aaf7" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> CRANE_FLAT_LOOKOUT_CALIFORNIA (USR0000CCRA)<br>         <b>Years:</b> 1991 – 2025<br>         <b>Coords:</b> (37.7617, -119.8247)<br>         <b>Paired with:</b> YOSEMITE_VILLAGE_12_W (USW00053150)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.3 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 441 meters<br>         <b>Combined Years:</b> 35<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_cbbcfea369a33fad4bf728f2309f398b.setContent(html_20e9c60e6fb7ca49b6c3a0d5f0b8aaf7);
+        
+
+        marker_b9609402887e932c6ee72105101036b2.bindPopup(popup_cbbcfea369a33fad4bf728f2309f398b)
+        ;
+
+        
+    
+    
+            var marker_8f46aba5b30474b02913b80fe1703d32 = L.marker(
+                [37.7592, -119.8208],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_da6a13cc1392692f62bf77c24b7cb261 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_8f46aba5b30474b02913b80fe1703d32.setIcon(icon_da6a13cc1392692f62bf77c24b7cb261);
+        
+    
+        var popup_60b1c2b96da479096a8631d2816b03d7 = L.popup({"maxWidth": 420});
+
+        
+            var html_bf5a4574d0e75de6485c92d11d373cc1 = $(`<div id="html_bf5a4574d0e75de6485c92d11d373cc1" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> YOSEMITE_VILLAGE_12_W (USW00053150)<br>         <b>Years:</b> 2007 – 2025<br>         <b>Coords:</b> (37.7592, -119.8208)<br>         <b>Paired with:</b> CRANE_FLAT_LOOKOUT_CALIFORNIA (USR0000CCRA)<br>         BU% 1975: 0.0% | BU% 2020: 0.0%<br>         BI 2020 (lsq): 0.3 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 441 meters<br>         <b>Combined Years:</b> 35<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_60b1c2b96da479096a8631d2816b03d7.setContent(html_bf5a4574d0e75de6485c92d11d373cc1);
+        
+
+        marker_8f46aba5b30474b02913b80fe1703d32.bindPopup(popup_60b1c2b96da479096a8631d2816b03d7)
+        ;
+
+        
+    
+    
+            var poly_line_d3ba2be2af72a960551411b358df337b = L.polyline(
+                [[37.7617, -119.8247], [37.7592, -119.8208]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_d3ba2be2af72a960551411b358df337b.bindTooltip(
+                `<div>
+                     441 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_be8ccd9cd19e1327dc3e5f9907668e32 = L.marker(
+                [35.9667, -79.0917],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_0504ad3e3f3ac0ec70e9eddb7d6eedbf = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_be8ccd9cd19e1327dc3e5f9907668e32.setIcon(icon_0504ad3e3f3ac0ec70e9eddb7d6eedbf);
+        
+    
+        var popup_d45aeca68426429a155a8fd33f02fd30 = L.popup({"maxWidth": 420});
+
+        
+            var html_172ee9621677da4d9143400135454373 = $(`<div id="html_172ee9621677da4d9143400135454373" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> DUKE_FOREST_NORTH_CAROLINA (USR0000NDUK)<br>         <b>Years:</b> 2000 – 2025<br>         <b>Coords:</b> (35.9667, -79.0917)<br>         <b>Paired with:</b> DURHAM_11_W (USW00003758)<br>         BU% 1975: 1.1% | BU% 2020: 3.2%<br>         BI 2020 (lsq): 2.4 | NASAGISS_false_BI: 10.0<br><br>         <b>Distance:</b> 450 meters<br>         <b>Combined Years:</b> 26<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_d45aeca68426429a155a8fd33f02fd30.setContent(html_172ee9621677da4d9143400135454373);
+        
+
+        marker_be8ccd9cd19e1327dc3e5f9907668e32.bindPopup(popup_d45aeca68426429a155a8fd33f02fd30)
+        ;
+
+        
+    
+    
+            var marker_f2f57ae2b4b2c07312915ef7046d9c86 = L.marker(
+                [35.9706, -79.0931],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_5a7e8a48eef43e3a83d4cc61e2710aea = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_f2f57ae2b4b2c07312915ef7046d9c86.setIcon(icon_5a7e8a48eef43e3a83d4cc61e2710aea);
+        
+    
+        var popup_a56915913cb8abb88dce070529008df4 = L.popup({"maxWidth": 420});
+
+        
+            var html_765a9d651a0aef05f66931c937c2472c = $(`<div id="html_765a9d651a0aef05f66931c937c2472c" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> DURHAM_11_W (USW00003758)<br>         <b>Years:</b> 2007 – 2025<br>         <b>Coords:</b> (35.9706, -79.0931)<br>         <b>Paired with:</b> DUKE_FOREST_NORTH_CAROLINA (USR0000NDUK)<br>         BU% 1975: 1.0% | BU% 2020: 2.9%<br>         BI 2020 (lsq): 1.6 | NASAGISS_false_BI: 10.0<br><br>         <b>Distance:</b> 450 meters<br>         <b>Combined Years:</b> 26<br>         <b>Overlap:</b> 19 years         </div>`)[0];
+            popup_a56915913cb8abb88dce070529008df4.setContent(html_765a9d651a0aef05f66931c937c2472c);
+        
+
+        marker_f2f57ae2b4b2c07312915ef7046d9c86.bindPopup(popup_a56915913cb8abb88dce070529008df4)
+        ;
+
+        
+    
+    
+            var poly_line_c2d7c557cde195cc6b8e9aabf61f07d9 = L.polyline(
+                [[35.9667, -79.0917], [35.9706, -79.0931]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_c2d7c557cde195cc6b8e9aabf61f07d9.bindTooltip(
+                `<div>
+                     450 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cbcdc320b9c91e41125478df8611e2cc = L.marker(
+                [40.0333, -105.55],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_d3145c787ea50cbebbe9915d8b65d250 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_cbcdc320b9c91e41125478df8611e2cc.setIcon(icon_d3145c787ea50cbebbe9915d8b65d250);
+        
+    
+        var popup_003f28768db95f533ada8744008e10e9 = L.popup({"maxWidth": 420});
+
+        
+            var html_282081acc05a55de77e745743f1b5dee = $(`<div id="html_282081acc05a55de77e745743f1b5dee" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> NIWOT (USS0005J42S)<br>         <b>Years:</b> 1989 – 2025<br>         <b>Coords:</b> (40.0333, -105.5500)<br>         <b>Paired with:</b> BOULDER_14_W (USW00094075)<br>         BU% 1975: 0.0% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 0.3 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 816 meters<br>         <b>Combined Years:</b> 37<br>         <b>Overlap:</b> 23 years         </div>`)[0];
+            popup_003f28768db95f533ada8744008e10e9.setContent(html_282081acc05a55de77e745743f1b5dee);
+        
+
+        marker_cbcdc320b9c91e41125478df8611e2cc.bindPopup(popup_003f28768db95f533ada8744008e10e9)
+        ;
+
+        
+    
+    
+            var marker_a674fd81759c02da7fa5da639ef848e9 = L.marker(
+                [40.0353, -105.5408],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_3557bc48db143bcd7c14f03d366c7678 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_a674fd81759c02da7fa5da639ef848e9.setIcon(icon_3557bc48db143bcd7c14f03d366c7678);
+        
+    
+        var popup_a2f9703266963f4a8351ead18e1e1310 = L.popup({"maxWidth": 420});
+
+        
+            var html_150992534cab752fe64d58c77abdd5f7 = $(`<div id="html_150992534cab752fe64d58c77abdd5f7" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> BOULDER_14_W (USW00094075)<br>         <b>Years:</b> 2003 – 2025<br>         <b>Coords:</b> (40.0353, -105.5408)<br>         <b>Paired with:</b> NIWOT (USS0005J42S)<br>         BU% 1975: 0.0% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 0.3 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 816 meters<br>         <b>Combined Years:</b> 37<br>         <b>Overlap:</b> 23 years         </div>`)[0];
+            popup_a2f9703266963f4a8351ead18e1e1310.setContent(html_150992534cab752fe64d58c77abdd5f7);
+        
+
+        marker_a674fd81759c02da7fa5da639ef848e9.bindPopup(popup_a2f9703266963f4a8351ead18e1e1310)
+        ;
+
+        
+    
+    
+            var poly_line_e9cfc749122408aee8251191a2f26079 = L.polyline(
+                [[40.0333, -105.55], [40.0353, -105.5408]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_e9cfc749122408aee8251191a2f26079.bindTooltip(
+                `<div>
+                     816 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1d895737da780bc1bb6bece362403374 = L.marker(
+                [36.6206, -116.0278],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_f17565f2da3494f96ea574e891c2b13c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_1d895737da780bc1bb6bece362403374.setIcon(icon_f17565f2da3494f96ea574e891c2b13c);
+        
+    
+        var popup_f65304b5ecd1cbf4b77bfaa9ac25cef5 = L.popup({"maxWidth": 420});
+
+        
+            var html_d544230e4b44c531fde0d5fb806d0197 = $(`<div id="html_d544230e4b44c531fde0d5fb806d0197" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> MERCURY_DESERT_ROCK_AP (USW00003160)<br>         <b>Years:</b> 1978 – 2025<br>         <b>Coords:</b> (36.6206, -116.0278)<br>         <b>Paired with:</b> MERCURY_3_SSW (USW00053136)<br>         BU% 1975: 0.1% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 599 meters<br>         <b>Combined Years:</b> 48<br>         <b>Overlap:</b> 22 years         </div>`)[0];
+            popup_f65304b5ecd1cbf4b77bfaa9ac25cef5.setContent(html_d544230e4b44c531fde0d5fb806d0197);
+        
+
+        marker_1d895737da780bc1bb6bece362403374.bindPopup(popup_f65304b5ecd1cbf4b77bfaa9ac25cef5)
+        ;
+
+        
+    
+    
+            var marker_d2057919366c5fcdf288a132bf72b9f4 = L.marker(
+                [36.6239, -116.0225],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_f46a53003b280237d9b2dc1000f2e469 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_d2057919366c5fcdf288a132bf72b9f4.setIcon(icon_f46a53003b280237d9b2dc1000f2e469);
+        
+    
+        var popup_6e296c5b4c5864a91d0bf5c1c527bcaa = L.popup({"maxWidth": 420});
+
+        
+            var html_31822fb66f9f2019550ccdc96d4da638 = $(`<div id="html_31822fb66f9f2019550ccdc96d4da638" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> MERCURY_3_SSW (USW00053136)<br>         <b>Years:</b> 2004 – 2025<br>         <b>Coords:</b> (36.6239, -116.0225)<br>         <b>Paired with:</b> MERCURY_DESERT_ROCK_AP (USW00003160)<br>         BU% 1975: 0.1% | BU% 2020: 0.1%<br>         BI 2020 (lsq): 0.5 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 599 meters<br>         <b>Combined Years:</b> 48<br>         <b>Overlap:</b> 22 years         </div>`)[0];
+            popup_6e296c5b4c5864a91d0bf5c1c527bcaa.setContent(html_31822fb66f9f2019550ccdc96d4da638);
+        
+
+        marker_d2057919366c5fcdf288a132bf72b9f4.bindPopup(popup_6e296c5b4c5864a91d0bf5c1c527bcaa)
+        ;
+
+        
+    
+    
+            var poly_line_3a3e75bf1d2739c8b4f5f634b2596830 = L.polyline(
+                [[36.6206, -116.0278], [36.6239, -116.0225]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_3a3e75bf1d2739c8b4f5f634b2596830.bindTooltip(
+                `<div>
+                     599 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_56265de01b7aa65527064747cfa9c67e = L.marker(
+                [32.3333, -86.9833],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_a2e405c9b62f659db4fe202c29617d97 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_56265de01b7aa65527064747cfa9c67e.setIcon(icon_a2e405c9b62f659db4fe202c29617d97);
+        
+    
+        var popup_c5a2535be0854a348e2b52d2474eadeb = L.popup({"maxWidth": 420});
+
+        
+            var html_d195c2aa18079e51489d2b97f9218238 = $(`<div id="html_d195c2aa18079e51489d2b97f9218238" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> CRAIG_AFB (USW00013850)<br>         <b>Years:</b> 1949 – 1961<br>         <b>Coords:</b> (32.3333, -86.9833)<br>         <b>Paired with:</b> SELMA_6_SSE (USW00063897)<br>         BU% 1975: 0.6% | BU% 2020: 1.1%<br>         BI 2020 (lsq): 3.1 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 480 meters<br>         <b>Combined Years:</b> 77<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_c5a2535be0854a348e2b52d2474eadeb.setContent(html_d195c2aa18079e51489d2b97f9218238);
+        
+
+        marker_56265de01b7aa65527064747cfa9c67e.bindPopup(popup_c5a2535be0854a348e2b52d2474eadeb)
+        ;
+
+        
+    
+    
+            var marker_079bf3b61776a82af7688ab9734a39bd = L.marker(
+                [32.335, -86.9786],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_a463f4ed77a2fb5eef7c6fe321a8e2f7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_079bf3b61776a82af7688ab9734a39bd.setIcon(icon_a463f4ed77a2fb5eef7c6fe321a8e2f7);
+        
+    
+        var popup_ec92f4fb933f131c5c7912165a5d09ed = L.popup({"maxWidth": 420});
+
+        
+            var html_980f44e56e2c988fa45b44fe7013c260 = $(`<div id="html_980f44e56e2c988fa45b44fe7013c260" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> SELMA_6_SSE (USW00063897)<br>         <b>Years:</b> 2007 – 2025<br>         <b>Coords:</b> (32.3350, -86.9786)<br>         <b>Paired with:</b> CRAIG_AFB (USW00013850)<br>         BU% 1975: 0.7% | BU% 2020: 1.1%<br>         BI 2020 (lsq): 3.1 | NASAGISS_false_BI: 13.0<br><br>         <b>Distance:</b> 480 meters<br>         <b>Combined Years:</b> 77<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_ec92f4fb933f131c5c7912165a5d09ed.setContent(html_980f44e56e2c988fa45b44fe7013c260);
+        
+
+        marker_079bf3b61776a82af7688ab9734a39bd.bindPopup(popup_ec92f4fb933f131c5c7912165a5d09ed)
+        ;
+
+        
+    
+    
+            var poly_line_b6a1de1f0e82b5ae4c62d7e0a7fcd4fa = L.polyline(
+                [[32.3333, -86.9833], [32.335, -86.9786]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_b6a1de1f0e82b5ae4c62d7e0a7fcd4fa.bindTooltip(
+                `<div>
+                     480 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5e91a0cb3c1a1f791bbf4524f796a77a = L.marker(
+                [46.95, -67.8833],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_89551b67774b990389ee9eaac997c923 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_5e91a0cb3c1a1f791bbf4524f796a77a.setIcon(icon_89551b67774b990389ee9eaac997c923);
+        
+    
+        var popup_53ffb8621ebabb9df1ee278a82d9755d = L.popup({"maxWidth": 420});
+
+        
+            var html_83ff015cd77eef6d85f6cfc3e808dbd8 = $(`<div id="html_83ff015cd77eef6d85f6cfc3e808dbd8" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> LIMESTONE_LORING_AFB (USW00014623)<br>         <b>Years:</b> 1950 – 1994<br>         <b>Coords:</b> (46.9500, -67.8833)<br>         <b>Paired with:</b> LIMESTONE_4_NNW (USW00094645)<br>         BU% 1975: 0.4% | BU% 2020: 0.6%<br>         BI 2020 (lsq): 0.4 | NASAGISS_false_BI: 26.0<br><br>         <b>Distance:</b> 1111 meters<br>         <b>Combined Years:</b> 76<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_53ffb8621ebabb9df1ee278a82d9755d.setContent(html_83ff015cd77eef6d85f6cfc3e808dbd8);
+        
+
+        marker_5e91a0cb3c1a1f791bbf4524f796a77a.bindPopup(popup_53ffb8621ebabb9df1ee278a82d9755d)
+        ;
+
+        
+    
+    
+            var marker_a267c36282c61944181c6932dcace4e3 = L.marker(
+                [46.96, -67.8833],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_9fce7531376e124fc6ee8e45b87029ed = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_a267c36282c61944181c6932dcace4e3.setIcon(icon_9fce7531376e124fc6ee8e45b87029ed);
+        
+    
+        var popup_068c5aa830e34e7ac683d7dc3b56395c = L.popup({"maxWidth": 420});
+
+        
+            var html_a2b0f36ae395023a5b0f1df0cec64f2a = $(`<div id="html_a2b0f36ae395023a5b0f1df0cec64f2a" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> LIMESTONE_4_NNW (USW00094645)<br>         <b>Years:</b> 2002 – 2025<br>         <b>Coords:</b> (46.9600, -67.8833)<br>         <b>Paired with:</b> LIMESTONE_LORING_AFB (USW00014623)<br>         BU% 1975: 0.3% | BU% 2020: 0.4%<br>         BI 2020 (lsq): 0.3 | NASAGISS_false_BI: 21.0<br><br>         <b>Distance:</b> 1111 meters<br>         <b>Combined Years:</b> 76<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_068c5aa830e34e7ac683d7dc3b56395c.setContent(html_a2b0f36ae395023a5b0f1df0cec64f2a);
+        
+
+        marker_a267c36282c61944181c6932dcace4e3.bindPopup(popup_068c5aa830e34e7ac683d7dc3b56395c)
+        ;
+
+        
+    
+    
+            var poly_line_51e1ea81b03d34dd8b2bbc874cdea79e = L.polyline(
+                [[46.95, -67.8833], [46.96, -67.8833]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_51e1ea81b03d34dd8b2bbc874cdea79e.bindTooltip(
+                `<div>
+                     1111 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6c436d58540f425a47bb64dd100486ca = L.marker(
+                [33.3631, -81.3292],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_0afbb400f491c6345c1fbb6d6a065e20 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_6c436d58540f425a47bb64dd100486ca.setIcon(icon_0afbb400f491c6345c1fbb6d6a065e20);
+        
+    
+        var popup_217f8018477789385c63f6ac8f4678a8 = L.popup({"maxWidth": 420});
+
+        
+            var html_ef40ff1dff0a1da1c5aa84464c62652d = $(`<div id="html_ef40ff1dff0a1da1c5aa84464c62652d" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> BLACKVILLE_3_W (USC00380764)<br>         <b>Years:</b> 1894 – 2000<br>         <b>Coords:</b> (33.3631, -81.3292)<br>         <b>Paired with:</b> BLACKVILLE_3_W (USW00063826)<br>         BU% 1975: 0.3% | BU% 2020: 0.5%<br>         BI 2020 (lsq): 0.6 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 907 meters<br>         <b>Combined Years:</b> 132<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_217f8018477789385c63f6ac8f4678a8.setContent(html_ef40ff1dff0a1da1c5aa84464c62652d);
+        
+
+        marker_6c436d58540f425a47bb64dd100486ca.bindPopup(popup_217f8018477789385c63f6ac8f4678a8)
+        ;
+
+        
+    
+    
+            var marker_0834c766ea9989f66292eba189fb57ed = L.marker(
+                [33.355, -81.3278],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_3f4a6267cdd0ab52c350d079fa84ce23 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_0834c766ea9989f66292eba189fb57ed.setIcon(icon_3f4a6267cdd0ab52c350d079fa84ce23);
+        
+    
+        var popup_59aeca8ea2ec43b9ff2aee2d13a3a587 = L.popup({"maxWidth": 420});
+
+        
+            var html_931242771796e4e223d28240ac038648 = $(`<div id="html_931242771796e4e223d28240ac038648" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> BLACKVILLE_3_W (USW00063826)<br>         <b>Years:</b> 2002 – 2025<br>         <b>Coords:</b> (33.3550, -81.3278)<br>         <b>Paired with:</b> BLACKVILLE_3_W (USC00380764)<br>         BU% 1975: 0.3% | BU% 2020: 0.5%<br>         BI 2020 (lsq): 0.6 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 907 meters<br>         <b>Combined Years:</b> 132<br>         <b>Overlap:</b> 0 years         </div>`)[0];
+            popup_59aeca8ea2ec43b9ff2aee2d13a3a587.setContent(html_931242771796e4e223d28240ac038648);
+        
+
+        marker_0834c766ea9989f66292eba189fb57ed.bindPopup(popup_59aeca8ea2ec43b9ff2aee2d13a3a587)
+        ;
+
+        
+    
+    
+            var poly_line_0ab54af14221c95c5d9022ed8ef3bf8e = L.polyline(
+                [[33.3631, -81.3292], [33.355, -81.3278]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_0ab54af14221c95c5d9022ed8ef3bf8e.bindTooltip(
+                `<div>
+                     907 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_aec8700bfb7156ad175300dbd99bfaae = L.marker(
+                [34.8219, -89.4347],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_17547041d5a9512dce6396eadf8d7fc0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_aec8700bfb7156ad175300dbd99bfaae.setIcon(icon_17547041d5a9512dce6396eadf8d7fc0);
+        
+    
+        var popup_92b870db0d3570c5129c1c99ae9297b8 = L.popup({"maxWidth": 420});
+
+        
+            var html_eb8bfe665c904d803e4a493465f84383 = $(`<div id="html_eb8bfe665c904d803e4a493465f84383" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> HOLLY_SPRINGS_4_N (USC00224173)<br>         <b>Years:</b> 1867 – 2013<br>         <b>Coords:</b> (34.8219, -89.4347)<br>         <b>Paired with:</b> HOLLY_SPRINGS_4_N (USW00023803)<br>         BU% 1975: 0.3% | BU% 2020: 0.7%<br>         BI 2020 (lsq): 1.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 33 meters<br>         <b>Combined Years:</b> 159<br>         <b>Overlap:</b> 6 years         </div>`)[0];
+            popup_92b870db0d3570c5129c1c99ae9297b8.setContent(html_eb8bfe665c904d803e4a493465f84383);
+        
+
+        marker_aec8700bfb7156ad175300dbd99bfaae.bindPopup(popup_92b870db0d3570c5129c1c99ae9297b8)
+        ;
+
+        
+    
+    
+            var marker_5f057a0b0cc756f3fa30040024e79534 = L.marker(
+                [34.8222, -89.4347],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_460f9c1de72951cd710ad60e63fcc8d8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_5f057a0b0cc756f3fa30040024e79534.setIcon(icon_460f9c1de72951cd710ad60e63fcc8d8);
+        
+    
+        var popup_09c4312dd11fab8b83527c6993e1f3d6 = L.popup({"maxWidth": 420});
+
+        
+            var html_7c7b4b5a2b3fb993d74013eaba7d64e2 = $(`<div id="html_7c7b4b5a2b3fb993d74013eaba7d64e2" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> HOLLY_SPRINGS_4_N (USW00023803)<br>         <b>Years:</b> 2008 – 2025<br>         <b>Coords:</b> (34.8222, -89.4347)<br>         <b>Paired with:</b> HOLLY_SPRINGS_4_N (USC00224173)<br>         BU% 1975: 0.3% | BU% 2020: 0.7%<br>         BI 2020 (lsq): 1.2 | NASAGISS_false_BI: 0.0<br><br>         <b>Distance:</b> 33 meters<br>         <b>Combined Years:</b> 159<br>         <b>Overlap:</b> 6 years         </div>`)[0];
+            popup_09c4312dd11fab8b83527c6993e1f3d6.setContent(html_7c7b4b5a2b3fb993d74013eaba7d64e2);
+        
+
+        marker_5f057a0b0cc756f3fa30040024e79534.bindPopup(popup_09c4312dd11fab8b83527c6993e1f3d6)
+        ;
+
+        
+    
+    
+            var poly_line_13d9540942cdcc5d1aa88c2de7ebce49 = L.polyline(
+                [[34.8219, -89.4347], [34.8222, -89.4347]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_13d9540942cdcc5d1aa88c2de7ebce49.bindTooltip(
+                `<div>
+                     33 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a398febca9c116c97546bb67cfdfbe25 = L.marker(
+                [36.1175, -97.095],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_1a286fcdcaf78191bd1adc8b1e32a4aa = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_a398febca9c116c97546bb67cfdfbe25.setIcon(icon_1a286fcdcaf78191bd1adc8b1e32a4aa);
+        
+    
+        var popup_8244b0442a5a442e2e30d0e4ad4f25ed = L.popup({"maxWidth": 420});
+
+        
+            var html_d3cf9660f233492f9af28e1061e8f6c4 = $(`<div id="html_d3cf9660f233492f9af28e1061e8f6c4" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: Legacy</b><br>         <b>Legacy Station:</b> STILLWATER_2_W (USC00348501)<br>         <b>Years:</b> 1893 – 2010<br>         <b>Coords:</b> (36.1175, -97.0950)<br>         <b>Paired with:</b> STILLWATER_2_W (USW00053926)<br>         BU% 1975: 3.6% | BU% 2020: 7.7%<br>         BI 2020 (lsq): 6.9 | NASAGISS_false_BI: 30.0<br><br>         <b>Distance:</b> 330 meters<br>         <b>Combined Years:</b> 133<br>         <b>Overlap:</b> 9 years         </div>`)[0];
+            popup_8244b0442a5a442e2e30d0e4ad4f25ed.setContent(html_d3cf9660f233492f9af28e1061e8f6c4);
+        
+
+        marker_a398febca9c116c97546bb67cfdfbe25.bindPopup(popup_8244b0442a5a442e2e30d0e4ad4f25ed)
+        ;
+
+        
+    
+    
+            var marker_0aeb28a30b995b66ec79988252c1ecdd = L.marker(
+                [36.1181, -97.0914],
+                {}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            var icon_be69043e05c759d5ecf92cf6920f8721 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_0aeb28a30b995b66ec79988252c1ecdd.setIcon(icon_be69043e05c759d5ecf92cf6920f8721);
+        
+    
+        var popup_c4bf8d705ea0db764c02d56bac4ccf5f = L.popup({"maxWidth": 420});
+
+        
+            var html_07c165ca8182cb56213edb031d8c3d70 = $(`<div id="html_07c165ca8182cb56213edb031d8c3d70" style="width: 100.0%; height: 100.0%;">         <b>Shown is location: USCRN</b><br>         <b>USCRN Station:</b> STILLWATER_2_W (USW00053926)<br>         <b>Years:</b> 2002 – 2025<br>         <b>Coords:</b> (36.1181, -97.0914)<br>         <b>Paired with:</b> STILLWATER_2_W (USC00348501)<br>         BU% 1975: 3.7% | BU% 2020: 7.9%<br>         BI 2020 (lsq): 6.9 | NASAGISS_false_BI: 30.0<br><br>         <b>Distance:</b> 330 meters<br>         <b>Combined Years:</b> 133<br>         <b>Overlap:</b> 9 years         </div>`)[0];
+            popup_c4bf8d705ea0db764c02d56bac4ccf5f.setContent(html_07c165ca8182cb56213edb031d8c3d70);
+        
+
+        marker_0aeb28a30b995b66ec79988252c1ecdd.bindPopup(popup_c4bf8d705ea0db764c02d56bac4ccf5f)
+        ;
+
+        
+    
+    
+            var poly_line_b173c5d0be2e20906691a14394e9c8d4 = L.polyline(
+                [[36.1175, -97.095], [36.1181, -97.0914]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.6, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+        
+    
+            poly_line_b173c5d0be2e20906691a14394e9c8d4.bindTooltip(
+                `<div>
+                     330 m
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var layer_control_552e311ac2b8158c856e0e34bca20131 = {
+                base_layers : {
+                    "Street Map" : tile_layer_c6549e18b490cd9d0a2b1297f5e0cace,
+                    "Terrain" : tile_layer_0ea8424e754bfb05ca75860b4f76b319,
+                    "Light" : tile_layer_4c92df4715efd00d5f76732ac2a8502a,
+                    "Dark" : tile_layer_55c337e53edf0ff696946c3d20093b5b,
+                    "Topo Map" : tile_layer_ddc7114d42ea70cbe20c098e13273300,
+                    "Satellite" : tile_layer_343d0c23fd62d6ae1017da17e5193192,
+                },
+                overlays :  {
+                },
+            };
+            L.control.layers(
+                layer_control_552e311ac2b8158c856e0e34bca20131.base_layers,
+                layer_control_552e311ac2b8158c856e0e34bca20131.overlays,
+                {"autoZIndex": true, "collapsed": true, "position": "topright"}
+            ).addTo(map_681e979ab1b56a369e38570ea007cb3c);
+            tile_layer_0ea8424e754bfb05ca75860b4f76b319.remove();
+            tile_layer_4c92df4715efd00d5f76732ac2a8502a.remove();
+            tile_layer_55c337e53edf0ff696946c3d20093b5b.remove();
+            tile_layer_ddc7114d42ea70cbe20c098e13273300.remove();
+            tile_layer_343d0c23fd62d6ae1017da17e5193192.remove();
+        
+</script>
+</html>
