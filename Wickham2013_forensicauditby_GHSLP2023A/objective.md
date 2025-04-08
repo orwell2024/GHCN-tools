@@ -14,6 +14,7 @@ The Wickham (2013) paper has become a cornerstone reference for claims minimizin
 - No transparent definition for "very rural" is provided.
 - No explicit station list accompanies their analysis.
 - The MODIS 500m dataset used is extremely coarse by modern standards.
+- The binary classification flaw: proper GHSL style parametrization for BU must be used
 
 Recent critics have resurrected this outdated study to dispute current high-resolution urban analyses, such as GHSL. This is akin to relying on an obsolete 1-megapixel black-and-white photograph to challenge the validity of today's AI-analyzed, multispectral, 2500-megapixel imagery.
 
