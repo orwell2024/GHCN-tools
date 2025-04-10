@@ -80,9 +80,11 @@ While we worked with BU (built-up surface) using the GHSL, we can also leverage 
 
 [https://x.com/orwell2022/status/1830981277144826185](https://x.com/orwell2022/status/1830981277144826185)
 
-[https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS\_S2\_SR\_HARMONIZED]
+[https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS\_S2\_SR\_HARMONIZED](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS\_S2\_SR\_HARMONIZED)
+
 Overall view GHSL: try any location you like. Use your google account. It's free.
-[https://developers.google.com/earth-engine/datasets/catalog/JRC_GHSL_P2023A_GHS_BUILT_C]
+
+[https://developers.google.com/earth-engine/datasets/catalog/JRC_GHSL_P2023A_GHS_BUILT_C](https://developers.google.com/earth-engine/datasets/catalog/JRC_GHSL_P2023A_GHS_BUILT_C])
 
 ### Minimum Applicable Standards
 
