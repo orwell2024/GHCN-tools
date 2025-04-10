@@ -84,7 +84,7 @@ While we worked with BU (built-up surface) using the GHSL, we can also leverage 
 
 Overall view GHSL: try any location you like. Use your google account. It's free.
 
-[https://developers.google.com/earth-engine/datasets/catalog/JRC_GHSL_P2023A_GHS_BUILT_C](https://developers.google.com/earth-engine/datasets/catalog/JRC_GHSL_P2023A_GHS_BUILT_C])
+[https://developers.google.com/earth-engine/datasets/catalog/JRC_GHSL_P2023A_GHS_BUILT_C](https://code.earthengine.google.com/?scriptPath=Examples%3ADatasets%2FJRC%2FJRC_GHSL_P2023A_GHS_BUILT_C)
 
 ### Minimum Applicable Standards
 
