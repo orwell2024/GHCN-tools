@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_1f4f38f174866413d8d4d07826bc6a93 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_1f4f38f174866413d8d4d07826bc6a93" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_1f4f38f174866413d8d4d07826bc6a93 = L.map(
+                "map_1f4f38f174866413d8d4d07826bc6a93",
+                {
+                    center: [-0.5708999999999997, -24.643585185185184],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 2,
+                    zoomControl: true,
+                    preferCanvas: false,
+                    name: "Satellite View",
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_da203448c4171b670a28c6060928db0f = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {"attribution": "Tiles \u00a9 Esri \u2014 Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var tile_layer_e2b43ec8a2423b08336cd8d6f25dbd31 = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg",
+                {"attribution": "Map tiles by \u003ca href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, under \u003ca href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e. Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://creativecommons.org/licenses/by-sa/3.0\"\u003eCC BY SA\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var marker_b31fd9d811420b87f02664fc5a7e23f2 = L.marker(
+                [29.0567, -96.2319],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_4caffc4fdb20188c5bd64e998f1eb155 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_b31fd9d811420b87f02664fc5a7e23f2.setIcon(icon_4caffc4fdb20188c5bd64e998f1eb155);
+        
+    
+        var popup_da6bcbebef7e5bd9c4ccdf6c226cb9d6 = L.popup({"maxWidth": 300});
+
+        
+            var html_31a6ccac4b21a644747bb9d4f3afa652 = $(`<div id="html_31a6ccac4b21a644747bb9d4f3afa652" style="width: 100.0%; height: 100.0%;">ID: USC00412266<br>Station: DANEVANG_1_W<br>USCRN_Y_N: N<br>Lat: 29.0567<br>Lon: -96.2319<br>Elev-m: 21.3<br>BI: 0.0<br>Built_1975_50km_percent: 0.17<br>Built_2020_50km_percent: 0.36<br>Percentage_Change_50km: 111.76<br>Built_1975_10km_percent: 0.13<br>Built_2020_10km_percent: 0.24<br>Percentage_Change_10km: 84.62<br>Built_1975_2km_percent: 0.21<br>Built_2020_2km_percent: 0.4<br>Percentage_Change_2km: 90.48<br>USCRN_Station: nan<br>BI_2012: 0.28<br>BI_2017: 0.53<br>BI_2020: 0.58<br>BI_2023: 0.76<br>BI_change_decade: 0.44<br>BI_2020_lsq: 0.62<br>BI_trend_lsq: 0.04<br>Red_Flag: True</div>`)[0];
+            popup_da6bcbebef7e5bd9c4ccdf6c226cb9d6.setContent(html_31a6ccac4b21a644747bb9d4f3afa652);
+        
+
+        marker_b31fd9d811420b87f02664fc5a7e23f2.bindPopup(popup_da6bcbebef7e5bd9c4ccdf6c226cb9d6)
+        ;
+
+        
+    
+    
+            var marker_b4af83371a843efd008f5cc15d67ab75 = L.marker(
+                [16.633, -14.917],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_06cba0c19099676e0fee8ff9d80652e3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_b4af83371a843efd008f5cc15d67ab75.setIcon(icon_06cba0c19099676e0fee8ff9d80652e3);
+        
+    
+        var popup_f1f0f0d9eddc10c8b55a08c2c68e6b06 = L.popup({"maxWidth": 300});
+
+        
+            var html_e344efb363ce92922f84a9bb142eba4b = $(`<div id="html_e344efb363ce92922f84a9bb142eba4b" style="width: 100.0%; height: 100.0%;">ID: SG000061612<br>Station: PODOR<br>USCRN_Y_N: N<br>Lat: 16.633<br>Lon: -14.917<br>Elev-m: 7.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.05<br>Built_2020_50km_percent: 0.29<br>Percentage_Change_50km: 480.0<br>Built_1975_10km_percent: 0.23<br>Built_2020_10km_percent: 1.24<br>Percentage_Change_10km: 439.13<br>Built_1975_2km_percent: 0.57<br>Built_2020_2km_percent: 2.56<br>Percentage_Change_2km: 349.12<br>USCRN_Station: nan<br>BI_2012: 0.16<br>BI_2017: 0.3<br>BI_2020: 0.63<br>BI_2023: 0.52<br>BI_change_decade: 0.33<br>BI_2020_lsq: 0.48<br>BI_trend_lsq: 0.04<br>Red_Flag: True</div>`)[0];
+            popup_f1f0f0d9eddc10c8b55a08c2c68e6b06.setContent(html_e344efb363ce92922f84a9bb142eba4b);
+        
+
+        marker_b4af83371a843efd008f5cc15d67ab75.bindPopup(popup_f1f0f0d9eddc10c8b55a08c2c68e6b06)
+        ;
+
+        
+    
+    
+            var marker_41459290446fe4ae4cee64f3857ed25d = L.marker(
+                [-27.617, -144.333],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_fde7f89ff754fed5c39a35669e5230f1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_41459290446fe4ae4cee64f3857ed25d.setIcon(icon_fde7f89ff754fed5c39a35669e5230f1);
+        
+    
+        var popup_a4b3a910bef5357da8772f045e78629b = L.popup({"maxWidth": 300});
+
+        
+            var html_bf7c86e504b4a0ebb66167563b9fe19f = $(`<div id="html_bf7c86e504b4a0ebb66167563b9fe19f" style="width: 100.0%; height: 100.0%;">ID: FP000091958<br>Station: RAPA<br>USCRN_Y_N: N<br>Lat: -27.617<br>Lon: -144.333<br>Elev-m: 2.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.0<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.03<br>Built_2020_10km_percent: 0.06<br>Percentage_Change_10km: 100.0<br>Built_1975_2km_percent: 0.48<br>Built_2020_2km_percent: 1.08<br>Percentage_Change_2km: 125.0<br>USCRN_Station: nan<br>BI_2012: 0.1<br>BI_2017: 1.08<br>BI_2020: 0.84<br>BI_2023: 0.81<br>BI_change_decade: 0.65<br>BI_2020_lsq: 0.83<br>BI_trend_lsq: 0.06<br>Red_Flag: True</div>`)[0];
+            popup_a4b3a910bef5357da8772f045e78629b.setContent(html_bf7c86e504b4a0ebb66167563b9fe19f);
+        
+
+        marker_41459290446fe4ae4cee64f3857ed25d.bindPopup(popup_a4b3a910bef5357da8772f045e78629b)
+        ;
+
+        
+    
+    
+            var marker_3163ba6ae55dfd4db228b9c90820b8ef = L.marker(
+                [21.82, 31.35],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_4489bb365ff8a1cbee6b17fb25649629 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_3163ba6ae55dfd4db228b9c90820b8ef.setIcon(icon_4489bb365ff8a1cbee6b17fb25649629);
+        
+    
+        var popup_6a5cb1bd831011173a831858f1491371 = L.popup({"maxWidth": 300});
+
+        
+            var html_195454555d5ba761054d95ad879ff266 = $(`<div id="html_195454555d5ba761054d95ad879ff266" style="width: 100.0%; height: 100.0%;">ID: SU000062600<br>Station: WADI_HALFA<br>USCRN_Y_N: N<br>Lat: 21.82<br>Lon: 31.35<br>Elev-m: 190.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.09<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.04<br>Built_2020_10km_percent: 2.17<br>Percentage_Change_10km: 5325.0<br>Built_1975_2km_percent: 0.03<br>Built_2020_2km_percent: 3.9<br>Percentage_Change_2km: 12900.0<br>USCRN_Station: nan<br>BI_2012: 0.54<br>BI_2017: 1.79<br>BI_2020: 3.53<br>BI_2023: 6.47<br>BI_change_decade: 5.39<br>BI_2020_lsq: 4.12<br>BI_trend_lsq: 0.52<br>Red_Flag: True</div>`)[0];
+            popup_6a5cb1bd831011173a831858f1491371.setContent(html_195454555d5ba761054d95ad879ff266);
+        
+
+        marker_3163ba6ae55dfd4db228b9c90820b8ef.bindPopup(popup_6a5cb1bd831011173a831858f1491371)
+        ;
+
+        
+    
+    
+            var marker_efb58c94b96f3d9427b43d351a217ff4 = L.marker(
+                [-18.35, -70.333],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_f92017ca1990a4048cc3eef27a26f20a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_efb58c94b96f3d9427b43d351a217ff4.setIcon(icon_f92017ca1990a4048cc3eef27a26f20a);
+        
+    
+        var popup_00792f2e8fc5cce56d942b83aa3e8f52 = L.popup({"maxWidth": 300});
+
+        
+            var html_0623e0104c31911b5cc0c41425e2042d = $(`<div id="html_0623e0104c31911b5cc0c41425e2042d" style="width: 100.0%; height: 100.0%;">ID: CI000085406<br>Station: ARICA<br>USCRN_Y_N: N<br>Lat: -18.35<br>Lon: -70.333<br>Elev-m: 58.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.21<br>Built_2020_50km_percent: 0.51<br>Percentage_Change_50km: 142.86<br>Built_1975_10km_percent: 0.19<br>Built_2020_10km_percent: 0.33<br>Percentage_Change_10km: 73.68<br>Built_1975_2km_percent: 0.65<br>Built_2020_2km_percent: 1.43<br>Percentage_Change_2km: 120.0<br>USCRN_Station: nan<br>BI_2012: 0.8<br>BI_2017: 1.77<br>BI_2020: 1.72<br>BI_2023: 5.92<br>BI_change_decade: 4.65<br>BI_2020_lsq: 3.35<br>BI_trend_lsq: 0.4<br>Red_Flag: True</div>`)[0];
+            popup_00792f2e8fc5cce56d942b83aa3e8f52.setContent(html_0623e0104c31911b5cc0c41425e2042d);
+        
+
+        marker_efb58c94b96f3d9427b43d351a217ff4.bindPopup(popup_00792f2e8fc5cce56d942b83aa3e8f52)
+        ;
+
+        
+    
+    
+            var marker_98b73cc8579559a8f74577401017b047 = L.marker(
+                [-37.8, 77.5],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_c3901cd8eaee61d736bba0052fbcb315 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_98b73cc8579559a8f74577401017b047.setIcon(icon_c3901cd8eaee61d736bba0052fbcb315);
+        
+    
+        var popup_7b0776725f8e031fa7ea7ef782c94c5a = L.popup({"maxWidth": 300});
+
+        
+            var html_c908aca8abbad45f8f6d965f18420541 = $(`<div id="html_c908aca8abbad45f8f6d965f18420541" style="width: 100.0%; height: 100.0%;">ID: FSM00061996<br>Station: MARTIN_DE_VIVIES_I<br>USCRN_Y_N: N<br>Lat: -37.8<br>Lon: 77.5<br>Elev-m: 29.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.0<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.0<br>Built_2020_10km_percent: 0.0<br>Percentage_Change_10km: 0.0<br>Built_1975_2km_percent: 0.0<br>Built_2020_2km_percent: 0.0<br>Percentage_Change_2km: 0.0<br>USCRN_Station: nan<br>BI_2012: -0.04<br>BI_2017: 0.2<br>BI_2020: 0.16<br>BI_2023: 0.22<br>BI_change_decade: 0.24<br>BI_2020_lsq: 0.18<br>BI_trend_lsq: 0.02<br>Red_Flag: False</div>`)[0];
+            popup_7b0776725f8e031fa7ea7ef782c94c5a.setContent(html_c908aca8abbad45f8f6d965f18420541);
+        
+
+        marker_98b73cc8579559a8f74577401017b047.bindPopup(popup_7b0776725f8e031fa7ea7ef782c94c5a)
+        ;
+
+        
+    
+    
+            var marker_9cea7a3d138cdeea90a31416dd46b329 = L.marker(
+                [-22.9117, 139.9039],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_cf656f544de1e23d45c984652b0f740f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_9cea7a3d138cdeea90a31416dd46b329.setIcon(icon_cf656f544de1e23d45c984652b0f740f);
+        
+    
+        var popup_b9a268e6e1dd08f06d3f16580bfc09be = L.popup({"maxWidth": 300});
+
+        
+            var html_2c34dc93d6674d58daa83565c83cce78 = $(`<div id="html_2c34dc93d6674d58daa83565c83cce78" style="width: 100.0%; height: 100.0%;">ID: ASN00038003<br>Station: BOULIA_AIRPORT<br>USCRN_Y_N: N<br>Lat: -22.9117<br>Lon: 139.9039<br>Elev-m: 161.8<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.01<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.02<br>Built_2020_10km_percent: 0.12<br>Percentage_Change_10km: 500.0<br>Built_1975_2km_percent: 0.3<br>Built_2020_2km_percent: 2.38<br>Percentage_Change_2km: 693.33<br>USCRN_Station: nan<br>BI_2012: 3.62<br>BI_2017: 3.62<br>BI_2020: 4.45<br>BI_2023: 4.03<br>BI_change_decade: 0.37<br>BI_2020_lsq: 4.04<br>BI_trend_lsq: 0.06<br>Red_Flag: True</div>`)[0];
+            popup_b9a268e6e1dd08f06d3f16580bfc09be.setContent(html_2c34dc93d6674d58daa83565c83cce78);
+        
+
+        marker_9cea7a3d138cdeea90a31416dd46b329.bindPopup(popup_b9a268e6e1dd08f06d3f16580bfc09be)
+        ;
+
+        
+    
+    
+            var marker_b00f9e2c9dc6b97b54f7aa6cf320e27c = L.marker(
+                [-54.0, -38.05],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_b04f073ae6c39c3f7d39b3c805c277ed = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_b00f9e2c9dc6b97b54f7aa6cf320e27c.setIcon(icon_b04f073ae6c39c3f7d39b3c805c277ed);
+        
+    
+        var popup_a2045a05c7648d172e14cd3e97dafec1 = L.popup({"maxWidth": 300});
+
+        
+            var html_63fd59f8b5186d81d5c7dc9980a31aef = $(`<div id="html_63fd59f8b5186d81d5c7dc9980a31aef" style="width: 100.0%; height: 100.0%;">ID: SXM00088900<br>Station: BIRD_ISLAND<br>USCRN_Y_N: N<br>Lat: -54.0<br>Lon: -38.05<br>Elev-m: 2.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.0<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.0<br>Built_2020_10km_percent: 0.0<br>Percentage_Change_10km: 0.0<br>Built_1975_2km_percent: 0.0<br>Built_2020_2km_percent: 0.0<br>Percentage_Change_2km: 0.0<br>USCRN_Station: nan<br>BI_2012: 0.02<br>BI_2017: 0.17<br>BI_2020: 0.16<br>BI_2023: 0.09<br>BI_change_decade: 0.06<br>BI_2020_lsq: 0.12<br>BI_trend_lsq: 0.01<br>Red_Flag: False</div>`)[0];
+            popup_a2045a05c7648d172e14cd3e97dafec1.setContent(html_63fd59f8b5186d81d5c7dc9980a31aef);
+        
+
+        marker_b00f9e2c9dc6b97b54f7aa6cf320e27c.bindPopup(popup_a2045a05c7648d172e14cd3e97dafec1)
+        ;
+
+        
+    
+    
+            var marker_86ea7fd8eed20cac67f455da3525f711 = L.marker(
+                [4.8, -52.4],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_5eca2eabcffcf4703f781bf2392fd37d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_86ea7fd8eed20cac67f455da3525f711.setIcon(icon_5eca2eabcffcf4703f781bf2392fd37d);
+        
+    
+        var popup_48ace9becc60733bad8a88c91ff72e89 = L.popup({"maxWidth": 300});
+
+        
+            var html_fd9c31b8b6279a24ebcd21e2276c49db = $(`<div id="html_fd9c31b8b6279a24ebcd21e2276c49db" style="width: 100.0%; height: 100.0%;">ID: FGXLT442638<br>Station: CAYENNE_ROCHAMBEAU<br>USCRN_Y_N: N<br>Lat: 4.8<br>Lon: -52.4<br>Elev-m: 9.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.23<br>Built_2020_50km_percent: 0.55<br>Percentage_Change_50km: 139.13<br>Built_1975_10km_percent: 0.12<br>Built_2020_10km_percent: 0.28<br>Percentage_Change_10km: 133.33<br>Built_1975_2km_percent: 0.03<br>Built_2020_2km_percent: 0.05<br>Percentage_Change_2km: 66.67<br>USCRN_Station: nan<br>BI_2012: 0.02<br>BI_2017: 0.32<br>BI_2020: 0.28<br>BI_2023: 0.33<br>BI_change_decade: 0.28<br>BI_2020_lsq: 0.29<br>BI_trend_lsq: 0.03<br>Red_Flag: True</div>`)[0];
+            popup_48ace9becc60733bad8a88c91ff72e89.setContent(html_fd9c31b8b6279a24ebcd21e2276c49db);
+        
+
+        marker_86ea7fd8eed20cac67f455da3525f711.bindPopup(popup_48ace9becc60733bad8a88c91ff72e89)
+        ;
+
+        
+    
+    
+            var marker_adb10b9736a6cf63e3d7adae9794db39 = L.marker(
+                [41.3119, -105.6747],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_28896ffe96877d676882c7157ed529eb = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_adb10b9736a6cf63e3d7adae9794db39.setIcon(icon_28896ffe96877d676882c7157ed529eb);
+        
+    
+        var popup_50b9707abe1a36e7bf4aaf8848bb0081 = L.popup({"maxWidth": 300});
+
+        
+            var html_272bf7566792ce1363e1238b99a0b010 = $(`<div id="html_272bf7566792ce1363e1238b99a0b010" style="width: 100.0%; height: 100.0%;">ID: USW00024022<br>Station: LARAMIE_RGNL_AP<br>USCRN_Y_N: N<br>Lat: 41.3119<br>Lon: -105.6747<br>Elev-m: 2214.7<br>BI: 0.0<br>Built_1975_50km_percent: 0.12<br>Built_2020_50km_percent: 0.25<br>Percentage_Change_50km: 108.33<br>Built_1975_10km_percent: 0.37<br>Built_2020_10km_percent: 0.84<br>Percentage_Change_10km: 127.03<br>Built_1975_2km_percent: 0.21<br>Built_2020_2km_percent: 0.46<br>Percentage_Change_2km: 119.05<br>USCRN_Station: nan<br>BI_2012: 0.27<br>BI_2017: 0.4<br>BI_2020: 0.5<br>BI_2023: 0.4<br>BI_change_decade: 0.12<br>BI_2020_lsq: 0.42<br>BI_trend_lsq: 0.01<br>Red_Flag: True</div>`)[0];
+            popup_50b9707abe1a36e7bf4aaf8848bb0081.setContent(html_272bf7566792ce1363e1238b99a0b010);
+        
+
+        marker_adb10b9736a6cf63e3d7adae9794db39.bindPopup(popup_50b9707abe1a36e7bf4aaf8848bb0081)
+        ;
+
+        
+    
+    
+            var marker_442e572eb15687eaec47867faca2ce19 = L.marker(
+                [50.7, 142.7164],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_4b634e67af9962d82966e24eb728f015 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_442e572eb15687eaec47867faca2ce19.setIcon(icon_4b634e67af9962d82966e24eb728f015);
+        
+    
+        var popup_2a28959525e984dd5310cb7b1be20a21 = L.popup({"maxWidth": 300});
+
+        
+            var html_d6f14d0ab25b88c3fb8b07a092528538 = $(`<div id="html_d6f14d0ab25b88c3fb8b07a092528538" style="width: 100.0%; height: 100.0%;">ID: RSM00032071<br>Station: TIMOVSKOE<br>USCRN_Y_N: N<br>Lat: 50.7<br>Lon: 142.7164<br>Elev-m: 94.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.03<br>Built_2020_50km_percent: 0.05<br>Percentage_Change_50km: 66.67<br>Built_1975_10km_percent: 0.09<br>Built_2020_10km_percent: 0.16<br>Percentage_Change_10km: 77.78<br>Built_1975_2km_percent: 0.35<br>Built_2020_2km_percent: 0.49<br>Percentage_Change_2km: 40.0<br>USCRN_Station: nan<br>BI_2012: 0.1<br>BI_2017: 0.94<br>BI_2020: 0.74<br>BI_2023: 0.92<br>BI_change_decade: 0.75<br>BI_2020_lsq: 0.81<br>BI_trend_lsq: 0.07<br>Red_Flag: True</div>`)[0];
+            popup_2a28959525e984dd5310cb7b1be20a21.setContent(html_d6f14d0ab25b88c3fb8b07a092528538);
+        
+
+        marker_442e572eb15687eaec47867faca2ce19.bindPopup(popup_2a28959525e984dd5310cb7b1be20a21)
+        ;
+
+        
+    
+    
+            var marker_5adbc13be4694ee4938688a7eca90bd0 = L.marker(
+                [-40.35, -9.883],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_5701ec3a7219f022d3cc4f4e66fbd7b8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_5adbc13be4694ee4938688a7eca90bd0.setIcon(icon_5701ec3a7219f022d3cc4f4e66fbd7b8);
+        
+    
+        var popup_08f2804ae98e98b44b3e45b495f3fd86 = L.popup({"maxWidth": 300});
+
+        
+            var html_e2c991153dc918902278d9e720f1bac1 = $(`<div id="html_e2c991153dc918902278d9e720f1bac1" style="width: 100.0%; height: 100.0%;">ID: SHM00068906<br>Station: GOUGH_ISLAND<br>USCRN_Y_N: N<br>Lat: -40.35<br>Lon: -9.883<br>Elev-m: 54.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.0<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.0<br>Built_2020_10km_percent: 0.0<br>Percentage_Change_10km: 0.0<br>Built_1975_2km_percent: 0.04<br>Built_2020_2km_percent: 0.06<br>Percentage_Change_2km: 50.0<br>USCRN_Station: nan<br>BI_2012: 0.03<br>BI_2017: 0.19<br>BI_2020: 0.22<br>BI_2023: 0.21<br>BI_change_decade: 0.16<br>BI_2020_lsq: 0.2<br>BI_trend_lsq: 0.02<br>Red_Flag: False</div>`)[0];
+            popup_08f2804ae98e98b44b3e45b495f3fd86.setContent(html_e2c991153dc918902278d9e720f1bac1);
+        
+
+        marker_5adbc13be4694ee4938688a7eca90bd0.bindPopup(popup_08f2804ae98e98b44b3e45b495f3fd86)
+        ;
+
+        
+    
+    
+            var marker_108cf1649ae2a02ccf411994cf91d510 = L.marker(
+                [-5.083, 32.833],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_a0e193008f2e7deaceb8e17351cee8a4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_108cf1649ae2a02ccf411994cf91d510.setIcon(icon_a0e193008f2e7deaceb8e17351cee8a4);
+        
+    
+        var popup_7829bd892d2b67c52a7534dcebfcbf56 = L.popup({"maxWidth": 300});
+
+        
+            var html_0b096f8f203322e67e4a3f14ba059489 = $(`<div id="html_0b096f8f203322e67e4a3f14ba059489" style="width: 100.0%; height: 100.0%;">ID: TZ000063832<br>Station: TABORA_AIRPORT<br>USCRN_Y_N: N<br>Lat: -5.083<br>Lon: 32.833<br>Elev-m: 1182.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.36<br>Built_2020_50km_percent: 1.34<br>Percentage_Change_50km: 272.22<br>Built_1975_10km_percent: 1.12<br>Built_2020_10km_percent: 3.58<br>Percentage_Change_10km: 219.64<br>Built_1975_2km_percent: 0.08<br>Built_2020_2km_percent: 0.75<br>Percentage_Change_2km: 837.5<br>USCRN_Station: nan<br>BI_2012: 0.26<br>BI_2017: 0.4<br>BI_2020: 0.31<br>BI_2023: 0.58<br>BI_change_decade: 0.29<br>BI_2020_lsq: 0.43<br>BI_trend_lsq: 0.02<br>Red_Flag: True</div>`)[0];
+            popup_7829bd892d2b67c52a7534dcebfcbf56.setContent(html_0b096f8f203322e67e4a3f14ba059489);
+        
+
+        marker_108cf1649ae2a02ccf411994cf91d510.bindPopup(popup_7829bd892d2b67c52a7534dcebfcbf56)
+        ;
+
+        
+    
+    
+            var marker_2ef15d999c08d8e310ea7f7f38192e5b = L.marker(
+                [29.755, -81.5389],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_b9d9c3884421bebecb3c53d3c856b713 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_2ef15d999c08d8e310ea7f7f38192e5b.setIcon(icon_b9d9c3884421bebecb3c53d3c856b713);
+        
+    
+        var popup_1ff0651fb5c8ee98fe6e097c8c88011d = L.popup({"maxWidth": 300});
+
+        
+            var html_b77bfe2d658c4a04ffed423e77fb21b7 = $(`<div id="html_b77bfe2d658c4a04ffed423e77fb21b7" style="width: 100.0%; height: 100.0%;">ID: USC00082915<br>Station: FEDERAL_POINT<br>USCRN_Y_N: N<br>Lat: 29.755<br>Lon: -81.5389<br>Elev-m: 1.5<br>BI: 0.0<br>Built_1975_50km_percent: 0.61<br>Built_2020_50km_percent: 1.39<br>Percentage_Change_50km: 127.87<br>Built_1975_10km_percent: 0.47<br>Built_2020_10km_percent: 0.89<br>Percentage_Change_10km: 89.36<br>Built_1975_2km_percent: 0.6<br>Built_2020_2km_percent: 1.2<br>Percentage_Change_2km: 100.0<br>USCRN_Station: nan<br>BI_2012: 0.39<br>BI_2017: 0.68<br>BI_2020: 0.69<br>BI_2023: 0.83<br>BI_change_decade: 0.4<br>BI_2020_lsq: 0.72<br>BI_trend_lsq: 0.04<br>Red_Flag: True</div>`)[0];
+            popup_1ff0651fb5c8ee98fe6e097c8c88011d.setContent(html_b77bfe2d658c4a04ffed423e77fb21b7);
+        
+
+        marker_2ef15d999c08d8e310ea7f7f38192e5b.bindPopup(popup_1ff0651fb5c8ee98fe6e097c8c88011d)
+        ;
+
+        
+    
+    
+            var marker_56f2c739a870d7813c420ebebacc77b3 = L.marker(
+                [-54.7, -64.2],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_5cb4573d0e36af8421b7376921aa476f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_56f2c739a870d7813c420ebebacc77b3.setIcon(icon_5cb4573d0e36af8421b7376921aa476f);
+        
+    
+        var popup_6251426cc277fde3970c5cc8afd2b5d5 = L.popup({"maxWidth": 300});
+
+        
+            var html_b07f47a82c658f8a20fe7283ec59ba47 = $(`<div id="html_b07f47a82c658f8a20fe7283ec59ba47" style="width: 100.0%; height: 100.0%;">ID: ARXLT954992<br>Station: ANO_NUEVO<br>USCRN_Y_N: N<br>Lat: -54.7<br>Lon: -64.2<br>Elev-m: 53.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.0<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.0<br>Built_2020_10km_percent: 0.0<br>Percentage_Change_10km: 0.0<br>Built_1975_2km_percent: 0.0<br>Built_2020_2km_percent: 0.0<br>Percentage_Change_2km: 0.0<br>USCRN_Station: nan<br>BI_2012: -0.05<br>BI_2017: 0.06<br>BI_2020: 0.11<br>BI_2023: 0.1<br>BI_change_decade: 0.14<br>BI_2020_lsq: 0.08<br>BI_trend_lsq: 0.01<br>Red_Flag: False</div>`)[0];
+            popup_6251426cc277fde3970c5cc8afd2b5d5.setContent(html_b07f47a82c658f8a20fe7283ec59ba47);
+        
+
+        marker_56f2c739a870d7813c420ebebacc77b3.bindPopup(popup_6251426cc277fde3970c5cc8afd2b5d5)
+        ;
+
+        
+    
+    
+            var marker_db7e3f74ada3588e686d419716bf5ffd = L.marker(
+                [-43.95, -176.567],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_4692e1c78b2ecb0f629000e75f4c40b5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_db7e3f74ada3588e686d419716bf5ffd.setIcon(icon_4692e1c78b2ecb0f629000e75f4c40b5);
+        
+    
+        var popup_cac051ae5fdc3ed6c1f734016b5cf7b5 = L.popup({"maxWidth": 300});
+
+        
+            var html_b2453b99749daf812df1439b78f7e916 = $(`<div id="html_b2453b99749daf812df1439b78f7e916" style="width: 100.0%; height: 100.0%;">ID: NZ000939870<br>Station: CHATHAM_ISLANDS_AWS<br>USCRN_Y_N: N<br>Lat: -43.95<br>Lon: -176.567<br>Elev-m: 49.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.01<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.05<br>Built_2020_10km_percent: 0.09<br>Percentage_Change_10km: 80.0<br>Built_1975_2km_percent: 0.63<br>Built_2020_2km_percent: 1.04<br>Percentage_Change_2km: 65.08<br>USCRN_Station: nan<br>BI_2012: 0.14<br>BI_2017: 0.25<br>BI_2020: 0.25<br>BI_2023: 0.36<br>BI_change_decade: 0.2<br>BI_2020_lsq: 0.29<br>BI_trend_lsq: 0.02<br>Red_Flag: True</div>`)[0];
+            popup_cac051ae5fdc3ed6c1f734016b5cf7b5.setContent(html_b2453b99749daf812df1439b78f7e916);
+        
+
+        marker_db7e3f74ada3588e686d419716bf5ffd.bindPopup(popup_cac051ae5fdc3ed6c1f734016b5cf7b5)
+        ;
+
+        
+    
+    
+            var marker_ec26598434a9c7c38069f7df32f4d894 = L.marker(
+                [-15.933, -5.667],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_e842ac64da2aa421fd637c31f5ac2e8b = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_ec26598434a9c7c38069f7df32f4d894.setIcon(icon_e842ac64da2aa421fd637c31f5ac2e8b);
+        
+    
+        var popup_d3b054e20b225a582523e9d47c2f2574 = L.popup({"maxWidth": 300});
+
+        
+            var html_a026b5df12f2679547e59e238c9ccf1f = $(`<div id="html_a026b5df12f2679547e59e238c9ccf1f" style="width: 100.0%; height: 100.0%;">ID: SHM00061901<br>Station: ST_HELENA_IS<br>USCRN_Y_N: N<br>Lat: -15.933<br>Lon: -5.667<br>Elev-m: 436.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.01<br>Built_2020_50km_percent: 0.02<br>Percentage_Change_50km: 100.0<br>Built_1975_10km_percent: 0.05<br>Built_2020_10km_percent: 0.12<br>Percentage_Change_10km: 140.0<br>Built_1975_2km_percent: 0.0<br>Built_2020_2km_percent: 0.0<br>Percentage_Change_2km: 0.0<br>USCRN_Station: nan<br>BI_2012: 0.08<br>BI_2017: 0.27<br>BI_2020: 0.27<br>BI_2023: 0.43<br>BI_change_decade: 0.32<br>BI_2020_lsq: 0.32<br>BI_trend_lsq: 0.03<br>Red_Flag: True</div>`)[0];
+            popup_d3b054e20b225a582523e9d47c2f2574.setContent(html_a026b5df12f2679547e59e238c9ccf1f);
+        
+
+        marker_ec26598434a9c7c38069f7df32f4d894.bindPopup(popup_d3b054e20b225a582523e9d47c2f2574)
+        ;
+
+        
+    
+    
+            var marker_2d6017a9b2372fa2820a3224dccdd51a = L.marker(
+                [64.1667, -51.75],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_fe5d7033b4381213e4cef37ffe0bdb9d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_2d6017a9b2372fa2820a3224dccdd51a.setIcon(icon_fe5d7033b4381213e4cef37ffe0bdb9d);
+        
+    
+        var popup_43cfc87cec238a8344281f148aa0df86 = L.popup({"maxWidth": 300});
+
+        
+            var html_fa38f493150db7372bd589ce420594d7 = $(`<div id="html_fa38f493150db7372bd589ce420594d7" style="width: 100.0%; height: 100.0%;">ID: GL000004250<br>Station: NUUK<br>USCRN_Y_N: N<br>Lat: 64.1667<br>Lon: -51.75<br>Elev-m: 80.0<br>BI: 17.0<br>Built_1975_50km_percent: 0.01<br>Built_2020_50km_percent: 0.02<br>Percentage_Change_50km: 100.0<br>Built_1975_10km_percent: 0.31<br>Built_2020_10km_percent: 0.61<br>Percentage_Change_10km: 96.77<br>Built_1975_2km_percent: 1.98<br>Built_2020_2km_percent: 3.9<br>Percentage_Change_2km: 96.97<br>USCRN_Station: nan<br>BI_2012: 7.32<br>BI_2017: 12.48<br>BI_2020: 8.01<br>BI_2023: 6.21<br>BI_change_decade: -1.01<br>BI_2020_lsq: 8.22<br>BI_trend_lsq: -0.14<br>Red_Flag: True</div>`)[0];
+            popup_43cfc87cec238a8344281f148aa0df86.setContent(html_fa38f493150db7372bd589ce420594d7);
+        
+
+        marker_2d6017a9b2372fa2820a3224dccdd51a.bindPopup(popup_43cfc87cec238a8344281f148aa0df86)
+        ;
+
+        
+    
+    
+            var marker_120f6e83e82a1740334e5e349d850dab = L.marker(
+                [-17.817, 25.817],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_63388f57b6e7ec4cb80b7e0a4a1e4bf1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_120f6e83e82a1740334e5e349d850dab.setIcon(icon_63388f57b6e7ec4cb80b7e0a4a1e4bf1);
+        
+    
+        var popup_d4c26cbf71c5b12379693e465aeb04dd = L.popup({"maxWidth": 300});
+
+        
+            var html_cfb407bdb5fe8d0ddc65740a1ff8290f = $(`<div id="html_cfb407bdb5fe8d0ddc65740a1ff8290f" style="width: 100.0%; height: 100.0%;">ID: ZA000067743<br>Station: LIVINGSTONE<br>USCRN_Y_N: N<br>Lat: -17.817<br>Lon: 25.817<br>Elev-m: 986.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.23<br>Built_2020_50km_percent: 0.63<br>Percentage_Change_50km: 173.91<br>Built_1975_10km_percent: 2.5<br>Built_2020_10km_percent: 5.04<br>Percentage_Change_10km: 101.6<br>Built_1975_2km_percent: 0.27<br>Built_2020_2km_percent: 0.89<br>Percentage_Change_2km: 229.63<br>USCRN_Station: nan<br>BI_2012: 1.75<br>BI_2017: 1.3<br>BI_2020: 0.91<br>BI_2023: 0.89<br>BI_change_decade: -0.78<br>BI_2020_lsq: 1.04<br>BI_trend_lsq: -0.08<br>Red_Flag: True</div>`)[0];
+            popup_d4c26cbf71c5b12379693e465aeb04dd.setContent(html_cfb407bdb5fe8d0ddc65740a1ff8290f);
+        
+
+        marker_120f6e83e82a1740334e5e349d850dab.bindPopup(popup_d4c26cbf71c5b12379693e465aeb04dd)
+        ;
+
+        
+    
+    
+            var marker_f5c60e260528cd72a12bf8f23e2595f5 = L.marker(
+                [-54.283, -36.5],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_78f84adeb5267778dd551400341c526a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_f5c60e260528cd72a12bf8f23e2595f5.setIcon(icon_78f84adeb5267778dd551400341c526a);
+        
+    
+        var popup_c088d1123cbced606581be83507eab97 = L.popup({"maxWidth": 300});
+
+        
+            var html_042e23d7584f2188b72bcab71829174c = $(`<div id="html_042e23d7584f2188b72bcab71829174c" style="width: 100.0%; height: 100.0%;">ID: SXM00088903<br>Station: GRYTVIKEN<br>USCRN_Y_N: N<br>Lat: -54.283<br>Lon: -36.5<br>Elev-m: 3.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.0<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.0<br>Built_2020_10km_percent: 0.0<br>Percentage_Change_10km: 0.0<br>Built_1975_2km_percent: 0.0<br>Built_2020_2km_percent: 0.0<br>Percentage_Change_2km: 0.0<br>USCRN_Station: nan<br>BI_2012: 0.06<br>BI_2017: 0.16<br>BI_2020: 0.26<br>BI_2023: 0.11<br>BI_change_decade: 0.05<br>BI_2020_lsq: 0.16<br>BI_trend_lsq: 0.01<br>Red_Flag: False</div>`)[0];
+            popup_c088d1123cbced606581be83507eab97.setContent(html_042e23d7584f2188b72bcab71829174c);
+        
+
+        marker_f5c60e260528cd72a12bf8f23e2595f5.bindPopup(popup_c088d1123cbced606581be83507eab97)
+        ;
+
+        
+    
+    
+            var marker_b4db898e225fad420c23f7200e2b812e = L.marker(
+                [45.8667, 7.1667],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_06c8f167e86f8817653a6b646097e328 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_b4db898e225fad420c23f7200e2b812e.setIcon(icon_06c8f167e86f8817653a6b646097e328);
+        
+    
+        var popup_94080e0db97277a97b55715bec89f4a6 = L.popup({"maxWidth": 300});
+
+        
+            var html_181bdc22b56e3fe958a972f35d3db79e = $(`<div id="html_181bdc22b56e3fe958a972f35d3db79e" style="width: 100.0%; height: 100.0%;">ID: SZ000006717<br>Station: COL_DU_GRAND_ST_BERNARD<br>USCRN_Y_N: N<br>Lat: 45.8667<br>Lon: 7.1667<br>Elev-m: 2472.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.26<br>Built_2020_50km_percent: 0.53<br>Percentage_Change_50km: 103.85<br>Built_1975_10km_percent: 0.08<br>Built_2020_10km_percent: 0.14<br>Percentage_Change_10km: 75.0<br>Built_1975_2km_percent: 0.1<br>Built_2020_2km_percent: 0.15<br>Percentage_Change_2km: 50.0<br>USCRN_Station: nan<br>BI_2012: 0.25<br>BI_2017: 0.34<br>BI_2020: 0.33<br>BI_2023: 0.34<br>BI_change_decade: 0.08<br>BI_2020_lsq: 0.33<br>BI_trend_lsq: 0.01<br>Red_Flag: True</div>`)[0];
+            popup_94080e0db97277a97b55715bec89f4a6.setContent(html_181bdc22b56e3fe958a972f35d3db79e);
+        
+
+        marker_b4db898e225fad420c23f7200e2b812e.bindPopup(popup_94080e0db97277a97b55715bec89f4a6)
+        ;
+
+        
+    
+    
+            var marker_4a013bb2857da4d27b72d5cf1298eaf3 = L.marker(
+                [65.1667, -152.1],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_e829df81fb85cc02854464133027f221 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_4a013bb2857da4d27b72d5cf1298eaf3.setIcon(icon_e829df81fb85cc02854464133027f221);
+        
+    
+        var popup_2b57f9efc4f60ede222f1dd5b6d5b707 = L.popup({"maxWidth": 300});
+
+        
+            var html_46981d1346d9c659edf51597cd029ef9 = $(`<div id="html_46981d1346d9c659edf51597cd029ef9" style="width: 100.0%; height: 100.0%;">ID: USC00509015<br>Station: TANANA<br>USCRN_Y_N: N<br>Lat: 65.1667<br>Lon: -152.1<br>Elev-m: 60.4<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.0<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.04<br>Built_2020_10km_percent: 0.05<br>Percentage_Change_10km: 25.0<br>Built_1975_2km_percent: 0.52<br>Built_2020_2km_percent: 0.64<br>Percentage_Change_2km: 23.08<br>USCRN_Station: nan<br>BI_2012: 0.39<br>BI_2017: 0.76<br>BI_2020: 0.67<br>BI_2023: 0.84<br>BI_change_decade: 0.41<br>BI_2020_lsq: 0.74<br>BI_trend_lsq: 0.04<br>Red_Flag: False</div>`)[0];
+            popup_2b57f9efc4f60ede222f1dd5b6d5b707.setContent(html_46981d1346d9c659edf51597cd029ef9);
+        
+
+        marker_4a013bb2857da4d27b72d5cf1298eaf3.bindPopup(popup_2b57f9efc4f60ede222f1dd5b6d5b707)
+        ;
+
+        
+    
+    
+            var marker_6c4b359c6de706bda4af4989cb7dde63 = L.marker(
+                [-54.499, 158.937],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_aee84e0c2f94f62877343e8e212ff8d7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_6c4b359c6de706bda4af4989cb7dde63.setIcon(icon_aee84e0c2f94f62877343e8e212ff8d7);
+        
+    
+        var popup_c8d8e33a75f50ead336d8ded69c2514e = L.popup({"maxWidth": 300});
+
+        
+            var html_8da6888b8e42b2dbd2ae00f9ba5b9577 = $(`<div id="html_8da6888b8e42b2dbd2ae00f9ba5b9577" style="width: 100.0%; height: 100.0%;">ID: ASM00094998<br>Station: MACQUARIE_ISLAND<br>USCRN_Y_N: N<br>Lat: -54.499<br>Lon: 158.937<br>Elev-m: 8.3<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.0<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.0<br>Built_2020_10km_percent: 0.0<br>Percentage_Change_10km: 0.0<br>Built_1975_2km_percent: 0.0<br>Built_2020_2km_percent: 0.0<br>Percentage_Change_2km: 0.0<br>USCRN_Station: nan<br>BI_2012: 0.55<br>BI_2017: 0.75<br>BI_2020: 0.3<br>BI_2023: 0.53<br>BI_change_decade: -0.02<br>BI_2020_lsq: 0.51<br>BI_trend_lsq: -0.01<br>Red_Flag: False</div>`)[0];
+            popup_c8d8e33a75f50ead336d8ded69c2514e.setContent(html_8da6888b8e42b2dbd2ae00f9ba5b9577);
+        
+
+        marker_6c4b359c6de706bda4af4989cb7dde63.bindPopup(popup_c8d8e33a75f50ead336d8ded69c2514e)
+        ;
+
+        
+    
+    
+            var marker_bd1732e484bfabdc00fc403d865aa5d9 = L.marker(
+                [51.32, 119.62],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_369e7e9bb0086e14ab22a4958dfdd2f4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_bd1732e484bfabdc00fc403d865aa5d9.setIcon(icon_369e7e9bb0086e14ab22a4958dfdd2f4);
+        
+    
+        var popup_ce6ce82f6c728505408aa7f51e3c9a1a = L.popup({"maxWidth": 300});
+
+        
+            var html_4cb5301300b8a0ef873d6561d398bb7d = $(`<div id="html_4cb5301300b8a0ef873d6561d398bb7d" style="width: 100.0%; height: 100.0%;">ID: RSM00030879<br>Station: NERCHINSKIJ_ZAVOD<br>USCRN_Y_N: N<br>Lat: 51.32<br>Lon: 119.62<br>Elev-m: 621.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.02<br>Built_2020_50km_percent: 0.04<br>Percentage_Change_50km: 100.0<br>Built_1975_10km_percent: 0.15<br>Built_2020_10km_percent: 0.24<br>Percentage_Change_10km: 60.0<br>Built_1975_2km_percent: 0.58<br>Built_2020_2km_percent: 0.75<br>Percentage_Change_2km: 29.31<br>USCRN_Station: nan<br>BI_2012: 0.32<br>BI_2017: 0.39<br>BI_2020: 0.39<br>BI_2023: 3.98<br>BI_change_decade: 3.33<br>BI_2020_lsq: 1.83<br>BI_trend_lsq: 0.28<br>Red_Flag: True</div>`)[0];
+            popup_ce6ce82f6c728505408aa7f51e3c9a1a.setContent(html_4cb5301300b8a0ef873d6561d398bb7d);
+        
+
+        marker_bd1732e484bfabdc00fc403d865aa5d9.bindPopup(popup_ce6ce82f6c728505408aa7f51e3c9a1a)
+        ;
+
+        
+    
+    
+            var marker_3cf037a64b0c2c99aefacb134d498b56 = L.marker(
+                [42.2497, -77.7583],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_1fa9c9ce5d06e0dfd17736645a4c5fd1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_3cf037a64b0c2c99aefacb134d498b56.setIcon(icon_1fa9c9ce5d06e0dfd17736645a4c5fd1);
+        
+    
+        var popup_59c218a0234dbdb966f0f77d91e802ea = L.popup({"maxWidth": 300});
+
+        
+            var html_e0db36d05b595be25dcf66a485bb542a = $(`<div id="html_e0db36d05b595be25dcf66a485bb542a" style="width: 100.0%; height: 100.0%;">ID: USC00300085<br>Station: ALFRED<br>USCRN_Y_N: N<br>Lat: 42.2497<br>Lon: -77.7583<br>Elev-m: 520.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.29<br>Built_2020_50km_percent: 0.49<br>Percentage_Change_50km: 68.97<br>Built_1975_10km_percent: 0.39<br>Built_2020_10km_percent: 0.69<br>Percentage_Change_10km: 76.92<br>Built_1975_2km_percent: 0.33<br>Built_2020_2km_percent: 0.55<br>Percentage_Change_2km: 66.67<br>USCRN_Station: nan<br>BI_2012: 0.36<br>BI_2017: 0.82<br>BI_2020: 1.05<br>BI_2023: 0.91<br>BI_change_decade: 0.5<br>BI_2020_lsq: 0.9<br>BI_trend_lsq: 0.06<br>Red_Flag: True</div>`)[0];
+            popup_59c218a0234dbdb966f0f77d91e802ea.setContent(html_e0db36d05b595be25dcf66a485bb542a);
+        
+
+        marker_3cf037a64b0c2c99aefacb134d498b56.bindPopup(popup_59c218a0234dbdb966f0f77d91e802ea)
+        ;
+
+        
+    
+    
+            var marker_25dd311ab68747af21afc856a6c76720 = L.marker(
+                [-1.717, -45.4],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_da016770b96a35c810b9dfdb081886e7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_25dd311ab68747af21afc856a6c76720.setIcon(icon_da016770b96a35c810b9dfdb081886e7);
+        
+    
+        var popup_6e4dd7f3b77dc3876e284a7d91888488 = L.popup({"maxWidth": 300});
+
+        
+            var html_1bbb04da979d27450deb77cd938dbc9c = $(`<div id="html_1bbb04da979d27450deb77cd938dbc9c" style="width: 100.0%; height: 100.0%;">ID: BR026393280<br>Station: TURIACU<br>USCRN_Y_N: N<br>Lat: -1.717<br>Lon: -45.4<br>Elev-m: 44.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.02<br>Built_2020_50km_percent: 0.05<br>Percentage_Change_50km: 150.0<br>Built_1975_10km_percent: 0.03<br>Built_2020_10km_percent: 0.04<br>Percentage_Change_10km: 33.33<br>Built_1975_2km_percent: 0.02<br>Built_2020_2km_percent: 0.03<br>Percentage_Change_2km: 50.0<br>USCRN_Station: nan<br>BI_2012: 0.04<br>BI_2017: 0.26<br>BI_2020: 0.34<br>BI_2023: 0.35<br>BI_change_decade: 0.28<br>BI_2020_lsq: 0.31<br>BI_trend_lsq: 0.03<br>Red_Flag: True</div>`)[0];
+            popup_6e4dd7f3b77dc3876e284a7d91888488.setContent(html_1bbb04da979d27450deb77cd938dbc9c);
+        
+
+        marker_25dd311ab68747af21afc856a6c76720.bindPopup(popup_6e4dd7f3b77dc3876e284a7d91888488)
+        ;
+
+        
+    
+    
+            var marker_8b58fa24a6f4649841298d9be2fa0d29 = L.marker(
+                [-29.25, -177.917],
+                {}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+        
+    
+            var icon_49c03e5aafcfdfef5049be7fbfafa1f5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
+            );
+            marker_8b58fa24a6f4649841298d9be2fa0d29.setIcon(icon_49c03e5aafcfdfef5049be7fbfafa1f5);
+        
+    
+        var popup_d264a7f38f96357520ec26d24dac7822 = L.popup({"maxWidth": 300});
+
+        
+            var html_9e451e2e9a8b1d1fb1eda60386db53da = $(`<div id="html_9e451e2e9a8b1d1fb1eda60386db53da" style="width: 100.0%; height: 100.0%;">ID: NZ000093994<br>Station: RAOUL_ISL_KERMADEC<br>USCRN_Y_N: N<br>Lat: -29.25<br>Lon: -177.917<br>Elev-m: 49.0<br>BI: 0.0<br>Built_1975_50km_percent: 0.0<br>Built_2020_50km_percent: 0.0<br>Percentage_Change_50km: 0.0<br>Built_1975_10km_percent: 0.0<br>Built_2020_10km_percent: 0.0<br>Percentage_Change_10km: 0.0<br>Built_1975_2km_percent: 0.02<br>Built_2020_2km_percent: 0.03<br>Percentage_Change_2km: 50.0<br>USCRN_Station: nan<br>BI_2012: 0.02<br>BI_2017: 0.2<br>BI_2020: 0.24<br>BI_2023: 0.32<br>BI_change_decade: 0.27<br>BI_2020_lsq: 0.25<br>BI_trend_lsq: 0.03<br>Red_Flag: False</div>`)[0];
+            popup_d264a7f38f96357520ec26d24dac7822.setContent(html_9e451e2e9a8b1d1fb1eda60386db53da);
+        
+
+        marker_8b58fa24a6f4649841298d9be2fa0d29.bindPopup(popup_d264a7f38f96357520ec26d24dac7822)
+        ;
+
+        
+    
+    
+            var layer_control_b5b4e9577d0923bcd3a2e7094cea364d = {
+                base_layers : {
+                    "https://server.arcgisonline.com/arcgis/rest/services/world_imagery/mapserver/tile/{z}/{y}/{x}" : tile_layer_da203448c4171b670a28c6060928db0f,
+                    "Terrain View" : tile_layer_e2b43ec8a2423b08336cd8d6f25dbd31,
+                },
+                overlays :  {
+                },
+            };
+            L.control.layers(
+                layer_control_b5b4e9577d0923bcd3a2e7094cea364d.base_layers,
+                layer_control_b5b4e9577d0923bcd3a2e7094cea364d.overlays,
+                {"autoZIndex": true, "collapsed": true, "position": "topright"}
+            ).addTo(map_1f4f38f174866413d8d4d07826bc6a93);
+            tile_layer_e2b43ec8a2423b08336cd8d6f25dbd31.remove();
+        
+</script>
+</html>
