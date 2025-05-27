@@ -185,6 +185,7 @@ Map.addLayer(modisUrban.updateMask(modisUrban),
 
 // ---- Center the map to example region ----
 Map.setCenter(5, 52, 8);
+```
 ![image](https://github.com/user-attachments/assets/43138a0a-5f3f-4777-b344-df6e263c7a69)
 ![image](https://github.com/user-attachments/assets/415220f6-34c7-49f4-862c-1a4ceee8da9d)
 ![image](https://github.com/user-attachments/assets/9d7cc9c0-fc81-4cff-a7c7-ba7f6d389d6d)
