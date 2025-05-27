@@ -8,7 +8,7 @@ This repository contains a forensic, methodological audit of the rural station c
 
 ### Original Study Under Audit
 
-[Wickham, C., et al. (2013)]([https://doi.org/10.1002/jgrd.50202](https://www.scitechnol.com/influence-urban-heating-global-temperature-land-average-using-rural-sites-identified-from-modis-classifications-vwBQ.php?article_id=588)). 
+[Wickham, C., et al. (2013)](https://www.scitechnol.com/influence-urban-heating-global-temperature-land-average-using-rural-sites-identified-from-modis-classifications-vwBQ.php?article_id=588). 
  Wickham C, Rohde R, Muller RA, Wurtele J, Curry J, et al. (2013) Influence of Urban Heating on the Global Temperature Land Average using Rural Sites Identified from MODIS Classifications. Geoinfor Geostat: An Overview 1:2. doi:10.4172/2327-4581.1000104
 
 ### Context and Motivation
