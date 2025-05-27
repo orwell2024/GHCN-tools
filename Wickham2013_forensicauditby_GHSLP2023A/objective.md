@@ -4,11 +4,11 @@
 
 ### Project Overview
 
-This repository contains a forensic, methodological audit of the rural station classifications used by [Wickham et al. (2013)](https://doi.org/10.1002/jgrd.50202). Their study employed outdated MODIS 500m land cover data to select 15,000 "very rural" temperature stations, claiming negligible influence from urban heat islands (UHI) on global temperature trends. With advances in geospatial analysis and AI-driven satellite technology—specifically the GHSL P2023A 10-meter multispectral dataset derived from Sentinel-2 imagery—we critically reassess these classifications.
+This repository contains a forensic, methodological audit of the rural station classifications used by [Wickham et al. (2013)]([https://doi.org/10.1002/jgrd.50202](https://www.scitechnol.com/influence-urban-heating-global-temperature-land-average-using-rural-sites-identified-from-modis-classifications-vwBQ.php?article_id=588)). Their study employed outdated MODIS 500m land cover data to select 15,000 "very rural" temperature stations, claiming negligible influence from urban heat islands (UHI) on global temperature trends. With advances in geospatial analysis and AI-driven satellite technology—specifically the GHSL P2023A 10-meter multispectral dataset derived from Sentinel-2 imagery—we critically reassess these classifications.
 
 ### Original Study Under Audit
 
-[Wickham, C., et al. (2013)](https://doi.org/10.1002/jgrd.50202). *Influence of urban heating on the global temperature land average using rural sites identified from MODIS classifications*. Journal of Geophysical Research: Atmospheres, 118(5), 1890–1900.
+[Wickham, C., et al. (2013)]([https://doi.org/10.1002/jgrd.50202](https://www.scitechnol.com/influence-urban-heating-global-temperature-land-average-using-rural-sites-identified-from-modis-classifications-vwBQ.php?article_id=588)). *Influence of urban heating on the global temperature land average using rural sites identified from MODIS classifications*. Journal of Geophysical Research: Atmospheres, 118(5), 1890–1900.
 
 ### Context and Motivation
 
@@ -114,6 +114,13 @@ We anticipate that most stations originally labeled "very rural" by Wickham et a
 - [`v4.temperature.inv.txt`](https://data.giss.nasa.gov/gistemp/station_data_v4_globe/v4.temperature.inv.txt)
 - [Climate Audit: Berkeley "Very Rural" Data (2011)](https://climateaudit.org/2011/12/20/berkeley-very-rural-data/)
 - [Connolly (2014) Supplementary Data](https://doi.org/10.6084/m9.figshare.1005090.v1)
+- [Wickham et al. (2013)](https://berkeley-earth-wp-offload.storage.googleapis.com/wp-content/uploads/2022/12/03232406/UHI-GIGS-1-104.pdf)
+- #### Google Earth Engine Datasets Used
+- `MODIS/061/MCD12Q1` — MODIS Land Cover (500m, yearly)
+- `JRC/GHSL/P2023A/GHS_BUILT_S/2020` — GHSL P2023A Built-up Surface (10m)
+- `ESA/WorldCover/v100/2020` — ESA WorldCover 2020 (10m)
+- `ESA/WorldCover/v200/2021` — ESA WorldCover 2021 (10m, improved version)
+- `COPERNICUS/Landcover/100m/Proba-V/Global` — Copernicus Global Land Cover (100m)
 
 ### Ethical and Licensing Statement
 
@@ -130,3 +137,56 @@ Just as modern LLMs easily expose plagiarism in decades-old doctoral theses, mod
 > The absence of evidence is not evidence of absence—especially when your resolution is a black & white 500m pixel.
 
 ![image](https://github.com/user-attachments/assets/16561fe6-d694-4202-b07b-dd602b7284bf)
+
+### Appendix: Google Earth Engine Code — GHSL + MODIS Cropland + Urban
+
+This script loads and visualizes three key land-use indicators in Google Earth Engine:
+
+1. **GHSL P2023A Built-up (2020)** — expanded to 3×3 neighborhood, shown in **purple**
+2. **MODIS Cropland (2020)** — class codes 12 and 14, shown in **yellow**
+3. **MODIS Urban (2020)** — class code 13, shown in **red**
+
+```javascript
+// ---- GHSL Built-up Surface (2020) ----
+var ghsl = ee.Image('JRC/GHSL/P2023A/GHS_BUILT_S/2020')
+              .select('built_surface')
+              .gt(0);  // Built-up presence
+
+// Expand GHSL to 3x3 pixels
+var kernel = ee.Kernel.square(1);
+var ghslExpanded = ghsl.focal_max({kernel: kernel, iterations: 1});
+
+// ---- MODIS Land Cover (2020) ----
+var modis = ee.ImageCollection("MODIS/061/MCD12Q1")
+              .filter(ee.Filter.calendarRange(2020, 2020, 'year'))
+              .first()
+              .select('LC_Type1');
+
+// MODIS cropland: classes 12 and 14
+var modisCrop = modis.eq(12).or(modis.eq(14));
+
+// MODIS urban: class 13
+var modisUrban = modis.eq(13);
+
+// ---- Layer 1: GHSL built-up (purple) ----
+Map.addLayer(ghslExpanded.updateMask(ghslExpanded), 
+             {palette: ['purple']}, 
+             'GHSL Built-up (Expanded 3x3)');
+
+// ---- Layer 2: MODIS cropland (yellow) ----
+Map.addLayer(modisCrop.updateMask(modisCrop), 
+             {palette: ['yellow']}, 
+             'MODIS Cropland (12 + 14)');
+
+// ---- Layer 3: MODIS urban (red) ----
+Map.addLayer(modisUrban.updateMask(modisUrban), 
+             {palette: ['red']}, 
+             'MODIS Urban (13)');
+
+// ---- Center the map to example region ----
+Map.setCenter(5, 52, 8);
+![image](https://github.com/user-attachments/assets/43138a0a-5f3f-4777-b344-df6e263c7a69)
+![image](https://github.com/user-attachments/assets/415220f6-34c7-49f4-862c-1a4ceee8da9d)
+![image](https://github.com/user-attachments/assets/9d7cc9c0-fc81-4cff-a7c7-ba7f6d389d6d)
+
+
