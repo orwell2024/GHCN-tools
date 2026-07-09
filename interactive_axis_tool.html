@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NL weather data interactive tool</title>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --panel: #fffaf3;
+      --ink: #1c1c1c;
+      --muted: #6e665d;
+      --grid: #ddd2bf;
+      --temp: #111111;
+      --ghg: #2c8c4a;
+      --total: #c8332d;
+      --ssr: #c88419;
+      --border: #d8ccb8;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #fff8ef 0, #fff8ef 20%, transparent 55%),
+        linear-gradient(180deg, #efe5d6 0, var(--bg) 45%, #efe7db 100%);
+    }
+    .page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.05;
+    }
+    .sub {
+      margin: 0 0 22px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
+    }
+    .panel {
+      background: color-mix(in srgb, var(--panel) 90%, white 10%);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 16px 40px rgba(70, 50, 20, 0.08);
+    }
+    .controls {
+      padding: 18px;
+    }
+    .group {
+      margin-bottom: 18px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #eadfce;
+    }
+    .group:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+    label, .group-title {
+      display: block;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    select, input[type="range"] {
+      width: 100%;
+    }
+    select {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fffdf9;
+      font: inherit;
+    }
+    .range-row {
+      margin-bottom: 12px;
+    }
+    .range-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .range-head span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+    }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .swatch {
+      width: 18px;
+      height: 3px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .chart-wrap {
+      padding: 18px;
+    }
+    .chart-card {
+      padding: 14px;
+      background: rgba(255, 252, 246, 0.88);
+      border: 1px solid #e5d9c6;
+      border-radius: 18px;
+    }
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+    .station-title {
+      font-size: 28px;
+      margin: 0;
+    }
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      overflow: visible;
+    }
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+      .page {
+        padding: 14px;
+      }
+      .chart-wrap, .controls {
+        padding: 14px;
+      }
+      .station-title {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>NL weather data interactive tool</h1>
+    <p class="sub">Adjust the temperature axis and the forcing axis separately, and hide the red total line if needed.</p>
+    <div class="layout">
+      <aside class="panel controls">
+        <div class="group">
+          <label for="station">Station</label>
+          <select id="station"></select>
+        </div>
+        <div class="group">
+          <div class="group-title">Temperature axis (C)</div>
+          <div class="range-row">
+            <div class="range-head"><span>Min</span><span id="temp-min-value"></span></div>
+            <input id="temp-min" type="range" min="-4" max="1" step="0.1" value="-1">
+          </div>
+          <div class="range-row">
+            <div class="range-head"><span>Max</span><span id="temp-max-value"></span></div>
+            <input id="temp-max" type="range" min="0.5" max="5" step="0.1" value="2.3">
+          </div>
+        </div>
+        <div class="group">
+          <div class="group-title">Forcing axis (W/m2)</div>
+          <div class="range-row">
+            <div class="range-head"><span>Min</span><span id="force-min-value"></span></div>
+            <input id="force-min" type="range" min="-10" max="0" step="0.1" value="-1">
+          </div>
+          <div class="range-row">
+            <div class="range-head"><span>Max</span><span id="force-max-value"></span></div>
+            <input id="force-max" type="range" min="0.5" max="40" step="0.1" value="3">
+          </div>
+        </div>
+        <div class="group">
+          <label class="toggle"><input id="show-total" type="checkbox" checked> Show total / SSR</label>
+          <div class="legend">
+            <span class="legend-item"><span class="swatch" style="background: var(--temp)"></span>T</span>
+            <span class="legend-item"><span class="swatch" style="background: var(--ghg)"></span>GHG</span>
+            <span class="legend-item" id="ssr-legend"><span class="swatch" style="background: var(--ssr)"></span>SSR</span>
+            <span class="legend-item" id="total-legend"><span class="swatch" style="background: var(--total)"></span>Total</span>
+          </div>
+        </div>
+      </aside>
+      <main class="panel chart-wrap">
+        <div class="chart-card">
+          <div class="title-row">
+            <div>
+              <h2 class="station-title" id="station-title"></h2>
+              <div class="meta" id="station-meta"></div>
+            </div>
+          </div>
+          <svg id="chart" viewBox="0 0 980 560" aria-label="interactive chart"></svg>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script>
+    const stationData = {"235":{"name":"De Kooy","rows":[{"year":1979,"temp":-1.302,"ssr":-6.262,"ghg":-0.159,"total":-6.420999999999999},{"year":1980,"temp":-0.34,"ssr":-3.494,"ghg":-0.125,"total":-3.619},{"year":1981,"temp":-0.338,"ssr":-3.146,"ghg":-0.106,"total":-3.252},{"year":1982,"temp":0.139,"ssr":3.977,"ghg":-0.094,"total":3.883},{"year":1983,"temp":0.271,"ssr":-1.471,"ghg":-0.066,"total":-1.5370000000000001},{"year":1984,"temp":-0.16,"ssr":-5.75,"ghg":-0.041,"total":-5.791},{"year":1985,"temp":-1.14,"ssr":-6.175,"ghg":-0.018,"total":-6.193},{"year":1986,"temp":-0.883,"ssr":8.844,"ghg":0.006,"total":8.85},{"year":1987,"temp":-0.971,"ssr":-2.428,"ghg":0.033,"total":-2.395},{"year":1988,"temp":0.649,"ssr":-7.228,"ghg":0.073,"total":-7.154999999999999},{"year":1989,"temp":1.149,"ssr":7.73,"ghg":0.098,"total":7.828},{"year":1990,"temp":1.284,"ssr":5.648,"ghg":0.119,"total":5.7669999999999995},{"year":1991,"temp":-0.016,"ssr":-2.878,"ghg":0.14,"total":-2.738},{"year":1992,"temp":0.964,"ssr":2.475,"ghg":0.151,"total":2.626},{"year":1993,"temp":-0.182,"ssr":-2.241,"ghg":0.162,"total":-2.079},{"year":1994,"temp":0.901,"ssr":-3.755,"ghg":0.186,"total":-3.569},{"year":1995,"temp":0.702,"ssr":5.954,"ghg":0.214,"total":6.168},{"year":1996,"temp":-1.241,"ssr":-3.43,"ghg":0.242,"total":-3.188},{"year":1997,"temp":0.424,"ssr":0.973,"ghg":0.259,"total":1.232},{"year":1998,"temp":0.658,"ssr":-11.811,"ghg":0.3,"total":-11.511},{"year":1999,"temp":1.391,"ssr":4.372,"ghg":0.332,"total":4.704},{"year":2000,"temp":1.1,"ssr":-6.452,"ghg":0.35,"total":-6.102},{"year":2001,"temp":0.843,"ssr":3.859,"ghg":0.374,"total":4.233},{"year":2002,"temp":1.168,"ssr":-0.656,"ghg":0.404,"total":-0.252},{"year":2003,"temp":0.995,"ssr":14.261,"ghg":0.443,"total":14.703999999999999},{"year":2004,"temp":1.029,"ssr":-1.257,"ghg":0.47,"total":-0.7869999999999999},{"year":2005,"temp":1.094,"ssr":0.773,"ghg":0.5,"total":1.2730000000000001},{"year":2006,"temp":1.61,"ssr":3.293,"ghg":0.532,"total":3.825},{"year":2007,"temp":1.648,"ssr":5.135,"ghg":0.558,"total":5.693},{"year":2008,"temp":1.03,"ssr":7.585,"ghg":0.589,"total":8.174},{"year":2009,"temp":0.944,"ssr":11.145,"ghg":0.611,"total":11.756},{"year":2010,"temp":-0.625,"ssr":4.326,"ghg":0.644,"total":4.97},{"year":2011,"temp":1.112,"ssr":3.936,"ghg":0.671,"total":4.607},{"year":2012,"temp":0.592,"ssr":2.677,"ghg":0.7,"total":3.377},{"year":2013,"temp":0.109,"ssr":6.734,"ghg":0.74,"total":7.474},{"year":2014,"temp":2.114,"ssr":7.162,"ghg":0.767,"total":7.929},{"year":2015,"temp":1.272,"ssr":7.439,"ghg":0.8,"total":8.239},{"year":2016,"temp":1.316,"ssr":9.705,"ghg":0.849,"total":10.554},{"year":2017,"temp":1.477,"ssr":6.193,"ghg":0.879,"total":7.071999999999999},{"year":2018,"temp":1.51,"ssr":12.284,"ghg":0.912,"total":13.196000000000002},{"year":2019,"temp":1.619,"ssr":12.139,"ghg":0.946,"total":13.084999999999999},{"year":2020,"temp":1.986,"ssr":14.787,"ghg":0.979,"total":15.766},{"year":2021,"temp":0.981,"ssr":3.466,"ghg":1.01,"total":4.476},{"year":2022,"temp":2.052,"ssr":22.611,"ghg":1.043,"total":23.654},{"year":2023,"temp":2.1,"ssr":10.298,"ghg":1.074,"total":11.372},{"year":2024,"temp":2.295,"ssr":6.278,"ghg":1.12,"total":7.398},{"year":2025,"temp":1.885,"ssr":19.057,"ghg":1.166,"total":20.223}]},"260":{"name":"De Bilt","rows":[{"year":1979,"temp":-1.203,"ssr":-7.181,"ghg":-0.159,"total":-7.34},{"year":1980,"temp":-0.506,"ssr":-5.626,"ghg":-0.125,"total":-5.751},{"year":1981,"temp":-0.494,"ssr":-7.395,"ghg":-0.106,"total":-7.5009999999999994},{"year":1982,"temp":0.325,"ssr":9.838,"ghg":-0.094,"total":9.744},{"year":1983,"temp":0.396,"ssr":0.691,"ghg":-0.066,"total":0.625},{"year":1984,"temp":-0.289,"ssr":-7.309,"ghg":-0.041,"total":-7.3500000000000005},{"year":1985,"temp":-1.164,"ssr":-4.452,"ghg":-0.018,"total":-4.47},{"year":1986,"temp":-0.694,"ssr":6.363,"ghg":0.006,"total":6.369000000000001},{"year":1987,"temp":-0.877,"ssr":-5.623,"ghg":0.033,"total":-5.59},{"year":1988,"temp":0.61,"ssr":-7.442,"ghg":0.073,"total":-7.369},{"year":1989,"temp":1.038,"ssr":9.188,"ghg":0.098,"total":9.286000000000001},{"year":1990,"temp":1.15,"ssr":6.14,"ghg":0.119,"total":6.2589999999999995},{"year":1991,"temp":-0.187,"ssr":-0.123,"ghg":0.14,"total":0.017000000000000015},{"year":1992,"temp":0.797,"ssr":3.588,"ghg":0.151,"total":3.739},{"year":1993,"temp":-0.099,"ssr":-5.107,"ghg":0.162,"total":-4.945},{"year":1994,"temp":0.884,"ssr":-2.545,"ghg":0.186,"total":-2.359},{"year":1995,"temp":0.719,"ssr":6.053,"ghg":0.214,"total":6.267},{"year":1996,"temp":-1.176,"ssr":-1.696,"ghg":0.242,"total":-1.454},{"year":1997,"temp":0.536,"ssr":1.956,"ghg":0.259,"total":2.215},{"year":1998,"temp":0.668,"ssr":-11.545,"ghg":0.3,"total":-11.245},{"year":1999,"temp":1.186,"ssr":5.006,"ghg":0.332,"total":5.338},{"year":2000,"temp":1.142,"ssr":-3.088,"ghg":0.35,"total":-2.738},{"year":2001,"temp":0.641,"ssr":3.79,"ghg":0.374,"total":4.164},{"year":2002,"temp":1.001,"ssr":4.684,"ghg":0.404,"total":5.088},{"year":2003,"temp":0.63,"ssr":16.515,"ghg":0.443,"total":16.958000000000002},{"year":2004,"temp":0.597,"ssr":3.818,"ghg":0.47,"total":4.288},{"year":2005,"temp":0.93,"ssr":7.741,"ghg":0.5,"total":8.241},{"year":2006,"temp":1.48,"ssr":7.112,"ghg":0.532,"total":7.644},{"year":2007,"temp":1.471,"ssr":4.644,"ghg":0.558,"total":5.202},{"year":2008,"temp":0.854,"ssr":4.834,"ghg":0.589,"total":5.423},{"year":2009,"temp":0.776,"ssr":10.99,"ghg":0.611,"total":11.601},{"year":2010,"temp":-0.591,"ssr":9.1,"ghg":0.644,"total":9.744},{"year":2011,"temp":1.179,"ssr":7.17,"ghg":0.671,"total":7.841},{"year":2012,"temp":0.616,"ssr":2.605,"ghg":0.7,"total":3.3049999999999997},{"year":2013,"temp":0.092,"ssr":4.599,"ghg":0.74,"total":5.339},{"year":2014,"temp":1.959,"ssr":8.848,"ghg":0.767,"total":9.615},{"year":2015,"temp":1.149,"ssr":12.551,"ghg":0.8,"total":13.351},{"year":2016,"temp":0.949,"ssr":8.379,"ghg":0.849,"total":9.228},{"year":2017,"temp":1.211,"ssr":6.485,"ghg":0.879,"total":7.364000000000001},{"year":2018,"temp":1.647,"ssr":19.857,"ghg":0.912,"total":20.769},{"year":2019,"temp":1.433,"ssr":15.474,"ghg":0.946,"total":16.42},{"year":2020,"temp":1.933,"ssr":18.146,"ghg":0.979,"total":19.125},{"year":2021,"temp":0.726,"ssr":7.899,"ghg":1.01,"total":8.909},{"year":2022,"temp":1.818,"ssr":26.493,"ghg":1.043,"total":27.535999999999998},{"year":2023,"temp":2.036,"ssr":15.143,"ghg":1.074,"total":16.217000000000002},{"year":2024,"temp":2.044,"ssr":8.457,"ghg":1.12,"total":9.577000000000002},{"year":2025,"temp":1.665,"ssr":28.342,"ghg":1.166,"total":29.508}]},"280":{"name":"Eelde","rows":[{"year":1979,"temp":-1.203,"ssr":-5.232,"ghg":-0.159,"total":-5.391},{"year":1980,"temp":-0.582,"ssr":-2.901,"ghg":-0.125,"total":-3.026},{"year":1981,"temp":-0.312,"ssr":-4.424,"ghg":-0.106,"total":-4.53},{"year":1982,"temp":0.389,"ssr":8.376,"ghg":-0.094,"total":8.282},{"year":1983,"temp":0.624,"ssr":4.635,"ghg":-0.066,"total":4.569},{"year":1984,"temp":-0.365,"ssr":-7.735,"ghg":-0.041,"total":-7.776000000000001},{"year":1985,"temp":-1.005,"ssr":-6.846,"ghg":-0.018,"total":-6.864},{"year":1986,"temp":-0.817,"ssr":4.909,"ghg":0.006,"total":4.915},{"year":1987,"temp":-1.0,"ssr":-3.594,"ghg":0.033,"total":-3.561},{"year":1988,"temp":0.582,"ssr":-7.66,"ghg":0.073,"total":-7.587},{"year":1989,"temp":0.817,"ssr":8.488,"ghg":0.098,"total":8.586},{"year":1990,"temp":1.087,"ssr":3.85,"ghg":0.119,"total":3.9690000000000003},{"year":1991,"temp":-0.106,"ssr":2.749,"ghg":0.14,"total":2.8890000000000002},{"year":1992,"temp":0.952,"ssr":5.435,"ghg":0.151,"total":5.585999999999999},{"year":1993,"temp":-0.285,"ssr":-5.293,"ghg":0.162,"total":-5.131},{"year":1994,"temp":0.76,"ssr":-0.043,"ghg":0.186,"total":0.14300000000000002},{"year":1995,"temp":0.46,"ssr":7.084,"ghg":0.214,"total":7.298},{"year":1996,"temp":-1.374,"ssr":-1.516,"ghg":0.242,"total":-1.274},{"year":1997,"temp":0.504,"ssr":3.957,"ghg":0.259,"total":4.216},{"year":1998,"temp":0.718,"ssr":-9.524,"ghg":0.3,"total":-9.223999999999998},{"year":1999,"temp":1.312,"ssr":7.805,"ghg":0.332,"total":8.137},{"year":2000,"temp":1.288,"ssr":-4.476,"ghg":0.35,"total":-4.126},{"year":2001,"temp":0.675,"ssr":3.38,"ghg":0.374,"total":3.754},{"year":2002,"temp":1.16,"ssr":0.186,"ghg":0.404,"total":0.5900000000000001},{"year":2003,"temp":0.758,"ssr":15.275,"ghg":0.443,"total":15.718},{"year":2004,"temp":0.873,"ssr":6.471,"ghg":0.47,"total":6.941},{"year":2005,"temp":1.002,"ssr":6.372,"ghg":0.5,"total":6.872},{"year":2006,"temp":1.639,"ssr":6.327,"ghg":0.532,"total":6.859},{"year":2007,"temp":1.668,"ssr":3.614,"ghg":0.558,"total":4.172},{"year":2008,"temp":1.186,"ssr":6.197,"ghg":0.589,"total":6.786},{"year":2009,"temp":0.842,"ssr":11.088,"ghg":0.611,"total":11.699},{"year":2010,"temp":-0.768,"ssr":9.356,"ghg":0.644,"total":10.0},{"year":2011,"temp":1.039,"ssr":4.936,"ghg":0.671,"total":5.607},{"year":2012,"temp":0.605,"ssr":5.289,"ghg":0.7,"total":5.989},{"year":2013,"temp":0.276,"ssr":5.833,"ghg":0.74,"total":6.573},{"year":2014,"temp":2.12,"ssr":8.53,"ghg":0.767,"total":9.296999999999999},{"year":2015,"temp":1.224,"ssr":7.393,"ghg":0.8,"total":8.193},{"year":2016,"temp":1.028,"ssr":7.764,"ghg":0.849,"total":8.613},{"year":2017,"temp":1.187,"ssr":4.434,"ghg":0.879,"total":5.313000000000001},{"year":2018,"temp":1.727,"ssr":18.072,"ghg":0.912,"total":18.983999999999998},{"year":2019,"temp":1.678,"ssr":10.57,"ghg":0.946,"total":11.516},{"year":2020,"temp":1.904,"ssr":13.2,"ghg":0.979,"total":14.178999999999998},{"year":2021,"temp":0.839,"ssr":7.38,"ghg":1.01,"total":8.39},{"year":2022,"temp":1.825,"ssr":19.774,"ghg":1.043,"total":20.817},{"year":2023,"temp":1.99,"ssr":15.163,"ghg":1.074,"total":16.237000000000002},{"year":2024,"temp":2.23,"ssr":9.467,"ghg":1.12,"total":10.587},{"year":2025,"temp":1.56,"ssr":18.648,"ghg":1.166,"total":19.814}]},"310":{"name":"Vlissingen","rows":[{"year":1979,"temp":-0.941,"ssr":-3.981,"ghg":-0.159,"total":-4.14},{"year":1980,"temp":-0.403,"ssr":-5.058,"ghg":-0.125,"total":-5.183},{"year":1981,"temp":-0.305,"ssr":-6.639,"ghg":-0.106,"total":-6.745},{"year":1982,"temp":0.265,"ssr":2.746,"ghg":-0.094,"total":2.652},{"year":1983,"temp":0.286,"ssr":-3.276,"ghg":-0.066,"total":-3.3419999999999996},{"year":1984,"temp":-0.195,"ssr":-4.724,"ghg":-0.041,"total":-4.765000000000001},{"year":1985,"temp":-1.283,"ssr":-0.218,"ghg":-0.018,"total":-0.236},{"year":1986,"temp":-0.835,"ssr":4.419,"ghg":0.006,"total":4.425},{"year":1987,"temp":-0.892,"ssr":-4.063,"ghg":0.033,"total":-4.029999999999999},{"year":1988,"temp":0.566,"ssr":-6.413,"ghg":0.073,"total":-6.34},{"year":1989,"temp":1.153,"ssr":6.906,"ghg":0.098,"total":7.004},{"year":1990,"temp":1.24,"ssr":11.262,"ghg":0.119,"total":11.381},{"year":1991,"temp":-0.084,"ssr":0.704,"ghg":0.14,"total":0.844},{"year":1992,"temp":0.709,"ssr":0.291,"ghg":0.151,"total":0.44199999999999995},{"year":1993,"temp":0.108,"ssr":-0.464,"ghg":0.162,"total":-0.30200000000000005},{"year":1994,"temp":1.009,"ssr":1.637,"ghg":0.186,"total":1.823},{"year":1995,"temp":1.016,"ssr":10.285,"ghg":0.214,"total":10.499},{"year":1996,"temp":-1.056,"ssr":2.028,"ghg":0.242,"total":2.27},{"year":1997,"temp":0.595,"ssr":5.296,"ghg":0.259,"total":5.555000000000001},{"year":1998,"temp":0.641,"ssr":-7.513,"ghg":0.3,"total":-7.213},{"year":1999,"temp":1.326,"ssr":4.159,"ghg":0.332,"total":4.491},{"year":2000,"temp":1.066,"ssr":-3.151,"ghg":0.35,"total":-2.8009999999999997},{"year":2001,"temp":0.814,"ssr":1.97,"ghg":0.374,"total":2.344},{"year":2002,"temp":1.149,"ssr":0.191,"ghg":0.404,"total":0.595},{"year":2003,"temp":1.034,"ssr":15.57,"ghg":0.443,"total":16.013},{"year":2004,"temp":0.935,"ssr":7.254,"ghg":0.47,"total":7.723999999999999},{"year":2005,"temp":1.001,"ssr":7.235,"ghg":0.5,"total":7.735},{"year":2006,"temp":1.335,"ssr":8.415,"ghg":0.532,"total":8.947},{"year":2007,"temp":1.536,"ssr":0.652,"ghg":0.558,"total":1.21},{"year":2008,"temp":0.861,"ssr":2.711,"ghg":0.589,"total":3.3},{"year":2009,"temp":0.842,"ssr":14.223,"ghg":0.611,"total":14.834000000000001},{"year":2010,"temp":-0.513,"ssr":9.365,"ghg":0.644,"total":10.009},{"year":2011,"temp":1.348,"ssr":8.383,"ghg":0.671,"total":9.053999999999998},{"year":2012,"temp":0.493,"ssr":4.367,"ghg":0.7,"total":5.067},{"year":2013,"temp":-0.044,"ssr":2.76,"ghg":0.74,"total":3.5},{"year":2014,"temp":2.034,"ssr":7.094,"ghg":0.767,"total":7.861000000000001},{"year":2015,"temp":1.207,"ssr":12.062,"ghg":0.8,"total":12.862},{"year":2016,"temp":1.266,"ssr":12.495,"ghg":0.849,"total":13.344},{"year":2017,"temp":1.439,"ssr":10.377,"ghg":0.879,"total":11.256},{"year":2018,"temp":1.541,"ssr":17.262,"ghg":0.912,"total":18.174},{"year":2019,"temp":1.6,"ssr":13.808,"ghg":0.946,"total":14.754},{"year":2020,"temp":2.08,"ssr":20.066,"ghg":0.979,"total":21.044999999999998},{"year":2021,"temp":0.847,"ssr":10.421,"ghg":1.01,"total":11.431},{"year":2022,"temp":2.212,"ssr":25.616,"ghg":1.043,"total":26.659},{"year":2023,"temp":2.119,"ssr":16.391,"ghg":1.074,"total":17.465},{"year":2024,"temp":1.916,"ssr":4.853,"ghg":1.12,"total":5.973},{"year":2025,"temp":1.854,"ssr":22.178,"ghg":1.166,"total":23.344}]},"380":{"name":"Maastricht","rows":[{"year":1979,"temp":-0.983,"ssr":-7.864,"ghg":-0.159,"total":-8.023},{"year":1980,"temp":-0.788,"ssr":-7.633,"ghg":-0.125,"total":-7.758},{"year":1981,"temp":-0.258,"ssr":-6.857,"ghg":-0.106,"total":-6.963},{"year":1982,"temp":0.435,"ssr":6.806,"ghg":-0.094,"total":6.712},{"year":1983,"temp":0.298,"ssr":2.07,"ghg":-0.066,"total":2.004},{"year":1984,"temp":-0.409,"ssr":-6.821,"ghg":-0.041,"total":-6.862},{"year":1985,"temp":-1.238,"ssr":-1.049,"ghg":-0.018,"total":-1.067},{"year":1986,"temp":-0.644,"ssr":7.501,"ghg":0.006,"total":7.507000000000001},{"year":1987,"temp":-0.888,"ssr":-5.279,"ghg":0.033,"total":-5.2459999999999996},{"year":1988,"temp":0.587,"ssr":-7.354,"ghg":0.073,"total":-7.281},{"year":1989,"temp":1.14,"ssr":5.376,"ghg":0.098,"total":5.474},{"year":1990,"temp":0.976,"ssr":5.608,"ghg":0.119,"total":5.726999999999999},{"year":1991,"temp":-0.183,"ssr":1.882,"ghg":0.14,"total":2.022},{"year":1992,"temp":0.57,"ssr":0.573,"ghg":0.151,"total":0.724},{"year":1993,"temp":0.074,"ssr":-1.368,"ghg":0.162,"total":-1.2060000000000002},{"year":1994,"temp":1.238,"ssr":0.244,"ghg":0.186,"total":0.43},{"year":1995,"temp":0.941,"ssr":3.568,"ghg":0.214,"total":3.782},{"year":1996,"temp":-0.975,"ssr":0.191,"ghg":0.242,"total":0.433},{"year":1997,"temp":0.616,"ssr":5.945,"ghg":0.259,"total":6.204000000000001},{"year":1998,"temp":0.574,"ssr":-9.483,"ghg":0.3,"total":-9.183},{"year":1999,"temp":1.264,"ssr":7.817,"ghg":0.332,"total":8.149000000000001},{"year":2000,"temp":1.315,"ssr":-2.322,"ghg":0.35,"total":-1.972},{"year":2001,"temp":0.773,"ssr":3.78,"ghg":0.374,"total":4.154},{"year":2002,"temp":1.284,"ssr":2.251,"ghg":0.404,"total":2.655},{"year":2003,"temp":1.173,"ssr":20.06,"ghg":0.443,"total":20.503},{"year":2004,"temp":0.554,"ssr":5.1,"ghg":0.47,"total":5.569999999999999},{"year":2005,"temp":1.001,"ssr":7.303,"ghg":0.5,"total":7.803},{"year":2006,"temp":1.353,"ssr":4.09,"ghg":0.532,"total":4.622},{"year":2007,"temp":1.379,"ssr":1.356,"ghg":0.558,"total":1.9140000000000001},{"year":2008,"temp":0.729,"ssr":2.39,"ghg":0.589,"total":2.979},{"year":2009,"temp":0.792,"ssr":7.85,"ghg":0.611,"total":8.461},{"year":2010,"temp":-0.511,"ssr":5.528,"ghg":0.644,"total":6.172},{"year":2011,"temp":1.385,"ssr":5.333,"ghg":0.671,"total":6.0040000000000004},{"year":2012,"temp":0.542,"ssr":1.491,"ghg":0.7,"total":2.191},{"year":2013,"temp":0.086,"ssr":3.1,"ghg":0.74,"total":3.84},{"year":2014,"temp":1.919,"ssr":6.91,"ghg":0.767,"total":7.6770000000000005},{"year":2015,"temp":1.314,"ssr":11.36,"ghg":0.8,"total":12.16},{"year":2016,"temp":1.009,"ssr":2.903,"ghg":0.849,"total":3.752},{"year":2017,"temp":1.399,"ssr":7.23,"ghg":0.879,"total":8.109},{"year":2018,"temp":1.997,"ssr":22.276,"ghg":0.912,"total":23.188},{"year":2019,"temp":1.621,"ssr":15.904,"ghg":0.946,"total":16.85},{"year":2020,"temp":2.204,"ssr":19.649,"ghg":0.979,"total":20.628},{"year":2021,"temp":0.756,"ssr":8.789,"ghg":1.01,"total":9.799},{"year":2022,"temp":2.267,"ssr":23.764,"ghg":1.043,"total":24.807},{"year":2023,"temp":2.112,"ssr":13.642,"ghg":1.074,"total":14.716},{"year":2024,"temp":1.922,"ssr":3.665,"ghg":1.12,"total":4.785},{"year":2025,"temp":2.015,"ssr":22.584,"ghg":1.166,"total":23.75}]}};
+    const stationSelect = document.getElementById("station");
+    const tempMinInput = document.getElementById("temp-min");
+    const tempMaxInput = document.getElementById("temp-max");
+    const forceMinInput = document.getElementById("force-min");
+    const forceMaxInput = document.getElementById("force-max");
+    const showTotalInput = document.getElementById("show-total");
+    const tempMinValue = document.getElementById("temp-min-value");
+    const tempMaxValue = document.getElementById("temp-max-value");
+    const forceMinValue = document.getElementById("force-min-value");
+    const forceMaxValue = document.getElementById("force-max-value");
+    const stationTitle = document.getElementById("station-title");
+    const stationMeta = document.getElementById("station-meta");
+    const chart = document.getElementById("chart");
+    const ssrLegend = document.getElementById("ssr-legend");
+    const totalLegend = document.getElementById("total-legend");
+
+    const stationIds = Object.keys(stationData);
+    for (const stationId of stationIds) {
+      const option = document.createElement("option");
+      option.value = stationId;
+      option.textContent = `${stationData[stationId].name} (${stationId})`;
+      stationSelect.appendChild(option);
+    }
+    stationSelect.value = stationIds.includes("260") ? "260" : stationIds[0];
+
+    function formatValue(value, digits = 1) {
+      return Number(value).toFixed(digits);
+    }
+
+    function makeTicks(min, max, targetCount) {
+      const span = max - min;
+      if (span <= 0) {
+        return [min];
+      }
+      const rawStep = span / targetCount;
+      const power = Math.pow(10, Math.floor(Math.log10(rawStep)));
+      const options = [1, 2, 5, 10];
+      let step = options[options.length - 1] * power;
+      for (const option of options) {
+        const candidate = option * power;
+        if (candidate >= rawStep) {
+          step = candidate;
+          break;
+        }
+      }
+      const start = Math.ceil(min / step) * step;
+      const ticks = [];
+      for (let value = start; value <= max + step * 0.5; value += step) {
+        ticks.push(Number(value.toFixed(10)));
+      }
+      if (!ticks.length) {
+        ticks.push(min, max);
+      }
+      return ticks;
+    }
+
+    function clampRanges() {
+      if (Number(tempMinInput.value) >= Number(tempMaxInput.value)) {
+        tempMaxInput.value = (Number(tempMinInput.value) + 0.1).toFixed(1);
+      }
+      if (Number(forceMinInput.value) >= Number(forceMaxInput.value)) {
+        forceMaxInput.value = (Number(forceMinInput.value) + 0.1).toFixed(1);
+      }
+    }
+
+    function smoothSeries(rows, key, frac = 0.30) {
+      if (rows.length < 3) {
+        return rows.map((row) => ({ year: row.year, value: row[key] }));
+      }
+      const xs = rows.map((row) => row.year);
+      const ys = rows.map((row) => row[key]);
+      const span = Math.max(3, Math.ceil(xs.length * frac));
+      const smoothed = [];
+      for (let index = 0; index < xs.length; index += 1) {
+        const x0 = xs[index];
+        const distances = xs.map((x) => Math.abs(x - x0)).sort((a, b) => a - b);
+        const bandwidth = distances[Math.min(span - 1, distances.length - 1)];
+        if (bandwidth === 0) {
+          smoothed.push({ year: x0, value: ys[index] });
+          continue;
+        }
+        let sw = 0;
+        let sx = 0;
+        let sy = 0;
+        let sxx = 0;
+        let sxy = 0;
+        for (let inner = 0; inner < xs.length; inner += 1) {
+          const u = Math.abs(xs[inner] - x0) / bandwidth;
+          const weight = u >= 1 ? 0 : Math.pow(1 - Math.pow(u, 3), 3);
+          sw += weight;
+          sx += xs[inner] * weight;
+          sy += ys[inner] * weight;
+          sxx += xs[inner] * xs[inner] * weight;
+          sxy += xs[inner] * ys[inner] * weight;
+        }
+        const denom = sw * sxx - sx * sx;
+        const value = sw === 0 || denom === 0 ? ys[index] : ((sw * sxy - sx * sy) / denom) * x0 + ((sy - ((sw * sxy - sx * sy) / denom) * sx) / sw);
+        smoothed.push({ year: x0, value });
+      }
+      return smoothed;
+    }
+
+    function render() {
+      clampRanges();
+      tempMinValue.textContent = formatValue(tempMinInput.value);
+      tempMaxValue.textContent = formatValue(tempMaxInput.value);
+      forceMinValue.textContent = formatValue(forceMinInput.value);
+      forceMaxValue.textContent = formatValue(forceMaxInput.value);
+
+      const stationId = stationSelect.value;
+      const station = stationData[stationId];
+      const rows = station.rows;
+      const tempMin = Number(tempMinInput.value);
+      const tempMax = Number(tempMaxInput.value);
+      const forceMin = Number(forceMinInput.value);
+      const forceMax = Number(forceMaxInput.value);
+      const showTotal = showTotalInput.checked;
+      ssrLegend.style.display = showTotal ? "inline-flex" : "none";
+      totalLegend.style.display = showTotal ? "inline-flex" : "none";
+      const years = rows.map((row) => row.year);
+      const yearMin = years[0];
+      const yearMax = years[years.length - 1];
+      const tempSmooth = smoothSeries(rows, "temp", 0.28);
+      const ghgSmooth = smoothSeries(rows, "ghg", 0.35);
+      const ssrSmooth = smoothSeries(rows, "ssr", 0.30);
+      const totalSmooth = smoothSeries(rows, "total", 0.30);
+
+      stationTitle.textContent = station.name;
+      stationMeta.textContent = `${yearMin}-${yearMax}`;
+
+      const width = 980;
+      const height = 560;
+      const left = 84;
+      const right = 86;
+      const top = 36;
+      const bottom = 54;
+      const plotWidth = width - left - right;
+      const plotHeight = height - top - bottom;
+
+      function xScale(year) {
+        return left + ((year - yearMin) / (yearMax - yearMin)) * plotWidth;
+      }
+
+      function yTemp(value) {
+        return top + (1 - (value - tempMin) / (tempMax - tempMin)) * plotHeight;
+      }
+
+      function yForce(value) {
+        return top + (1 - (value - forceMin) / (forceMax - forceMin)) * plotHeight;
+      }
+
+      function linePath(items, key, yScale) {
+        return items.map((row, index) => `${index === 0 ? "M" : "L"} ${xScale(row.year).toFixed(2)} ${yScale(row[key]).toFixed(2)}`).join(" ");
+      }
+
+      function smoothPath(items, yScale) {
+        return items.map((row, index) => `${index === 0 ? "M" : "L"} ${xScale(row.year).toFixed(2)} ${yScale(row.value).toFixed(2)}`).join(" ");
+      }
+
+      function fillPath(items, yScale, baselineY) {
+        if (!items.length) {
+          return "";
+        }
+        const startX = xScale(items[0].year).toFixed(2);
+        const endX = xScale(items[items.length - 1].year).toFixed(2);
+        return [
+          `M ${startX} ${baselineY.toFixed(2)}`,
+          items.map((row) => `L ${xScale(row.year).toFixed(2)} ${yScale(row.value).toFixed(2)}`).join(" "),
+          `L ${endX} ${baselineY.toFixed(2)}`,
+          "Z",
+        ].join(" ");
+      }
+
+      const tempTicks = makeTicks(tempMin, tempMax, 5);
+      const forceTicks = makeTicks(forceMin, forceMax, 5);
+
+      let svg = "";
+      svg += `<rect x="0" y="0" width="${width}" height="${height}" fill="#fffdf8"></rect>`;
+      for (const tick of tempTicks) {
+        const y = yTemp(tick);
+        svg += `<line x1="${left}" y1="${y.toFixed(2)}" x2="${width - right}" y2="${y.toFixed(2)}" stroke="#ddd2bf" stroke-width="1"></line>`;
+        svg += `<text x="${left - 12}" y="${(y + 5).toFixed(2)}" text-anchor="end" font-size="13" fill="#5d554c">${formatValue(tick)}</text>`;
+      }
+      for (const tick of forceTicks) {
+        const y = yForce(tick);
+        svg += `<text x="${width - right + 12}" y="${(y + 5).toFixed(2)}" font-size="13" fill="#5d554c">${formatValue(tick)}</text>`;
+      }
+      const yearTicks = [yearMin, 1990, 2000, 2010, 2020, yearMax].filter((value, index, array) => array.indexOf(value) === index && value >= yearMin && value <= yearMax);
+      for (const year of yearTicks) {
+        const x = xScale(year);
+        svg += `<line x1="${x.toFixed(2)}" y1="${top}" x2="${x.toFixed(2)}" y2="${height - bottom}" stroke="#efe6d8" stroke-width="1"></line>`;
+        svg += `<text x="${x.toFixed(2)}" y="${height - 18}" text-anchor="middle" font-size="13" fill="#5d554c">${year}</text>`;
+      }
+      const zeroTempInRange = tempMin <= 0 && tempMax >= 0;
+      if (zeroTempInRange) {
+        const y = yTemp(0);
+        svg += `<line x1="${left}" y1="${y.toFixed(2)}" x2="${width - right}" y2="${y.toFixed(2)}" stroke="#8f877d" stroke-width="1.2" stroke-dasharray="5 5"></line>`;
+      }
+      svg += `<line x1="${left}" y1="${top}" x2="${left}" y2="${height - bottom}" stroke="#aa9f8f" stroke-width="1.2"></line>`;
+      svg += `<line x1="${width - right}" y1="${top}" x2="${width - right}" y2="${height - bottom}" stroke="#aa9f8f" stroke-width="1.2"></line>`;
+      svg += `<line x1="${left}" y1="${height - bottom}" x2="${width - right}" y2="${height - bottom}" stroke="#aa9f8f" stroke-width="1.2"></line>`;
+      svg += `<g id="temp-series">`;
+      svg += `<path d="${linePath(rows, "temp", yTemp)}" fill="none" stroke="#777777" stroke-opacity="0.45" stroke-width="1.5"></path>`;
+      svg += `<path d="${smoothPath(tempSmooth, yTemp)}" fill="none" stroke="#111111" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"></path>`;
+      svg += `</g>`;
+      svg += `<g id="ghg-series">`;
+      svg += `<path d="${fillPath(ghgSmooth, yForce, yForce(0))}" fill="#2c8c4a" fill-opacity="0.14"></path>`;
+      svg += `<path d="${linePath(rows, "ghg", yForce)}" fill="none" stroke="#2c8c4a" stroke-opacity="0.35" stroke-width="1.6"></path>`;
+      svg += `<path d="${smoothPath(ghgSmooth, yForce)}" fill="none" stroke="#2c8c4a" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"></path>`;
+      svg += `</g>`;
+      svg += `<g id="ssr-series">`;
+      svg += `<path d="${linePath(rows, "ssr", yForce)}" fill="none" stroke="#c88419" stroke-opacity="0.45" stroke-width="1.8" stroke-dasharray="6 5"></path>`;
+      svg += `<path d="${smoothPath(ssrSmooth, yForce)}" fill="none" stroke="#c88419" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="10 7"></path>`;
+      svg += `</g>`;
+      svg += `<g id="total-series">`;
+      svg += `<path d="${fillPath(totalSmooth, yForce, yForce(0))}" fill="#c8332d" fill-opacity="0.14"></path>`;
+      svg += `<path d="${linePath(rows, "total", yForce)}" fill="none" stroke="#c8332d" stroke-opacity="0.30" stroke-width="1.7"></path>`;
+      svg += `<path d="${smoothPath(totalSmooth, yForce)}" fill="none" stroke="#c8332d" stroke-width="5.0" stroke-linecap="round" stroke-linejoin="round"></path>`;
+      svg += `</g>`;
+      svg += `<text x="${left}" y="18" font-size="13" fill="#5d554c">Left axis: temperature anomaly (C)</text>`;
+      svg += `<text x="${width - right}" y="18" text-anchor="end" font-size="13" fill="#5d554c">Right axis: SSR / GHG / total (W/m2)</text>`;
+      chart.innerHTML = svg;
+      const totalSeries = document.getElementById("total-series");
+      const ssrSeries = document.getElementById("ssr-series");
+      if (ssrSeries) {
+        ssrSeries.style.display = showTotal ? "inline" : "none";
+      }
+      if (totalSeries) {
+        totalSeries.style.display = showTotal ? "inline" : "none";
+      }
+    }
+
+    stationSelect.addEventListener("change", render);
+    tempMinInput.addEventListener("input", render);
+    tempMaxInput.addEventListener("input", render);
+    forceMinInput.addEventListener("input", render);
+    forceMaxInput.addEventListener("input", render);
+    showTotalInput.addEventListener("change", render);
+    render();
+  </script>
+</body>
+</html>
